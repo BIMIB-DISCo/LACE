@@ -1,0 +1,35 @@
+Package: LaCE
+Version: 1.0.0
+Date: 2019-11-26
+Title: Longitudinal Cancer Evolution (LaCE)
+Authors@R: c(person("Daniele","Ramazzotti",role=c("cre","aut"),email="daniele.ramazzotti@yahoo.com"),
+    person("Fabrizio","Angaroni",role=c("aut"),email="fabrizio.angaroni@unimib.it"),
+    person("Davide","Maspero",role=c("aut"),email="d.maspero@campus.unimib.it"),
+    person("Alex","Graudenzi",role=c("aut"),email="alex.graudenzi@unimib.it"))
+Maintainer: Davide Maspero <d.maspero@campus.unimib.it>
+Depends:
+    R (>= 3.6.0)
+Imports:
+    cluster,
+    parallel,
+    Rfast
+Suggests:
+    BiocGenerics,
+    BiocStyle,
+    testthat,
+    knitr
+Name:
+    LaCE: R package for the inference of Longitudinal Cancer Evolution models
+Description:
+    LaCE is the first algorithmic framework that processes single-cell somatic mutation profiles from cancer samples collected at 
+    different time points and in distinct experimental settings, to produce longitudinal models of cancer evolution. 
+    The approach solves a Boolean Matrix Factorization problem with phylogenetic constraints, by maximizing a weighed likelihood 
+    function computed on multiple time points.
+Encoding: UTF-8
+LazyData: TRUE
+License: file LICENSE
+URL: https://github.com/BIMIB-DISCo/LaCE
+BugReports: https://github.com/BIMIB-DISCo/LaCE
+biocViews: BiomedicalInformatics
+RoxygenNote: 7.0.0
+VignetteBuilder: knitr

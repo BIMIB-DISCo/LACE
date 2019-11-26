@@ -153,10 +153,10 @@ LaCE <- function( D, lik_w = NULL, alpha = c(0.001, 0.001, 0.010, 0.010, 0.020, 
     C <- inference[[best]][["C"]]
     names(C) <- paste0("Experiment_",1:length(C))
     for(i in 1:length(C)) {
-    	tmp <- matrix(C[[i]],ncol=1)
-    	rownames(tmp) <- rownames(D[[i]])
-    	colnames(tmp) <- "Clone"
-    	C[[i]] <- tmp
+        tmp <- matrix(C[[i]],ncol=1)
+        rownames(tmp) <- rownames(D[[i]])
+        colnames(tmp) <- "Clone"
+        C[[i]] <- tmp
     }
     relative_likelihoods <- inference[[best]][["lik"]]
     names(relative_likelihoods) <- paste0("Experiment_",1:length(relative_likelihoods))
