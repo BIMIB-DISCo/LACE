@@ -1,0 +1,167 @@
+#' Perform inference of the maximum likelihood clonal tree from longitudinal data.
+#' @title LaCE
+#' @param D Mutation data from multiple experiments for a list of driver genes.
+#' @param lik_w Weight for each data point. If not provided, weights to correct for sample sizes are used.
+#' @param alpha False positive error rate; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at 
+#' maximum-likelihood is returned.
+#' @param beta False negative error rate; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
+#' maximum-likelihood is returned.
+#' @param initialization Starting point of the mcmc; if not provided, a random starting point is used.
+#' @param num_rs Number of restarts during mcmc inference.
+#' @param num_iter Maximum number of mcmc steps to be performed during the inference.
+#' @param n_try_bs Number of steps without change in likelihood of best solution after which to stop the mcmc.
+#' @param learning_rate Parameter to tune the probability of accepting solutions at lower values during mcmc. Value of learning_rate = 1 (default), set a 
+#' probability proportional to the difference in likelihood; values of learning_rate greater than 1 inclease the chance of accepting solutions at lower likelihood 
+#' during mcmc while values lower than 1 decrease such probability.
+#' @param marginalize Boolean. Shall I marginalize C when computing likelihood?
+#' @param num_processes Number of processes to be used during parallel execution. To execute in single process mode, 
+#' this parameter needs to be set to either NA or NULL.
+#' @param seed Seed for reproducibility.
+#' @param verbose Boolean. Shall I print to screen information messages during the execution?
+#' @return A list of 5 elements: B, C, likelihood, joint_likelihood and error_rates. Here, B returns the maximum likelihood longitudinal clonal tree, C the 
+#' attachment of cells to clones; likelihood and joint_likelihood are respectively the likelihood of the solutions at each individual time points and the joint likelihood. 
+#' Finally error_rates provides the best values of alpha and beta among the considered ones.
+#' @param log_file log file where to print outputs when using parallel. If parallel execution is disabled, this parameter is ignored.
+#' @export LaCE
+#' @import parallel
+#' @import Rfast
+#'
+LaCE <- function( D, lik_w = NULL, alpha = c(0.001, 0.001, 0.010, 0.010, 0.020, 0.030), beta = c(0.010, 0.100, 0.010, 0.100, 0.100, 0.200), initialization = NULL, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
+    
+    # Set the seed
+    set.seed(seed)
+
+    # Initialize weights to compute weighted joint likelihood
+    if(is.null(lik_w)) {
+        total_sample_size <- 0
+        for(i in 1:length(D)) {
+            total_sample_size <- total_sample_size + nrow(D[[i]])
+        }
+        for(i in 1:length(D)) {
+            lik_w <- c(lik_w,(1-(nrow(D[[i]])/total_sample_size)))
+        }
+        lik_w <- lik_w / sum(lik_w)
+    }
+    
+    if(verbose) {
+        cat(paste0("Starting inference for a total of ",length(alpha)," difference values of alpha and beta.","\n"))
+    }
+
+    # Setting up parallel execution
+    parallel <- NULL
+    close_parallel <- FALSE
+    if(is.null(parallel)&&length(alpha)>1) {
+        if(is.na(num_processes) || is.null(num_processes) || num_processes == 1) {
+            parallel <- NULL
+        }
+        else if(num_processes==Inf) {
+            cores <- as.integer((detectCores()-1))
+            if(cores < 2) {
+                parallel <- NULL
+            }
+            else {
+                num_processes <- min(num_processes,length(alpha))
+                parallel <- makeCluster(num_processes,outfile=log_file)
+                close_parallel <- TRUE
+            }
+        }
+        else {
+            num_processes <- min(num_processes,length(alpha))
+            parallel <- makeCluster(num_processes,outfile=log_file)
+            close_parallel <- TRUE
+        }
+        
+        if(verbose && !is.null(parallel)) {
+            cat("Executing",num_processes,"processes via parallel...","\n")
+        }
+    }
+
+    # Now start the inference
+    if(is.null(parallel)) {
+
+        # Sequential computation
+        inference <- list()
+
+        for(i in 1:length(alpha)) {
+
+            inference[[i]] <- learn.longitudinal.phylogeny( D = D, 
+                                                            P = P, 
+                                                            lik_w = lik_w, 
+                                                            alpha = alpha[[i]], 
+                                                            beta = beta[[i]], 
+                                                            initialization = initialization, 
+                                                            num_rs = num_rs, 
+                                                            num_iter = num_iter, 
+                                                            n_try_bs = n_try_bs, 
+                                                            learning_rate = learning_rate, 
+                                                            marginalize = marginalize, 
+                                                            seed = round(runif(1)*10000), 
+                                                            verbose = verbose)
+            
+        }
+
+    }
+    else {
+
+        # Parallel computation
+        res_clusterEvalQ <- clusterEvalQ(parallel,library("cluster"))
+        res_clusterEvalQ <- clusterEvalQ(parallel,library("Rfast"))
+        clusterExport(parallel,varlist=c("D","P","lik_w","alpha","beta","initialization","num_rs","num_iter","n_try_bs","learning_rate","marginalize","verbose"),envir=environment())
+        clusterExport(parallel,c("learn.longitudinal.phylogeny","compute.dist","jaccard.dist","initialize.B","move.B","compute.C"),envir=environment())
+        clusterSetRNGStream(parallel,iseed=round(runif(1)*100000))
+        inference <- parLapply(parallel,1:length(alpha),function(x) {
+            
+            if(verbose) {
+                cat('Performing inference for alpha =',paste0(alpha[[x]],collapse=" | "),'and beta =',paste0(beta[[x]],collapse=" | "),'\n')
+            }
+            
+            inference <- learn.longitudinal.phylogeny( D = D, 
+                                                       P = P, 
+                                                       lik_w = lik_w, 
+                                                       alpha = alpha[[x]], 
+                                                       beta = beta[[x]], 
+                                                       initialization = initialization, 
+                                                       num_rs = num_rs, 
+                                                       num_iter = num_iter, 
+                                                       n_try_bs = n_try_bs, 
+                                                       learning_rate = learning_rate, 
+                                                       marginalize = marginalize, 
+                                                       seed = round(runif(1)*10000), 
+                                                       verbose = FALSE)
+
+        })
+        
+    }
+    
+    # Close parallel
+    if(close_parallel) {
+        stopCluster(parallel)
+    }
+
+    # Return the solution at maximum likelihood among the inferrend ones
+    lik <- NULL
+    for(i in 1:length(inference)) {
+        lik <- c(lik,inference[[i]][["joint_lik"]])
+    }
+    best <- which(lik==max(lik))[1]
+    error_rates <- list(alpha=alpha[best],beta=beta[best])
+
+    # Renaming
+    B <- inference[[best]][["B"]]
+    rownames(B) <- c("Root",paste0("Clone_",rownames(B)[2:nrow(B)]))
+    colnames(B) <- c("Root",colnames(D[[1]])[as.numeric(colnames(B)[2:ncol(B)])])
+    C <- inference[[best]][["C"]]
+    names(C) <- paste0("Experiment_",1:length(C))
+    for(i in 1:length(C)) {
+        tmp <- matrix(C[[i]],ncol=1)
+        rownames(tmp) <- rownames(D[[i]])
+        colnames(tmp) <- "Clone"
+        C[[i]] <- tmp
+    }
+    relative_likelihoods <- inference[[best]][["lik"]]
+    names(relative_likelihoods) <- paste0("Experiment_",1:length(relative_likelihoods))
+    joint_likelihood <- inference[[best]][["joint_lik"]]
+
+    return(list(B=B,C=C,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,error_rates=error_rates))
+
+}
