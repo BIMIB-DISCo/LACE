@@ -85,7 +85,6 @@ LACE <- function( D, lik_w = NULL, alpha = c(0.001, 0.001, 0.010, 0.010, 0.020, 
         for(i in 1:length(alpha)) {
 
             inference[[i]] <- learn.longitudinal.phylogeny( D = D, 
-                                                            P = P, 
                                                             lik_w = lik_w, 
                                                             alpha = alpha[[i]], 
                                                             beta = beta[[i]], 
@@ -106,8 +105,8 @@ LACE <- function( D, lik_w = NULL, alpha = c(0.001, 0.001, 0.010, 0.010, 0.020, 
         # Parallel computation
         res_clusterEvalQ <- clusterEvalQ(parallel,library("cluster"))
         res_clusterEvalQ <- clusterEvalQ(parallel,library("Rfast"))
-        clusterExport(parallel,varlist=c("D","P","lik_w","alpha","beta","initialization","num_rs","num_iter","n_try_bs","learning_rate","marginalize","verbose"),envir=environment())
-        clusterExport(parallel,c("learn.longitudinal.phylogeny","compute.dist","jaccard.dist","initialize.B","move.B","compute.C"),envir=environment())
+        clusterExport(parallel,varlist=c("D","lik_w","alpha","beta","initialization","num_rs","num_iter","n_try_bs","learning_rate","marginalize","verbose"),envir=environment())
+        clusterExport(parallel,c("learn.longitudinal.phylogeny","initialize.B","move.B","compute.C"),envir=environment())
         clusterSetRNGStream(parallel,iseed=round(runif(1)*100000))
         inference <- parLapply(parallel,1:length(alpha),function(x) {
             
@@ -116,7 +115,6 @@ LACE <- function( D, lik_w = NULL, alpha = c(0.001, 0.001, 0.010, 0.010, 0.020, 
             }
             
             inference <- learn.longitudinal.phylogeny( D = D, 
-                                                       P = P, 
                                                        lik_w = lik_w, 
                                                        alpha = alpha[[x]], 
                                                        beta = beta[[x]], 
