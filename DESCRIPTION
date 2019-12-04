@@ -1,6 +1,6 @@
 Package: LACE
 Version: 1.0.0
-Date: 2019-11-27
+Date: 2019-12-04
 Title: Longitudinal Analysis of Cancer Evolution (LACE)
 Authors@R: c(person("Daniele","Ramazzotti",role=c("cre","aut"),email="daniele.ramazzotti@yahoo.com"),
     person("Fabrizio","Angaroni",role=c("aut"),email="fabrizio.angaroni@unimib.it"),
@@ -21,7 +21,7 @@ Suggests:
 Name:
     LACE: an R package for the inference of longitudinal cancer evolution models
 Description:
-    LACE is the first algorithmic framework that processes single-cell somatic mutation profiles from cancer samples collected at 
+    LACE is an algorithmic framework that processes single-cell somatic mutation profiles from cancer samples collected at 
     different time points and in distinct experimental settings, to produce longitudinal models of cancer evolution. 
     The approach solves a Boolean Matrix Factorization problem with phylogenetic constraints, by maximizing a weighed likelihood 
     function computed on multiple time points.

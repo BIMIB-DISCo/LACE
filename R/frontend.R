@@ -1,5 +1,10 @@
 #' Perform inference of the maximum likelihood clonal tree from longitudinal data.
 #' @title LACE
+#'
+#' @examples
+#' data(data_HN120Primary)
+#' inference = LACE(D=data_HN120Primary,lik_w=c(0.338,0.329,0.333),alpha=list(c(0.01,0.01,0.02)),beta=list(c(0.01,0.01,0.02)),num_rs=5,num_iter=10,n_try_bs=5,num_processes=NA,seed=12345,verbose=FALSE)
+#'
 #' @param D Mutation data from multiple experiments for a list of driver genes.
 #' @param lik_w Weight for each data point. If not provided, weights to correct for sample sizes are used.
 #' @param alpha False positive error rate; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at 
@@ -142,7 +147,7 @@ LACE <- function( D, lik_w = NULL, alpha = c(0.001, 0.001, 0.010, 0.010, 0.020, 
         lik <- c(lik,inference[[i]][["joint_lik"]])
     }
     best <- which(lik==max(lik))[1]
-    error_rates <- list(alpha=alpha[best],beta=beta[best])
+    error_rates <- list(alpha=alpha[[best]],beta=beta[[best]])
 
     # Renaming
     B <- inference[[best]][["B"]]
