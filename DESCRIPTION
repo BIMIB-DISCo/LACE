@@ -1,5 +1,5 @@
 Package: LACE
-Version: 1.0.0
+Version: 1.1.0
 Date: 2019-12-05
 Title: Longitudinal Analysis of Cancer Evolution (LACE)
 Authors@R: c(person("Daniele","Ramazzotti",role=c("cre","aut"),email="daniele.ramazzotti@yahoo.com"),
@@ -10,7 +10,6 @@ Maintainer: Davide Maspero <d.maspero@campus.unimib.it>
 Depends:
     R (>= 3.6.0)
 Imports:
-    cluster,
     parallel,
     Rfast
 Suggests:
