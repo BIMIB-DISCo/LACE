@@ -86,7 +86,7 @@ We setup the main parameter in oder to perform the inference. First of all, as t
 lik_weights = c(0.338,0.329,0.333)
 @
 
-The second main parameter to be defined as input is represented by the false positive and false negative error rates, i.e., alpha and beta. We can specify a different rate per time point as a list of rates. When multiple set of rates are provided, the LACE performs a grid search in order to estimate the best set of error rates. 
+The second main parameter to be defined as input is represented by the false positive and false negative error rates, i.e., alpha and beta. We can specify a different rate per time point as a list of rates. When multiple set of rates are provided, LACE performs a grid search in order to estimate the best set of error rates. 
 
 <<example_error_rates>>=
 alpha = list()
@@ -102,17 +102,26 @@ head(beta)
 We can now perform the inference as follow. 
 
 <<example_inference>>=
-inference = LACE(D=data_HN120Primary,lik_w=lik_weights,alpha=alpha,beta=beta,num_rs=5,num_iter=10,n_try_bs=5,num_processes=NA,seed=12345,verbose=FALSE)
+inference = LACE(D = data_HN120Primary,
+                 lik_w = lik_weights,
+                 alpha = alpha,
+                 beta = beta,
+                 num_rs = 5,
+                 num_iter = 10,
+                 n_try_bs = 5,
+                 num_processes = NA,
+                 seed = 12345,
+                 verbose = FALSE)
 @
 
-We notice that the inference resulting on the command above should be considered only as an example; the parameters $num_rs$, $num_iter$ and $n_try_bs$ representing the number of steps perfomed during the inference are downscaled to reduce execution time. We refer to the Manual for discussion on default values. We provide within the package results of inferences performed with correct parameters as RData. 
+We notice that the inference resulting on the command above should be considered only as an example; the parameters num rs, num iter and n try bs representing the number of steps perfomed during the inference are downscaled to reduce execution time. We refer to the Manual for discussion on default values. We provide within the package results of inferences performed with correct parameters as RData. 
 
 <<example_inference_full>>=
-data(inference_HN120Primary.RData)
+data(inference_HN120Primary)
 head(names(inference_HN120Primary))
 @
 
-LACE returns a list of six elements as results. Namely, $B$ and $C$ provide respectively the maximum likelihood longitudinal tree and cells attachments; $clones_prevalence$ the estimated prevalence of any observed clone; $relative_likelihoods$ and $joint_likelihood$ the estimated likelihoods for each time point and the weighted likelihood. Finally, $error_rates$ provide the best error rates (alpha and beta) as estimated by the grid search. 
+LACE returns a list of six elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; clones prevalence, the estimated prevalence of any observed clone; relative likelihoods and joint likelihood the estimated likelihoods for each time point and the weighted likelihood. Finally, error rates provide the best error rates (alpha and beta) as estimated by the grid search. 
 
 \section{\Rcode{sessionInfo()}}
 
