@@ -3,8 +3,9 @@
 
 | Branch              | Stato CI      |
 |---------------------|---------------|
-| master | [![Build Status](https://travis-ci.org/danro9685/SparseSignatures.svg?branch=master)](https://travis-ci.org/danro9685/SparseSignatures) |
-| development | [![Build Status](https://travis-ci.org/danro9685/SparseSignatures.svg?branch=development)](https://travis-ci.org/danro9685/SparseSignatures) |
+| master | [![Build Status](https://travis-ci.com/BIMIB-DISCo/LACE/builds/139504986)](https://travis-ci.com/BIMIB-DISCo/LACE/builds/139504986) |
+| development | [![Build Status](https://travis-ci.com/BIMIB-DISCo/LACE/builds/139505042)](https://travis-ci.com/BIMIB-DISCo/LACE/builds/139505042) |
+================
 
 Longitudinal Analysis of Cancer Evolution (LACE)
 
