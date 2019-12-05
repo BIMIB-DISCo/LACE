@@ -31,5 +31,5 @@ License: file LICENSE
 URL: https://github.com/BIMIB-DISCo/LACE
 BugReports: https://github.com/BIMIB-DISCo/LACE
 biocViews: BiomedicalInformatics
-RoxygenNote: 7.0.0
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr
