@@ -10,7 +10,6 @@ Maintainer: Davide Maspero <d.maspero@campus.unimib.it>
 Depends:
     R (>= 3.6.0)
 Imports:
-    cluster,
     parallel,
     Rfast
 Suggests:
