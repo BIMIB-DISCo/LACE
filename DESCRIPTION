@@ -27,7 +27,7 @@ Description:
     function computed on multiple time points.
 Encoding: UTF-8
 LazyData: TRUE
-License: file LICENSE
+License: file LICENSE.md
 URL: https://github.com/BIMIB-DISCo/LACE
 BugReports: https://github.com/BIMIB-DISCo/LACE
 biocViews: BiomedicalInformatics

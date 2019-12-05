@@ -80,7 +80,7 @@ data(data_HN120Primary)
 names(data_HN120Primary)
 @
 
-We setup the main parameter in oder to perform the inference. First of all, as the three data proint may potentially provide sequencing for an unbalanced number of cells, we weight each time point as follow w_s = (1-(n_s/n_T))/(y-1) in order to account for this. In the formula, e.g., the weigth for time point s (w_s) is calculated based on the number of cell observed in the time point (n_s) and the total number of cells in the threee time points (n_T). The denominator (y-1, with y being the numnber of time points, i.e., 3 in our case) aims at normalizing the weights to sum to one. 
+We setup the main parameter in oder to perform the inference. First of all, as the three data proint may potentially provide sequencing for an unbalanced number of cells, we weight each time point as follow $w_s=(1-\frac{n_s}{n_T})/(y-1)$ in order to account for this. In the formula, e.g., the weigth for time point $s$ ($w_s$) is calculated based on the number of cell observed in the time point ($n_s$) and the total number of cells in the threee time points ($n_T$). The denominator ($y-1$, with $y$ being the numnber of time points, i.e., 3 in our case) aims at normalizing the weights to sum to one. 
 
 <<example_weights>>=
 lik_weights = c(0.338,0.329,0.333)
@@ -105,14 +105,14 @@ We can now perform the inference as follow.
 inference = LACE(D=data_HN120Primary,lik_w=lik_weights,alpha=alpha,beta=beta,num_rs=5,num_iter=10,n_try_bs=5,num_processes=NA,seed=12345,verbose=FALSE)
 @
 
-We notice that the inference resulting on the command above should be considered only as an example; the parameters num_rs, num_iter and n_try_bs representing the number of steps perfomed during the inference are downscaled to reduce execution time. We refer to the Manual for discussion on default values. We provide within the package results of inferences performed with correct parameters as RData. 
+We notice that the inference resulting on the command above should be considered only as an example; the parameters $num_rs$, $num_iter$ and $n_try_bs$ representing the number of steps perfomed during the inference are downscaled to reduce execution time. We refer to the Manual for discussion on default values. We provide within the package results of inferences performed with correct parameters as RData. 
 
 <<example_inference_full>>=
 data(inference_HN120Primary.RData)
 head(names(inference_HN120Primary))
 @
 
-LACE returns a list of six elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; clones_prevalence the estimated prevalence of any observed clone; relative_likelihoods and joint_likelihood the estimated likelihoods for each time point and the weighted likelihood. Finally, error_rates provide the best error rates (alpha and beta) as estimated by the grid search. 
+LACE returns a list of six elements as results. Namely, $B$ and $C$ provide respectively the maximum likelihood longitudinal tree and cells attachments; $clones_prevalence$ the estimated prevalence of any observed clone; $relative_likelihoods$ and $joint_likelihood$ the estimated likelihoods for each time point and the weighted likelihood. Finally, $error_rates$ provide the best error rates (alpha and beta) as estimated by the grid search. 
 
 \section{\Rcode{sessionInfo()}}
 
