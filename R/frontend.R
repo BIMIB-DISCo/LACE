@@ -7,9 +7,9 @@
 #'
 #' @param D Mutation data from multiple experiments for a list of driver genes.
 #' @param lik_w Weight for each data point. If not provided, weights to correct for sample sizes are used.
-#' @param alpha False positive error rate; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at 
+#' @param alpha False positive error rate provided as list of elements; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at 
 #' maximum-likelihood is returned.
-#' @param beta False negative error rate; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
+#' @param beta False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
 #' maximum-likelihood is returned.
 #' @param initialization Starting point of the mcmc; if not provided, a random starting point is used.
 #' @param num_rs Number of restarts during mcmc inference.
@@ -31,7 +31,7 @@
 #' @import parallel
 #' @import Rfast
 #'
-LACE <- function( D, lik_w = NULL, alpha = c(0.001, 0.001, 0.010, 0.010, 0.020, 0.030), beta = c(0.010, 0.100, 0.010, 0.100, 0.100, 0.200), initialization = NULL, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
+LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
     
     # Set the seed
     set.seed(seed)
@@ -46,6 +46,12 @@ LACE <- function( D, lik_w = NULL, alpha = c(0.001, 0.001, 0.010, 0.010, 0.020, 
             lik_w <- c(lik_w,(1-(nrow(D[[i]])/total_sample_size)))
         }
         lik_w <- lik_w / sum(lik_w)
+    }
+
+    # Initialize error rates alpha and beta
+    if(is.null(alpha)) {
+        alpha = list(rep(0.01,length(D)))
+        beta = list(rep(0.05,length(D)))
     }
     
     if(verbose) {

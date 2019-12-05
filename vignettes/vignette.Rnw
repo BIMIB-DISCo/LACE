@@ -1,0 +1,123 @@
+%\VignetteEngine{knitr::knitr}
+
+\documentclass[a4paper,9pt]{article}
+
+<<style-knitr, eval=TRUE, echo=FALSE, results="asis">>=
+BiocStyle::latex()
+@
+
+%\VignetteIndexEntry{LACE}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{url}
+\usepackage{tcolorbox}
+\usepackage{authblk}
+
+\begin{document}
+
+\title{Longitudinal Analysis of Cancer Evolution with LACE}
+
+\author[1]{Daniele Ramazzotti}
+\author[2]{Fabrizio Angaroni}
+\author[2,3]{Davide Maspero}
+\author[2]{Gianluca Ascolani}
+\author[1]{Rocco Piazza}
+\author[2]{Marco Antoniotti}
+\author[4]{Alex Graudenzi}
+
+\affil[1]{School of Medicine and Surgery, Univ. of Milan-Bicocca, Monza, Italy.}
+\affil[2]{Dept. of Informatics, Systems and Communication, Univ. of Milan-Bicocca, Milan, Italy.}
+\affil[3]{Fondazione IRCCS Istituto Nazionale dei Tumori, Milan, Italy.}
+\affil[4]{Inst. of Molecular Bioimaging and Physiology, Consiglio Nazionale delle Ricerche (IBFM-CNR), Segrate, Milan, Italy.}
+
+\date{\today}
+\maketitle
+
+\begin{tcolorbox}{\bf Overview.} LACE is an algorithmic framework that processes single-cell somatic mutation profiles from cancer samples 
+collected at different time points and in distinct experimental settings, to produce longitudinal models of cancer evolution. The approach 
+solves a Boolean Matrix Factorization problem with phylogenetic constraints, by maximizing a weighed likelihood function computed on 
+multiple time points. 
+
+\vspace{1.0cm}
+
+{\em In this vignette, we give an overview of the package by presenting its main functions.}
+
+\vspace{1.0cm}
+
+\renewcommand{\arraystretch}{1.5}
+
+\end{tcolorbox}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance = TRUE,
+background = "#f3f3ff"
+)
+@
+
+\newpage
+
+\tableofcontents
+
+\section{Changelog} 
+
+\begin{itemize}
+\item[1.0.0] package released on December 2019. 
+\end{itemize}
+
+\section{Using the LACE R package}
+
+We now present an example of longitudinal analysis of cancer evolution with LACE using single-cell data obtained from Sharma, A. et al. (2018). As a first step, we load data for cell line HN120 obtained from Primary tumour. The data comprises point mutations for three time points: (1) initial sequencing, (2) right after therapy, showing potentially resistant clones and (3) therapy holiday. 
+
+We first load the data. 
+
+<<req>>=
+library("LACE")
+data(data_HN120Primary)
+names(data_HN120Primary)
+@
+
+We setup the main parameter in oder to perform the inference. First of all, as the three data proint may potentially provide sequencing for an unbalanced number of cells, we weight each time point as follow w_s = (1-(n_s/n_T))/(y-1) in order to account for this. In the formula, e.g., the weigth for time point s (w_s) is calculated based on the number of cell observed in the time point (n_s) and the total number of cells in the threee time points (n_T). The denominator (y-1, with y being the numnber of time points, i.e., 3 in our case) aims at normalizing the weights to sum to one. 
+
+<<example_weights>>=
+lik_weights = c(0.338,0.329,0.333)
+@
+
+The second main parameter to be defined as input is represented by the false positive and false negative error rates, i.e., alpha and beta. We can specify a different rate per time point as a list of rates. When multiple set of rates are provided, the LACE performs a grid search in order to estimate the best set of error rates. 
+
+<<example_error_rates>>=
+alpha = list()
+alpha[[1]] = c(0.01,0.01,0.02)
+alpha[[2]] = c(0.05,0.05,0.10)
+beta = list()
+beta[[1]] = c(0.01,0.01,0.02)
+beta[[2]] = c(0.10,0.10,0.10)
+head(alpha)
+head(beta)
+@
+
+We can now perform the inference as follow. 
+
+<<example_inference>>=
+inference = LACE(D=data_HN120Primary,lik_w=lik_weights,alpha=alpha,beta=beta,num_rs=5,num_iter=10,n_try_bs=5,num_processes=NA,seed=12345,verbose=FALSE)
+@
+
+We notice that the inference resulting on the command above should be considered only as an example; the parameters num_rs, num_iter and n_try_bs representing the number of steps perfomed during the inference are downscaled to reduce execution time. We refer to the Manual for discussion on default values. We provide within the package results of inferences performed with correct parameters as RData. 
+
+<<example_inference_full>>=
+data(inference_HN120Primary.RData)
+head(names(inference_HN120Primary))
+@
+
+LACE returns a list of six elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; clones_prevalence the estimated prevalence of any observed clone; relative_likelihoods and joint_likelihood the estimated likelihoods for each time point and the weighted likelihood. Finally, error_rates provide the best error rates (alpha and beta) as estimated by the grid search. 
+
+\section{\Rcode{sessionInfo()}}
+
+<<sessioninfo,results='asis',echo=FALSE>>=
+toLatex(sessionInfo())
+@
+
+\end{document}
