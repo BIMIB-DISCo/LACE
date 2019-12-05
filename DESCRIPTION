@@ -1,6 +1,6 @@
 Package: LACE
-Version: 1.0.0
-Date: 2019-12-04
+Version: 1.1.0
+Date: 2019-12-05
 Title: Longitudinal Analysis of Cancer Evolution (LACE)
 Authors@R: c(person("Daniele","Ramazzotti",role=c("cre","aut"),email="daniele.ramazzotti@yahoo.com"),
     person("Fabrizio","Angaroni",role=c("aut"),email="fabrizio.angaroni@unimib.it"),
@@ -27,9 +27,9 @@ Description:
     function computed on multiple time points.
 Encoding: UTF-8
 LazyData: TRUE
-License: file LICENSE
+License: file LICENSE.md
 URL: https://github.com/BIMIB-DISCo/LACE
 BugReports: https://github.com/BIMIB-DISCo/LACE
 biocViews: BiomedicalInformatics
-RoxygenNote: 7.0.0
+RoxygenNote: 7.0.2
 VignetteBuilder: knitr

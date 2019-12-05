@@ -7,8 +7,8 @@
 LACE(
   D,
   lik_w = NULL,
-  alpha = c(0.001, 0.001, 0.01, 0.01, 0.02, 0.03),
-  beta = c(0.01, 0.1, 0.01, 0.1, 0.1, 0.2),
+  alpha = NULL,
+  beta = NULL,
   initialization = NULL,
   num_rs = 50,
   num_iter = 10000,
@@ -26,10 +26,10 @@ LACE(
 
 \item{lik_w}{Weight for each data point. If not provided, weights to correct for sample sizes are used.}
 
-\item{alpha}{False positive error rate; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at 
+\item{alpha}{False positive error rate provided as list of elements; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at 
 maximum-likelihood is returned.}
 
-\item{beta}{False negative error rate; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
+\item{beta}{False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
 maximum-likelihood is returned.}
 
 \item{initialization}{Starting point of the mcmc; if not provided, a random starting point is used.}
