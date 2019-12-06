@@ -32,9 +32,10 @@
 #' this parameter needs to be set to either NA or NULL.
 #' @param seed Seed for reproducibility.
 #' @param verbose Boolean. Shall I print to screen information messages during the execution?
-#' @return A list of 6 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood and error_rates. Here, B returns the maximum likelihood longitudinal 
+#' @return A list of 7 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal 
 #' clonal tree, C the attachment of cells to clones and clones_prevalence clones' prevalence; relative_likelihoods and joint_likelihood are respectively the likelihood of 
-#' the solutions at each individual time points and the joint likelihood. Finally error_rates provides the best values of alpha and beta among the considered ones.
+#' the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. Finally error_rates provides the 
+#' best values of alpha and beta among the considered ones. 
 #' @param log_file log file where to print outputs when using parallel. If parallel execution is disabled, this parameter is ignored.
 #' @export LACE
 #' @import parallel
@@ -180,7 +181,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     names(relative_likelihoods) <- paste0("Experiment_",1:length(relative_likelihoods))
     joint_likelihood <- inference[[best]][["joint_lik"]]
 
-    # Finally compute clones' prevalence
+    # Compute clones' prevalence
     clones_prevalence <- array(NA,c((dim(B)[1]-1),(length(C)+1)))
     rownames(clones_prevalence) <- rownames(B)[2:nrow(B)]
     colnames(clones_prevalence) <- c(paste0("Experiment_",1:length(C)),"Total")
@@ -194,6 +195,16 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         clones_prevalence[i,"Total"] <- clone_number_cell / total_number_cell
     }
 
-    return(list(B=B,C=C,clones_prevalence=clones_prevalence,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,error_rates=error_rates))
+    # Finally compute clones' summary
+    clones_summary <- list()
+    Bwor <- B[,-1]
+    i = 2
+    for(c in rownames(Bwor[-1,])) {
+        mut_list <- colnames(Bwor)[Bwor[i,]==1]
+        clones_summary[[c]] <- mut_list
+        i = i + 1
+    }
+
+    return(list(B=B,C=C,clones_prevalence=clones_prevalence,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,clones_summary=clones_summary,error_rates=error_rates))
 
 }
