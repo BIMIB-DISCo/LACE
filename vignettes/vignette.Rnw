@@ -118,7 +118,7 @@ We notice that the inference resulting on the command above should be considered
 
 <<example_inference_full>>=
 data(inference_HN120Primary)
-head(names(inference_HN120Primary))
+print(names(inference_HN120Primary))
 @
 
 LACE returns a list of seven elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; clones prevalence, the estimated prevalence of any observed clone; relative likelihoods and joint likelihood the estimated likelihoods for each time point and the weighted likelihood; clones summary provide a summary of association of mutations to clones. Finally, error rates provide the best error rates (alpha and beta) as estimated by the grid search. 
