@@ -10,7 +10,7 @@
 
 **OVERVIEW**
 
-In this repository we provide an R implementation of *LACE* (link paper XXX). 
+In this repository we provide an R implementation of *LACE*. 
 
 *LACE* is an algorithmic framework that processes single-cell somatic mutation profiles from cancer samples collected at different 
 time points and in distinct experimental settings, to produce longitudinal models of cancer evolution. The approach solves a Boolean Matrix 
@@ -92,15 +92,15 @@ We can now perform the inference as follow.
 
 ```r
 inference = LACE(D = data_HN120Primary, 
-			lik_w = lik_weights, 
-			alpha = alpha, 
-			beta = beta, 
-			num_rs = 5, 
-			num_iter = 10, 
-			n_try_bs = 5, 
-			num_processes = NA, 
-			seed = 12345, 
-			verbose = FALSE)
+	lik_w = lik_weights, 
+	alpha = alpha, 
+	beta = beta, 
+	num_rs = 5, 
+	num_iter = 10, 
+	n_try_bs = 5, 
+	num_processes = NA, 
+	seed = 12345, 
+	verbose = FALSE)
 ```
 
 We notice that the inference resulting on the command above should be considered only as an example; the parameters num_rs, num_iter and n_try_bs representing the number of 
