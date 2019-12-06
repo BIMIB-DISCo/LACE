@@ -23,14 +23,16 @@ BiocStyle::latex()
 \author[2]{Fabrizio Angaroni}
 \author[2,3]{Davide Maspero}
 \author[2]{Gianluca Ascolani}
+\author[4,5]{Isabella Castiglioni}
 \author[1]{Rocco Piazza}
 \author[2]{Marco Antoniotti}
-\author[4]{Alex Graudenzi}
+\author[5]{Alex Graudenzi}
 
 \affil[1]{School of Medicine and Surgery, Univ. of Milan-Bicocca, Monza, Italy.}
 \affil[2]{Dept. of Informatics, Systems and Communication, Univ. of Milan-Bicocca, Milan, Italy.}
 \affil[3]{Fondazione IRCCS Istituto Nazionale dei Tumori, Milan, Italy.}
-\affil[4]{Inst. of Molecular Bioimaging and Physiology, Consiglio Nazionale delle Ricerche (IBFM-CNR), Segrate, Milan, Italy.}
+\affil[4]{Department of Physics "Giuseppe Occhialini", Univ. of Milan-Bicocca, Milan, Italy.}
+\affil[5]{Inst. of Molecular Bioimaging and Physiology, Consiglio Nazionale delle Ricerche (IBFM-CNR), Segrate, Milan, Italy.}
 
 \date{\today}
 \maketitle
