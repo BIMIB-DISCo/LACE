@@ -109,10 +109,11 @@ of inferences performed with correct parameters as RData.
 
 ```r
 data(inference_HN120Primary)
-head(names(inference_HN120Primary))
+print(names(inference_HN120Primary))
 
 ## [1] "B" "C" "clones_prevalence" 
 ## [4] "relative_likelihoods" "joint_likelihood" "clones_summary"
+## [7] "error_rates"
 ```
 
 *LACE* returns a list of seven elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; clones_prevalence, 
