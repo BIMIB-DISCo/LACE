@@ -56,9 +56,10 @@ this parameter needs to be set to either NA or NULL.}
 \item{log_file}{log file where to print outputs when using parallel. If parallel execution is disabled, this parameter is ignored.}
 }
 \value{
-A list of 6 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood and error_rates. Here, B returns the maximum likelihood longitudinal 
+A list of 7 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal 
 clonal tree, C the attachment of cells to clones and clones_prevalence clones' prevalence; relative_likelihoods and joint_likelihood are respectively the likelihood of 
-the solutions at each individual time points and the joint likelihood. Finally error_rates provides the best values of alpha and beta among the considered ones.
+the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. Finally error_rates provides the 
+best values of alpha and beta among the considered ones.
 }
 \description{
 Perform inference of the maximum likelihood clonal tree from longitudinal data.
