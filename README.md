@@ -33,17 +33,17 @@ Now we can install and run *LACE* as follows:
 ```r
 # install CIMLR from Github
 library("devtools")
-install_github("BIMIB-DISCo/LACE", ref = 'master')
+install_github("BIMIB-DISCo/LACE", ref = "master")
 
 # load LACE library
 library("LACE")
+```
 
 **RUNNING LACE R IMPLEMENTATION**
-```
 
 We now present an example of longitudinal analysis of cancer evolution with *LACE* using single-cell data obtained from Sharma, A. et al. (2018). 
 
-As a first step, we load data for cell line *HN120* obtained from a primary oral squamous cell carcinoma. The data comprises point mutations for three 
+As a first step, we load data for cell line HN120 obtained from a primary oral squamous cell carcinoma. The data comprises point mutations for three 
 time points: (1) initial sequencing, (2) right after therapy, showing potentially resistant clones and (3) therapy holiday. 
 
 ```r
@@ -55,7 +55,7 @@ names(data_HN120Primary)
 ```
 
 We setup the main parameter in oder to perform the inference. First of all, as the three data proint may potentially provide sequencing for an unbalanced 
-number of cells, we weight each time point proportionally to the sample sizes as follow. 
+number of cells, we weight each time point proportionally to the sample sizes as follow. We refer to the paper for details. 
 
 ```r
 lik_weights = c(0.338, 0.329, 0.333)
@@ -74,14 +74,16 @@ beta[[2]] = c(0.10,0.10,0.10)
 head(alpha)
 
 ## [[1]]
-## [1] 0.01 0.01 0.02 ##
+## [1] 0.01 0.01 0.02
+##
 ## [[2]]
 ## [1] 0.05 0.05 0.10
 
 head(beta)
 
 ## [[1]]
-## [1] 0.01 0.01 0.02 ##
+## [1] 0.01 0.01 0.02
+##
 ## [[2]]
 ## [1] 0.1 0.1 0.1
 ```
@@ -90,15 +92,15 @@ We can now perform the inference as follow.
 
 ```r
 inference = LACE(D = data_HN120Primary, 
-	             lik_w = lik_weights, 
-	             alpha = alpha, 
-	             beta = beta, 
-	             num_rs = 5, 
-	             num_iter = 10, 
-	             n_try_bs = 5, 
-	             num_processes = NA, 
-	             seed = 12345, 
-	             verbose = FALSE)
+			lik_w = lik_weights, 
+			alpha = alpha, 
+			beta = beta, 
+			num_rs = 5, 
+			num_iter = 10, 
+			n_try_bs = 5, 
+			num_processes = NA, 
+			seed = 12345, 
+			verbose = FALSE)
 ```
 
 We notice that the inference resulting on the command above should be considered only as an example; the parameters num_rs, num_iter and n_try_bs representing the number of 
