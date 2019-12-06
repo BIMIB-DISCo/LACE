@@ -112,12 +112,11 @@ data(inference_HN120Primary)
 head(names(inference_HN120Primary))
 
 ## [1] "B" "C" "clones_prevalence" 
-## [4] "relative_likelihoods" "joint_likelihood" "error_rates"
+## [4] "relative_likelihoods" "joint_likelihood" "clones_summary"
 ```
 
-*LACE* returns a list of six elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; clones_prevalence, 
-the estimated prevalence of any observed clone; relative_likelihoods and joint_likelihood the estimated likelihoods for each time point and the weighted likelihood. 
-Finally, error rates provide the best error rates (alpha and beta) as estimated by the grid search. 
+*LACE* returns a list of seven elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; clones_prevalence, 
+the estimated prevalence of any observed clone; relative_likelihoods and joint_likelihood the estimated likelihoods for each time point and the weighted likelihood; clones_summary provide a summary of association of mutations to clones. Finally, error rates provide the best error rates (alpha and beta) as estimated by the grid search. 
 
 **DEBUG**
 
