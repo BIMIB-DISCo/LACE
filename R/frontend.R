@@ -124,7 +124,6 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     else {
 
         # Parallel computation
-        res_clusterEvalQ <- clusterEvalQ(parallel,library("cluster"))
         res_clusterEvalQ <- clusterEvalQ(parallel,library("Rfast"))
         clusterExport(parallel,varlist=c("D","lik_w","alpha","beta","initialization","num_rs","num_iter","n_try_bs","learning_rate","marginalize","verbose"),envir=environment())
         clusterExport(parallel,c("learn.longitudinal.phylogeny","initialize.B","move.B","compute.C"),envir=environment())
