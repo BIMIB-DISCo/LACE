@@ -41,24 +41,24 @@ library("LACE")
 
 **RUNNING LACE R IMPLEMENTATION**
 
-We now present an example of longitudinal analysis of cancer evolution with *LACE* using single-cell data obtained from Sharma, A. et al. (2018). 
+We now present an example of longitudinal analysis of cancer evolution with *LACE* using single-cell data obtained from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855. 
 
-As a first step, we load data for cell line HN120 obtained from a primary oral squamous cell carcinoma. The data comprises point mutations for three 
-time points: (1) initial sequencing, (2) right after therapy, showing potentially resistant clones and (3) therapy holiday. 
+As a first step, we load single-cell data for a skin melanoma. The data comprises point mutations for four 
+time points: (1) before treatment, (2) 4 days treatment, (3) 28 days treatment and finally (4) 57 days treatment. 
 
 ```r
 library("LACE")
-data(data_HN120Primary)
-names(data_HN120Primary)
+data(data)
+names(data)
 
-## [1] "T1_Sensitive" "T2_Resistant" "T3_Holiday"
+## [1] "T1_before_treatment"  "T2_4_days_treatment"  "T3_28_days_treatment" "T4_57_days_treatment"
 ```
 
-We setup the main parameter in oder to perform the inference. First of all, as the three data proint may potentially provide sequencing for an unbalanced 
+We setup the main parameter in oder to perform the inference. First of all, as the four data points may potentially provide sequencing for an unbalanced 
 number of cells, we weight each time point proportionally to the sample sizes as follow. We refer to the paper for details. 
 
 ```r
-lik_weights = c(0.338, 0.329, 0.333)
+lik_weights = c(0.2482690, 0.2566766, 0.2349159, 0.2601385)
 ```
 
 The second main parameter to be defined as input is represented by the false positive and false negative error rates, i.e., alpha and beta. We can specify a 
@@ -66,41 +66,41 @@ different rate per time point as a list of rates. When multiple set of rates are
 
 ```r
 alpha = list()
-alpha[[1]] = c(0.01,0.01,0.02)
-alpha[[2]] = c(0.05,0.05,0.10)
+alpha[[1]] = c(0.01,0.01,0.02,0.01)
+alpha[[2]] = c(0.05,0.05,0.10,0.05)
 beta = list()
-beta[[1]] = c(0.01,0.01,0.02)
-beta[[2]] = c(0.10,0.10,0.10)
+beta[[1]] = c(0.05,0.10,0.05,0.05)
+beta[[2]] = c(0.05,0.10,0.05,0.05)
 head(alpha)
 
 ## [[1]]
-## [1] 0.01 0.01 0.02
+## [1] 0.01 0.01 0.02 0.01
 ##
 ## [[2]]
-## [1] 0.05 0.05 0.10
+## [1] 0.05 0.05 0.10 0.05
 
 head(beta)
 
 ## [[1]]
-## [1] 0.01 0.01 0.02
+## [1] 0.05 0.10 0.05 0.05
 ##
 ## [[2]]
-## [1] 0.1 0.1 0.1
+## [1] 0.05 0.10 0.05 0.05
 ```
 
 We can now perform the inference as follow. 
 
 ```r
-inference = LACE(D = data_HN120Primary, 
-	lik_w = lik_weights, 
-	alpha = alpha, 
-	beta = beta, 
-	num_rs = 5, 
-	num_iter = 10, 
-	n_try_bs = 5, 
-	num_processes = NA, 
-	seed = 12345, 
-	verbose = FALSE)
+inference = LACE(D = data, 
+    lik_w = lik_weights, 
+    alpha = alpha, 
+    beta = beta, 
+    num_rs = 5, 
+    num_iter = 10, 
+    n_try_bs = 5, 
+    num_processes = NA, 
+    seed = 12345, 
+    verbose = FALSE)
 ```
 
 We notice that the inference resulting on the command above should be considered only as an example; the parameters num_rs, num_iter and n_try_bs representing the number of 
@@ -108,8 +108,8 @@ steps perfomed during the inference are downscaled to reduce execution time. We 
 of inferences performed with correct parameters as RData. 
 
 ```r
-data(inference_HN120Primary)
-print(names(inference_HN120Primary))
+data(inference)
+print(names(inference))
 
 ## [1] "B" "C" "clones_prevalence" 
 ## [4] "relative_likelihoods" "joint_likelihood" "clones_summary"

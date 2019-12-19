@@ -2,8 +2,8 @@
 #' @title LACE
 #'
 #' @examples
-#' data(data_HN120Primary)
-#' inference = LACE(D = data_HN120Primary,
+#' data(data)
+#' inference = LACE(D = data,
 #'                  lik_w = c(0.338,0.329,0.333),
 #'                  alpha = list(c(0.01,0.01,0.02)),
 #'                  beta = list(c(0.01,0.01,0.02)),
