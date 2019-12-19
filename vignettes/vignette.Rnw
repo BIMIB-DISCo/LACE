@@ -72,31 +72,31 @@ background = "#f3f3ff"
 
 \section{Using the LACE R package}
 
-We now present an example of longitudinal analysis of cancer evolution with LACE using single-cell data obtained from Sharma, A. et al. (2018). As a first step, we load data for cell line HN120 obtained from Primary tumour. The data comprises point mutations for three time points: (1) initial sequencing, (2) right after therapy, showing potentially resistant clones and (3) therapy holiday. 
+We now present an example of longitudinal analysis of cancer evolution with LACE using single-cell data obtained from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855. The data comprises point mutations for four time points: (1) before treatment, (2) 4 days treatment, (3) 28 days treatment and finally (4) 57 days treatment. 
 
 We first load the data. 
 
 <<req>>=
 library("LACE")
-data(data_HN120Primary)
-names(data_HN120Primary)
+data(data)
+names(data)
 @
 
 We setup the main parameter in oder to perform the inference. First of all, as the three data proint may potentially provide sequencing for an unbalanced number of cells, we weight each time point as follow $w_s=(1-\frac{n_s}{n_T})/(y-1)$ in order to account for this. In the formula, e.g., the weigth for time point $s$ ($w_s$) is calculated based on the number of cell observed in the time point ($n_s$) and the total number of cells in the threee time points ($n_T$). The denominator ($y-1$, with $y$ being the numnber of time points, i.e., 3 in our case) aims at normalizing the weights to sum to one. 
 
 <<example_weights>>=
-lik_weights = c(0.338,0.329,0.333)
+lik_weights = c(0.2482690,0.2566766,0.2349159,0.2601385)
 @
 
 The second main parameter to be defined as input is represented by the false positive and false negative error rates, i.e., alpha and beta. We can specify a different rate per time point as a list of rates. When multiple set of rates are provided, LACE performs a grid search in order to estimate the best set of error rates. 
 
 <<example_error_rates>>=
 alpha = list()
-alpha[[1]] = c(0.01,0.01,0.02)
-alpha[[2]] = c(0.05,0.05,0.10)
+alpha[[1]] = c(0.01,0.01,0.02,0.01)
+alpha[[2]] = c(0.05,0.05,0.10,0.05)
 beta = list()
-beta[[1]] = c(0.01,0.01,0.02)
-beta[[2]] = c(0.10,0.10,0.10)
+beta[[1]] = c(0.05,0.10,0.05,0.05)
+beta[[2]] = c(0.05,0.10,0.05,0.05)
 head(alpha)
 head(beta)
 @
@@ -104,7 +104,7 @@ head(beta)
 We can now perform the inference as follow. 
 
 <<example_inference>>=
-inference = LACE(D = data_HN120Primary,
+inference = LACE(D = data,
                  lik_w = lik_weights,
                  alpha = alpha,
                  beta = beta,
@@ -119,8 +119,8 @@ inference = LACE(D = data_HN120Primary,
 We notice that the inference resulting on the command above should be considered only as an example; the parameters num rs, num iter and n try bs representing the number of steps perfomed during the inference are downscaled to reduce execution time. We refer to the Manual for discussion on default values. We provide within the package results of inferences performed with correct parameters as RData. 
 
 <<example_inference_full>>=
-data(inference_HN120Primary)
-print(names(inference_HN120Primary))
+data(inference)
+print(names(inference))
 @
 
 LACE returns a list of seven elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; clones prevalence, the estimated prevalence of any observed clone; relative likelihoods and joint likelihood the estimated likelihoods for each time point and the weighted likelihood; clones summary provide a summary of association of mutations to clones. Finally, error rates provide the best error rates (alpha and beta) as estimated by the grid search. 

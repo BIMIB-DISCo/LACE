@@ -1,37 +1,18 @@
-#' @name data_HN120Primary
-#' @title mutation data for cell line HN120 Primary from Sharma, A. et al. (2018).
-#' @description mutation data for cell line HN120 Primary from Sharma, A. et al. (2018).
+#' @name data
+#' @title mutation data from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.
+#' @description mutation data from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.
 #' @docType data
-#' @usage data(data_HN120Primary)
-#' @format list of mutation data for 3 time points
-#' @source Sharma, A. et al. Longitudinal single-cell RNA sequencing of patient-derived primary cells reveals drug-induced infidelity in stem cell hierarchy. Nature communications 9, 4931 (2018).
-#' @return list of mutational data for cell line HN120 Primary
+#' @usage data(data)
+#' @format list of mutation data for four time points
+#' @source Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.
+#' @return list of mutational data for a total of 674 single cells
 NULL
 
-#' @name data_HN120Metastasis
-#' @title mutation data for cell line HN120 Metastasis from Sharma, A. et al. (2018).
-#' @description mutation data for cell line HN120 Metastasis from Sharma, A. et al. (2018).
+#' @name inference
+#' @title results obtained with the function LACE on the provided input data from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.
+#' @description results obtained with the function LACE on the provided input data from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.
 #' @docType data
-#' @usage data(data_HN120Metastasis)
-#' @format list of mutation data for 3 time points
-#' @source Sharma, A. et al. Longitudinal single-cell RNA sequencing of patient-derived primary cells reveals drug-induced infidelity in stem cell hierarchy. Nature communications 9, 4931 (2018).
-#' @return list of mutational data for cell line HN120 Metastasis
-NULL
-
-#' @name inference_HN120Primary
-#' @title results obtained with the function LACE on input data data_HN120Primary from Sharma, A. et al. (2018).
-#' @description results obtained with the function LACE on input data data_HN120Primary from Sharma, A. et al. (2018).
-#' @docType data
-#' @usage data(inference_HN120Primary)
-#' @format results obtained with the function LACE on input data data_HN120Primary
-#' @return results obtained with the function LACE on input data data_HN120Primary
-NULL
-
-#' @name inference_HN120Metastasis
-#' @title results obtained with the function LACE on input data data_HN120Metastasis from Sharma, A. et al. (2018).
-#' @description results obtained with the function LACE on input data data_HN120Metastasis from Sharma, A. et al. (2018).
-#' @docType data
-#' @usage data(inference_HN120Metastasis)
-#' @format results obtained with the function LACE on input data data_HN120Metastasis
-#' @return results obtained with the function LACE on input data data_HN120Metastasis
+#' @usage data(inference)
+#' @format results obtained with the function LACE on the provided input data
+#' @return results obtained with the function LACE on the provided input data
 NULL
