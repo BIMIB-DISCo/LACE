@@ -5,7 +5,7 @@
 #' @usage data(data)
 #' @format list of mutation data for four time points
 #' @source Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.
-#' @return list of mutational data for a total of 674 single cells
+#' @return list of mutational data for a total of 474 single cells
 NULL
 
 #' @name inference
