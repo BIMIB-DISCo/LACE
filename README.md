@@ -58,7 +58,7 @@ We setup the main parameter in oder to perform the inference. First of all, as t
 number of cells, we weight each time point proportionally to the sample sizes as follow. We refer to the paper for details. 
 
 ```r
-lik_weights = c(0.2482690, 0.2566766, 0.2349159, 0.2601385)
+lik_weights = c(0.2313643,0.2552743,0.2700422,0.2433193)
 ```
 
 The second main parameter to be defined as input is represented by the false positive and false negative error rates, i.e., alpha and beta. We can specify a 
@@ -66,26 +66,26 @@ different rate per time point as a list of rates. When multiple set of rates are
 
 ```r
 alpha = list()
-alpha[[1]] = c(0.01,0.01,0.02,0.01)
-alpha[[2]] = c(0.05,0.05,0.10,0.05)
+alpha[[1]] = c(0.02,0.01,0.01,0.01)
+alpha[[2]] = c(0.10,0.05,0.05,0.05)
 beta = list()
-beta[[1]] = c(0.05,0.10,0.05,0.05)
-beta[[2]] = c(0.05,0.10,0.05,0.05)
+beta[[1]] = c(0.10,0.05,0.05,0.05)
+beta[[2]] = c(0.10,0.05,0.05,0.05)
 head(alpha)
 
 ## [[1]]
-## [1] 0.01 0.01 0.02 0.01
+## [1] 0.02 0.01 0.01 0.01
 ##
 ## [[2]]
-## [1] 0.05 0.05 0.10 0.05
+## [1] 0.10 0.05 0.05 0.05
 
 head(beta)
 
 ## [[1]]
-## [1] 0.05 0.10 0.05 0.05
+## [1] 0.10 0.05 0.05 0.05
 ##
 ## [[2]]
-## [1] 0.05 0.10 0.05 0.05
+## [1] 0.10 0.05 0.05 0.05
 ```
 
 We can now perform the inference as follow. 
