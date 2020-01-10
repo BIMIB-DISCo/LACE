@@ -58,7 +58,7 @@ We setup the main parameter in oder to perform the inference. First of all, as t
 number of cells, we weight each time point proportionally to the sample sizes as follow. We refer to the paper for details. 
 
 ```r
-lik_weights = c(0.2313643,0.2552743,0.2700422,0.2433193)
+lik_weights = c(0.2308772,0.2554386,0.2701754,0.2435088)
 ```
 
 The second main parameter to be defined as input is represented by the false positive and false negative error rates, i.e., alpha and beta. We can specify a 
