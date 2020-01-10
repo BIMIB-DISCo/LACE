@@ -12,7 +12,7 @@ Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in mel
 data(data)
 }
 \value{
-list of mutational data for a total of 474 single cells
+list of mutational data for a total of 475 single cells
 }
 \description{
 mutation data from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.

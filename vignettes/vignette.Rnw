@@ -85,7 +85,7 @@ names(data)
 We setup the main parameter in oder to perform the inference. First of all, as the three data proint may potentially provide sequencing for an unbalanced number of cells, we weight each time point as follow $w_s=(1-\frac{n_s}{n_T})/(y-1)$ in order to account for this. In the formula, e.g., the weigth for time point $s$ ($w_s$) is calculated based on the number of cell observed in the time point ($n_s$) and the total number of cells in the threee time points ($n_T$). The denominator ($y-1$, with $y$ being the numnber of time points, i.e., 3 in our case) aims at normalizing the weights to sum to one. 
 
 <<example_weights>>=
-lik_weights = c(0.2313643,0.2552743,0.2700422,0.2433193)
+lik_weights = c(0.2308772,0.2554386,0.2701754,0.2435088)
 @
 
 The second main parameter to be defined as input is represented by the false positive and false negative error rates, i.e., alpha and beta. We can specify a different rate per time point as a list of rates. When multiple set of rates are provided, LACE performs a grid search in order to estimate the best set of error rates. 
