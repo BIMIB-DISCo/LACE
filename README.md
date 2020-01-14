@@ -3,8 +3,8 @@
 
 | Branch              | Stato CI      |
 |---------------------|---------------|
-| master | [![Build Status](https://travis-ci.com/BIMIB-DISCo/LACE/builds/139504986)](https://travis-ci.com/BIMIB-DISCo/LACE/builds/139504986) |
-| development | [![Build Status](https://travis-ci.com/BIMIB-DISCo/LACE/builds/139505042)](https://travis-ci.com/BIMIB-DISCo/LACE/builds/139505042) |
+| master | [![Build Status](https://travis-ci.org/BIMIB-DISCo/LACE.svg?branch=master)](https://travis-ci.org/BIMIB-DISCo/LACE) |
+| development | [![Build Status](https://travis-ci.org/BIMIB-DISCo/LACE.svg?branch=development)](https://travis-ci.org/BIMIB-DISCo/LACE) |
 
 ================
 
