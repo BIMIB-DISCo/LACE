@@ -4,6 +4,7 @@ r: bioc-devel
 cache: packages
 
 before_install:
+  - sudo apt-get install libgsl-dev
   - tlmgr install tcolorbox
   - tlmgr install bera
   - tlmgr install nowidow
