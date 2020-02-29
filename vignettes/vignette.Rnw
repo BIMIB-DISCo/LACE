@@ -108,6 +108,7 @@ inference = LACE(D = data,
                  lik_w = lik_weights,
                  alpha = alpha,
                  beta = beta,
+                 keep_equivalent = FALSE,
                  num_rs = 5,
                  num_iter = 10,
                  n_try_bs = 5,
@@ -123,7 +124,8 @@ data(inference)
 print(names(inference))
 @
 
-LACE returns a list of seven elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; clones prevalence, the estimated prevalence of any observed clone; relative likelihoods and joint likelihood the estimated likelihoods for each time point and the weighted likelihood; clones summary provide a summary of association of mutations to clones. Finally, error rates provide the best error rates (alpha and beta) as estimated by the grid search. 
+LACE returns a list of eight elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; clones prevalence, the estimated prevalence of any observed clone; relative likelihoods and joint likelihood the estimated likelihoods for each time point and the weighted likelihood; clones summary provide a summary of association of mutations to clones. In equivalent solutions, solutions (B and C) with likelihood equivalent to the best solution are returned; notice that in the example we disabled this feature by 
+setting equivalent solutions parameter to FALSE. Finally, error rates provide the best error rates (alpha and beta) as estimated by the grid search. 
 
 \section{\Rcode{sessionInfo()}}
 

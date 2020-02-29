@@ -10,6 +10,7 @@ LACE(
   alpha = NULL,
   beta = NULL,
   initialization = NULL,
+  keep_equivalent = TRUE,
   num_rs = 50,
   num_iter = 10000,
   n_try_bs = 500,
@@ -34,6 +35,8 @@ maximum-likelihood is returned.}
 
 \item{initialization}{Starting point of the mcmc; if not provided, a random starting point is used.}
 
+\item{keep_equivalent}{Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?}
+
 \item{num_rs}{Number of restarts during mcmc inference.}
 
 \item{num_iter}{Maximum number of mcmc steps to be performed during the inference.}
@@ -56,10 +59,10 @@ this parameter needs to be set to either NA or NULL.}
 \item{log_file}{log file where to print outputs when using parallel. If parallel execution is disabled, this parameter is ignored.}
 }
 \value{
-A list of 7 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal 
+A list of 8 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal 
 clonal tree, C the attachment of cells to clones and clones_prevalence clones' prevalence; relative_likelihoods and joint_likelihood are respectively the likelihood of 
-the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. Finally error_rates provides the 
-best values of alpha and beta among the considered ones.
+the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions, solutions (B and C) 
+with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones.
 }
 \description{
 Perform inference of the maximum likelihood clonal tree from longitudinal data.
@@ -70,6 +73,7 @@ inference = LACE(D = data,
                  lik_w = c(0.2308772,0.2554386,0.2701754,0.2435088),
                  alpha = list(c(0.10,0.05,0.05,0.05)),
                  beta = list(c(0.10,0.05,0.05,0.05)),
+                 keep_equivalent = FALSE,
                  num_rs = 5,
                  num_iter = 10,
                  n_try_bs = 5,
