@@ -217,9 +217,9 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
             for(j in 1:i) { # check if we have equivalent solutions among the ones discovered before
                 if(i!=j) {
                     curr_i <- equivalent_solutions[[i]][["B"]]
-                    curr_i <- curr_i[,rownames(curr_i)]
+                    curr_i <- as.adj.matrix(curr_i)
                     curr_j <- equivalent_solutions[[j]][["B"]]
-                    curr_j <- curr_j[,rownames(curr_i)]
+                    curr_j <- as.adj.matrix(curr_j)
                     if(all(curr_i==curr_j)) {
                         duplicated <- c(duplicated,i)
                     }
