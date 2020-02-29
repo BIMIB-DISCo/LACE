@@ -167,7 +167,6 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         lik <- c(lik,inference[[i]][["joint_lik"]])
     }
     best <- which(lik==max(lik))[1]
-    equivalent_solutions <- inference[[best]][["equivalent_solutions"]]
     error_rates <- list(alpha=alpha[[best]],beta=beta[[best]])
 
     # Renaming
@@ -200,7 +199,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         clones_prevalence[i,"Total"] <- clone_number_cell / total_number_cell
     }
 
-    # Finally compute clones' summary
+    # Compute clones' summary
     clones_summary <- list()
     Bwor <- B[,-1]
     i = 2
@@ -208,6 +207,33 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         mut_list <- colnames(Bwor)[Bwor[i,]==1]
         clones_summary[[c]] <- mut_list
         i = i + 1
+    }
+
+    # Finally, process equivalent solutions
+    equivalent_solutions <- inference[[best]][["equivalent_solutions"]]
+    if(length(equivalent_solutions)>1) { # if we have at least one other solution besides the best one
+        duplicated <- NULL
+        for(i in 2:length(equivalent_solutions)) { # consider all solutions besides the first one
+            for(j in 1:i) { # check if we have equivalent solutions among the ones discovered before
+                if(i!=j) {
+                    curr_i <- equivalent_solutions[[i]][["B"]]
+                    curr_i <- curr_i[,rownames(curr_i)]
+                    curr_j <- equivalent_solutions[[j]][["B"]]
+                    curr_j <- curr_j[,rownames(curr_i)]
+                    if(all(curr_i==curr_j)) {
+                        duplicated <- c(duplicated,i)
+                    }
+                }
+            }
+        }
+        if(!is.null(duplicated)) {
+            duplicated <- unique(duplicated)
+            equivalent_solutions <- equivalent_solutions[-duplicated]
+        }
+        for(i in 1:length(equivalent_solutions)) {
+            rownames(equivalent_solutions[[i]][["B"]]) <- c("Root",paste0("Clone_",rownames(equivalent_solutions[[i]][["B"]])[2:nrow(equivalent_solutions[[i]][["B"]])]))
+            colnames(equivalent_solutions[[i]][["B"]]) <- c("Root",colnames(D[[1]])[as.numeric(colnames(equivalent_solutions[[i]][["B"]])[2:ncol(equivalent_solutions[[i]][["B"]])])])
+        }
     }
 
     return(list(B=B,C=C,clones_prevalence=clones_prevalence,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,clones_summary=clones_summary,equivalent_solutions=equivalent_solutions,error_rates=error_rates))
