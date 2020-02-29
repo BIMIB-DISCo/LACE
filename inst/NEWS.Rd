@@ -4,6 +4,6 @@
 
 \section{Changes in Version 1.0.0}{
     \itemize{
-        \item Package released in January 2020.
+        \item Package released in February 2020.
     }
 }

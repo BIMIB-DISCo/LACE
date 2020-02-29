@@ -7,6 +7,7 @@
 #'                  lik_w = c(0.2308772,0.2554386,0.2701754,0.2435088),
 #'                  alpha = list(c(0.10,0.05,0.05,0.05)),
 #'                  beta = list(c(0.10,0.05,0.05,0.05)),
+#'                  keep_equivalent = FALSE,
 #'                  num_rs = 5,
 #'                  num_iter = 10,
 #'                  n_try_bs = 5,
@@ -21,6 +22,7 @@
 #' @param beta False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
 #' maximum-likelihood is returned.
 #' @param initialization Starting point of the mcmc; if not provided, a random starting point is used.
+#' @param keep_equivalent Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?
 #' @param num_rs Number of restarts during mcmc inference.
 #' @param num_iter Maximum number of mcmc steps to be performed during the inference.
 #' @param n_try_bs Number of steps without change in likelihood of best solution after which to stop the mcmc.
@@ -32,16 +34,16 @@
 #' this parameter needs to be set to either NA or NULL.
 #' @param seed Seed for reproducibility.
 #' @param verbose Boolean. Shall I print to screen information messages during the execution?
-#' @return A list of 7 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal 
+#' @return A list of 8 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal 
 #' clonal tree, C the attachment of cells to clones and clones_prevalence clones' prevalence; relative_likelihoods and joint_likelihood are respectively the likelihood of 
-#' the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. Finally error_rates provides the 
-#' best values of alpha and beta among the considered ones. 
+#' the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions, solutions (B and C) 
+#' with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones. 
 #' @param log_file log file where to print outputs when using parallel. If parallel execution is disabled, this parameter is ignored.
 #' @export LACE
 #' @import parallel
 #' @import Rfast
 #'
-LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
+LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
     
     # Set the seed
     set.seed(seed)
@@ -110,6 +112,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
                                                             alpha = alpha[[i]], 
                                                             beta = beta[[i]], 
                                                             initialization = initialization, 
+                                                            keep_equivalent = keep_equivalent, 
                                                             num_rs = num_rs, 
                                                             num_iter = num_iter, 
                                                             n_try_bs = n_try_bs, 
@@ -125,7 +128,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
 
         # Parallel computation
         res_clusterEvalQ <- clusterEvalQ(parallel,library("Rfast"))
-        clusterExport(parallel,varlist=c("D","lik_w","alpha","beta","initialization","num_rs","num_iter","n_try_bs","learning_rate","marginalize","verbose"),envir=environment())
+        clusterExport(parallel,varlist=c("D","lik_w","alpha","beta","initialization","keep_equivalent","num_rs","num_iter","n_try_bs","learning_rate","marginalize","verbose"),envir=environment())
         clusterExport(parallel,c("learn.longitudinal.phylogeny","initialize.B","move.B","compute.C"),envir=environment())
         clusterSetRNGStream(parallel,iseed=round(runif(1)*100000))
         inference <- parLapply(parallel,1:length(alpha),function(x) {
@@ -139,6 +142,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
                                                        alpha = alpha[[x]], 
                                                        beta = beta[[x]], 
                                                        initialization = initialization, 
+                                                       keep_equivalent = keep_equivalent, 
                                                        num_rs = num_rs, 
                                                        num_iter = num_iter, 
                                                        n_try_bs = n_try_bs, 
@@ -162,6 +166,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         lik <- c(lik,inference[[i]][["joint_lik"]])
     }
     best <- which(lik==max(lik))[1]
+    equivalent_solutions <- inference[[best]][["equivalent_solutions"]]
     error_rates <- list(alpha=alpha[[best]],beta=beta[[best]])
 
     # Renaming
@@ -204,6 +209,6 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         i = i + 1
     }
 
-    return(list(B=B,C=C,clones_prevalence=clones_prevalence,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,clones_summary=clones_summary,error_rates=error_rates))
+    return(list(B=B,C=C,clones_prevalence=clones_prevalence,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,clones_summary=clones_summary,equivalent_solutions=equivalent_solutions,error_rates=error_rates))
 
 }

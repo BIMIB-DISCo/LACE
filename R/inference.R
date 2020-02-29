@@ -1,5 +1,5 @@
 # Main function for phylogeny reconstruction with longitudinal data
-learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, beta = 10^-2, initialization = NULL, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, seed = NULL, verbose = TRUE ) {
+learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, beta = 10^-2, initialization = NULL, keep_equivalent = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, seed = NULL, verbose = TRUE ) {
     
     # Set the seed
     set.seed(seed)
@@ -15,6 +15,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
     C_global <- NULL
     lik_global <- NULL
     joint_lik_global <- NULL
+    equivalent_solutions_global <- list()
     
     # First of all, we remove any NA value from data
     for(i in 1:length(D)) {
@@ -60,6 +61,10 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
         lik_best <- lik
         joint_lik_best <- joint_lik
         count_lik_best_cons <- 0
+        if(keep_equivalent) {
+            equivalent_solutions <- list()
+            equivalent_solutions[[1]] <- list(B=B_best,C=C_best,relative_likelihoods=lik_best,joint_likelihood=joint_lik_best)
+        }
         
         # Repeat until num_iter number of iterations is reached
         for(j in 1:num_iter) {
@@ -89,9 +94,19 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
                 C <- C_tmp
                 lik <- lik_tmp
                 joint_lik <- joint_lik_tmp
+                if(keep_equivalent) {
+                    equivalent_solutions <- list()
+                    equivalent_solutions[[1]] <- list(B=B_best,C=C_best,relative_likelihoods=lik_best,joint_likelihood=joint_lik_best)
+                }
                 
             }
             else {
+
+                if(joint_lik_tmp == joint_lik_best) {
+                    if(keep_equivalent) {
+                        equivalent_solutions[[(length(equivalent_solutions)+1)]] <- list(B=B_tmp,C=C_tmp,relative_likelihoods=lik_tmp,joint_likelihood=joint_lik_tmp)
+                    }
+                }
                 
                 count_lik_best_cons <- count_lik_best_cons + 1
                 if(count_lik_best_cons > n_try_bs) {
@@ -125,12 +140,15 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
             C_global <- C_best
             lik_global <- lik_best
             joint_lik_global <- joint_lik_best
+            if(keep_equivalent) {
+                equivalent_solutions_global <- equivalent_solutions
+            }
             
         }
         
     }
     
-    return(list(B=B_global,C=C_global,lik=lik_global,joint_lik=joint_lik_global))
+    return(list(B=B_global,C=C_global,lik=lik_global,joint_lik=joint_lik_global,equivalent_solutions=equivalent_solutions_global))
     
 }
 
