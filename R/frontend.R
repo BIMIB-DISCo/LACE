@@ -241,6 +241,9 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
             colnames(equivalent_solutions[[i]][["B"]]) <- c("Root",colnames(D[[1]])[as.numeric(colnames(equivalent_solutions[[i]][["B"]])[2:ncol(equivalent_solutions[[i]][["B"]])])])
         }
     }
+    if(length(equivalent_solutions)==1) { # if we have only the best solution (no other equivalent solutions)
+        equivalent_solutions <- list()
+    }
 
     return(list(B=B,C=C,clones_prevalence=clones_prevalence,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,clones_summary=clones_summary,equivalent_solutions=equivalent_solutions,error_rates=error_rates))
 
