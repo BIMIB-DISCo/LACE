@@ -23,6 +23,7 @@
 #' maximum-likelihood is returned.
 #' @param initialization Starting point of the mcmc; if not provided, a random starting point is used.
 #' @param keep_equivalent Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?
+#' @param check_indistinguishable Boolean. Shall I remove any indistinguishable event from input data prior inference?
 #' @param num_rs Number of restarts during mcmc inference.
 #' @param num_iter Maximum number of mcmc steps to be performed during the inference.
 #' @param n_try_bs Number of steps without change in likelihood of best solution after which to stop the mcmc.
@@ -44,10 +45,15 @@
 #' @import Rfast
 #' @import stats
 #'
-LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
+LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
     
     # Set the seed
     set.seed(seed)
+
+    # Remove any indistinguishable event from input data prior inference
+    if(check_indistinguishable) {
+        D <- check.indistinguishable(D)
+    }
 
     # Initialize weights to compute weighted joint likelihood
     if(is.null(lik_w)) {

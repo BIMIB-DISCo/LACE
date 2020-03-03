@@ -11,6 +11,7 @@ LACE(
   beta = NULL,
   initialization = NULL,
   keep_equivalent = TRUE,
+  check_indistinguishable = TRUE,
   num_rs = 50,
   num_iter = 10000,
   n_try_bs = 500,
@@ -36,6 +37,8 @@ maximum-likelihood is returned.}
 \item{initialization}{Starting point of the mcmc; if not provided, a random starting point is used.}
 
 \item{keep_equivalent}{Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?}
+
+\item{check_indistinguishable}{Boolean. Shall I remove any indistinguishable event from input data prior inference?}
 
 \item{num_rs}{Number of restarts during mcmc inference.}
 
