@@ -176,21 +176,27 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     error_rates <- list(alpha=alpha[[best]],beta=beta[[best]])
 
     # compute corrected genotypes
-    inference_B = inference[[best]][["B"]][-1,-1]
-    inference_attachments = unlist(inference[[best]][["C"]])
-    inference_attachments_ordered = inference_attachments
+    inference_B <- inference[[best]][["B"]][-1,-1]
+    inference_attachments <- unlist(inference[[best]][["C"]])
+    inference_attachments_ordered <- inference_attachments
     for(curr_C_index in 1:length(inference_attachments)) {
-        inference_attachments_ordered[curr_C_index] = as.numeric(colnames(inference_B)[inference_attachments[curr_C_index]])
+        inference_attachments_ordered[curr_C_index] <- as.numeric(colnames(inference_B)[inference_attachments[curr_C_index]])
     }
-    inference_attachments = inference_attachments_ordered
-    idx_B_curr = sort.int(as.numeric(colnames(inference_B)),index.return=TRUE)$ix
-    inference_B = inference_B[idx_B_curr,]
-    inference_B = inference_B[,idx_B_curr]
-    inference_C = array(0,c(length(inference_attachments),ncol(inference_B)))
+    inference_attachments <- inference_attachments_ordered
+    idx_B_curr <- sort.int(as.numeric(colnames(inference_B)),index.return=TRUE)$ix
+    inference_B <- inference_B[idx_B_curr,]
+    inference_B <- inference_B[,idx_B_curr]
+    inference_C <- array(0,c(length(inference_attachments),ncol(inference_B)))
     for(curr_C_index in 1:nrow(inference_C)) {
-        inference_C[curr_C_index,inference_attachments[curr_C_index]] = 1
+        inference_C[curr_C_index,inference_attachments[curr_C_index]] <- 1
     }
-    corrected_genotypes = inference_C %*% inference_B
+    corrected_genotypes <- inference_C %*% inference_B
+    cells_names <- NULL
+    for(cn in 1:length(inference[[best]][["C"]])) {
+        cells_names <- c(cells_names,rownames(inference[[best]][["C"]][[cn]]))
+    }
+    rownames(corrected_genotypes) <- cells_names
+    colnames(corrected_genotypes) <- colnames(D[[1]])
 
     # Renaming
     B <- inference[[best]][["B"]]
