@@ -130,7 +130,7 @@ longitudinal.tree.plot(inference = inference,
                        clone_labels = clone_labels)
 ```
 
-![Image](LACE-Ex.pdf)
+![Image](LACE-Ex.jpg)
 
 **DEBUG**
 
