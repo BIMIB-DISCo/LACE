@@ -35,15 +35,15 @@
 #' this parameter needs to be set to either NA or NULL.
 #' @param seed Seed for reproducibility.
 #' @param verbose Boolean. Shall I print to screen information messages during the execution?
+#' @param log_file log file where to print outputs when using parallel. If parallel execution is disabled, this parameter is ignored.
 #' @return A list of 8 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal 
 #' clonal tree, C the attachment of cells to clones and clones_prevalence clones' prevalence; relative_likelihoods and joint_likelihood are respectively the likelihood of 
 #' the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions, solutions (B and C) 
 #' with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones. 
-#' @param log_file log file where to print outputs when using parallel. If parallel execution is disabled, this parameter is ignored.
 #' @export LACE
 #' @import parallel
-#' @import Rfast
-#' @import stats
+#' @importFrom Rfast rowMaxs
+#' @importFrom stats runif
 #'
 LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
     

@@ -121,6 +121,17 @@ print(names(inference))
 the estimated prevalence of any observed clone; relative_likelihoods and joint_likelihood the estimated likelihoods for each time point and the weighted likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions, solutions (B and C) with likelihood equivalent to the best solution are returned; notice that in the example we disabled this feature by 
 setting equivalent_solutions parameter to FALSE. Finally, error rates provide the best error rates (alpha and beta) as estimated by the grid search. 
 
+We can plot the inferred model using the function longitudinal.tree.plot. 
+
+```r
+clone_labels = c("ARPC2","PRAME","HNRNPC","COL1A2","RPL5","CCT8")
+longitudinal.tree.plot(inference = inference,
+                       labels = "clones", 
+                       clone_labels = clone_labels)
+```
+
+![Image](LACE-Ex.pdf)
+
 **DEBUG**
 
 Please feel free to contact us if you have problems running our tool at daniele.ramazzotti1@gmail.com or d.maspero@campus.unimib.it. 
