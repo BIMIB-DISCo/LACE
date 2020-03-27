@@ -117,8 +117,7 @@ print(names(inference))
 ## [7] "equivalent_solutions" "error_rates"
 ```
 
-*LACE* returns a list of eight elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; clones_prevalence, 
-the estimated prevalence of any observed clone; relative_likelihoods and joint_likelihood the estimated likelihoods for each time point and the weighted likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions, solutions (B and C) with likelihood equivalent to the best solution are returned; notice that in the example we disabled this feature by 
+*LACE* returns a list of nine elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; corrected_genotypes the corrected genotypes, clones_prevalence, the estimated prevalence of any observed clone; relative_likelihoods and joint_likelihood the estimated likelihoods for each time point and the weighted likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions, solutions (B and C) with likelihood equivalent to the best solution are returned; notice that in the example we disabled this feature by 
 setting equivalent_solutions parameter to FALSE. Finally, error rates provide the best error rates (alpha and beta) as estimated by the grid search. 
 
 We can plot the inferred model using the function longitudinal.tree.plot. 
