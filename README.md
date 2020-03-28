@@ -14,7 +14,7 @@ In this repository we provide an R implementation of *LACE*.
 
 *LACE* is an algorithmic framework that processes single-cell somatic mutation profiles from cancer samples collected at different 
 time points and in distinct experimental settings, to produce longitudinal models of cancer evolution. The approach solves a Boolean Matrix 
-Factorization problem with phylogenetic constraints, by maximizing a weighed likelihood function computed on multiple time points. 
+Factorization problem with phylogenetic constraints, by maximizing a weighted likelihood function computed on multiple time points. 
 
 **INSTALLING LACE R IMPLEMENTATION**
 
