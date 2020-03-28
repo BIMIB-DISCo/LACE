@@ -192,8 +192,8 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     }
     corrected_genotypes <- inference_C %*% inference_B
     cells_names <- NULL
-    for(cn in 1:length(inference[[best]][["C"]])) {
-        cells_names <- c(cells_names,rownames(inference[[best]][["C"]][[cn]]))
+    for(cn in 1:length(D)) {
+        cells_names <- c(cells_names,rownames(D[[cn]]))
     }
     rownames(corrected_genotypes) <- cells_names
     colnames(corrected_genotypes) <- colnames(D[[1]])

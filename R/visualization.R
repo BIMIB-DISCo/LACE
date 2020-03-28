@@ -6,7 +6,8 @@
 #' clone_labels = c("ARPC2","PRAME","HNRNPC","COL1A2","RPL5","CCT8")
 #' longitudinal.tree.plot(inference = inference,
 #'                        labels = "clones",
-#'                        clone_labels = clone_labels)
+#'                        clone_labels = clone_labels,
+#'                        legend_position = "topright")
 #'
 #' @param inference Results of the inference by LACE.
 #' @param labels Specify which type of label should be placed on the tree; options are, 
@@ -32,7 +33,7 @@
 #' @import RColorBrewer
 #' @import utils
 #'
-longitudinal.tree.plot <- function( inference, labels = "mutations", clone_labels = NULL, label.cex = 1, iter_max = 100, size = 500, size2 = NULL, tk_plot = FALSE, tp_mark = TRUE, tp_mark_alpha = 0.5, legend = TRUE, legend_position = 'topleft', legend_cex = 0.8 ) {
+longitudinal.tree.plot <- function( inference, labels = "mutations", clone_labels = NULL, label.cex = 1, iter_max = 100, size = 500, size2 = NULL, tk_plot = FALSE, tp_mark = TRUE, tp_mark_alpha = 0.5, legend = TRUE, legend_position = "topleft", legend_cex = 0.8 ) {
     
     if(is.null(size2)) {
         size2 <- size

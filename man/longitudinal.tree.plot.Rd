@@ -59,6 +59,7 @@ data(inference)
 clone_labels = c("ARPC2","PRAME","HNRNPC","COL1A2","RPL5","CCT8")
 longitudinal.tree.plot(inference = inference,
                        labels = "clones",
-                       clone_labels = clone_labels)
+                       clone_labels = clone_labels,
+                       legend_position = "topright")
 
 }
