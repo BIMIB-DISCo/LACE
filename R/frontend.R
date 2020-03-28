@@ -35,15 +35,15 @@
 #' this parameter needs to be set to either NA or NULL.
 #' @param seed Seed for reproducibility.
 #' @param verbose Boolean. Shall I print to screen information messages during the execution?
-#' @return A list of 8 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal 
-#' clonal tree, C the attachment of cells to clones and clones_prevalence clones' prevalence; relative_likelihoods and joint_likelihood are respectively the likelihood of 
-#' the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions, solutions (B and C) 
-#' with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones. 
 #' @param log_file log file where to print outputs when using parallel. If parallel execution is disabled, this parameter is ignored.
+#' @return A list of 9 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal 
+#' clonal tree, C the attachment of cells to clones, corrected_genotypes the corrected genotypes and clones_prevalence clones' prevalence; relative_likelihoods and joint_likelihood are respectively 
+#' the likelihood of the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions, 
+#' solutions (B and C) with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones. 
 #' @export LACE
 #' @import parallel
-#' @import Rfast
-#' @import stats
+#' @importFrom Rfast rowMaxs
+#' @importFrom stats runif
 #'
 LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
     
@@ -175,6 +175,29 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     best <- which(lik==max(lik))[1]
     error_rates <- list(alpha=alpha[[best]],beta=beta[[best]])
 
+    # compute corrected genotypes
+    inference_B <- inference[[best]][["B"]][-1,-1]
+    inference_attachments <- unlist(inference[[best]][["C"]])
+    inference_attachments_ordered <- inference_attachments
+    for(curr_C_index in 1:length(inference_attachments)) {
+        inference_attachments_ordered[curr_C_index] <- as.numeric(colnames(inference_B)[inference_attachments[curr_C_index]])
+    }
+    inference_attachments <- inference_attachments_ordered
+    idx_B_curr <- sort.int(as.numeric(colnames(inference_B)),index.return=TRUE)$ix
+    inference_B <- inference_B[idx_B_curr,]
+    inference_B <- inference_B[,idx_B_curr]
+    inference_C <- array(0,c(length(inference_attachments),ncol(inference_B)))
+    for(curr_C_index in 1:nrow(inference_C)) {
+        inference_C[curr_C_index,inference_attachments[curr_C_index]] <- 1
+    }
+    corrected_genotypes <- inference_C %*% inference_B
+    cells_names <- NULL
+    for(cn in 1:length(D)) {
+        cells_names <- c(cells_names,rownames(D[[cn]]))
+    }
+    rownames(corrected_genotypes) <- cells_names
+    colnames(corrected_genotypes) <- colnames(D[[1]])
+
     # Renaming
     B <- inference[[best]][["B"]]
     rownames(B) <- c("Root",paste0("Clone_",rownames(B)[2:nrow(B)]))
@@ -245,6 +268,6 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         equivalent_solutions <- list()
     }
 
-    return(list(B=B,C=C,clones_prevalence=clones_prevalence,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,clones_summary=clones_summary,equivalent_solutions=equivalent_solutions,error_rates=error_rates))
+    return(list(B=B,C=C,corrected_genotypes=corrected_genotypes,clones_prevalence=clones_prevalence,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,clones_summary=clones_summary,equivalent_solutions=equivalent_solutions,error_rates=error_rates))
 
 }
