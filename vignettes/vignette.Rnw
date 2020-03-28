@@ -134,7 +134,7 @@ clone_labels = c("ARPC2","RPL5","PRAME","COL1A2","CCT8","HNRNPC")
 longitudinal.tree.plot(inference = inference, 
                        labels = "clones", 
                        clone_labels = clone_labels, 
-                       legend_position = "topright")
+                       legend_position = "topleft")
 @
 
 \section{\Rcode{sessionInfo()}}

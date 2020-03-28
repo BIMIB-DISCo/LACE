@@ -7,7 +7,7 @@
 #' longitudinal.tree.plot(inference = inference,
 #'                        labels = "clones",
 #'                        clone_labels = clone_labels,
-#'                        legend_position = "topright")
+#'                        legend_position = "topleft")
 #'
 #' @param inference Results of the inference by LACE.
 #' @param labels Specify which type of label should be placed on the tree; options are, 
