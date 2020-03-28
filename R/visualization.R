@@ -3,7 +3,7 @@
 #'
 #' @examples
 #' data(inference)
-#' clone_labels = c("ARPC2","PRAME","HNRNPC","COL1A2","RPL5","CCT8")
+#' clone_labels = c("ARPC2","RPL5","PRAME","COL1A2","CCT8","HNRNPC")
 #' longitudinal.tree.plot(inference = inference,
 #'                        labels = "clones",
 #'                        clone_labels = clone_labels,
