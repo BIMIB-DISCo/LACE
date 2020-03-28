@@ -170,3 +170,21 @@ checkSegmentIntersect <- function( ax1, ay1, ax2, ay2, bx1, by1, bx2, by2 ) {
     return(FALSE)
 
 }
+
+#' Compute mutation distance from LACE corrected genotype.
+#' @title compute.mutation.distance
+#'
+#' @examples
+#' data(inference)
+#' mutation_distance <- compute.mutation.distance(inference)
+#'
+#' @param inference Results of the inference by LACE.
+#' @export compute.mutation.distance
+#' @importFrom stats dist
+#'
+compute.mutation.distance <- function( inference ) {
+
+    mutation_distance <- as.matrix(dist(t(inference$corrected_genotype),method="euclidean"))
+    return(mutation_distance)
+
+}
