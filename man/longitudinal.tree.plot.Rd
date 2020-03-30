@@ -6,8 +6,11 @@
 \usage{
 longitudinal.tree.plot(
   inference,
+  show_plot = TRUE,
+  filename = "lg_output.xml",
   labels = "mutations",
   clone_labels = NULL,
+  show_prev = TRUE,
   label.cex = 1,
   iter_max = 100,
   size = 500,
@@ -23,6 +26,10 @@ longitudinal.tree.plot(
 \arguments{
 \item{inference}{Results of the inference by LACE.}
 
+\item{show_plot}{If TRUE (default) output the longitudinal tree to the current graphical device.}
+
+\item{filename}{Specify the name of the file where to save the longitudinal tree. Dot or graphml formats are supported and are chosen based on the extenction of the filename (.dot or .xml).}
+
 \item{labels}{Specify which type of label should be placed on the tree; options are, 
 "mutations": parental edges are labeled with the acquired mutation between the two nodes (genotypes); 
 "clones": nodes (genotypes) are labeled with their last acquired mutation; 
@@ -30,6 +37,8 @@ longitudinal.tree.plot(
 "none": no labels will show on the longitudinal tree.}
 
 \item{clone_labels}{Character vector that specifies the name of the nodes (genotypes). If it is NULL (default), nodes will be labeled as specified by "label" parameter.}
+
+\item{show_prev}{If TRUE (default) add to clones label the correspongind prevalance.}
 
 \item{label.cex}{Specify the size of the labels.}
 
@@ -50,6 +59,9 @@ longitudinal.tree.plot(
 \item{legend_position}{Specify the legend position.}
 
 \item{legend_cex}{Specify size of the legend text.}
+}
+\value{
+An igraph object g with the longitudinal tree inferred by LACE.
 }
 \description{
 Plot a longitudinal tree inferred by LACE.
