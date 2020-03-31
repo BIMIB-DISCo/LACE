@@ -25,6 +25,8 @@ First we run an R session and we execute the following commands.
 ```r
 # run this commands only if the following R packages are not already installed
 install.packages("devtools", dependencies = TRUE)
+install.packages("igraph", dependencies = TRUE)
+install.packages("RColorBrewer", dependencies = TRUE)
 install.packages("Rfast", dependencies = TRUE)
 ```
 
