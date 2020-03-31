@@ -126,10 +126,10 @@ We can plot the inferred model using the function longitudinal.tree.plot.
 
 ```r
 clone_labels = c("ARPC2","PRAME","HNRNPC","COL1A2","RPL5","CCT8")
-longitudinal.tree.plot(inference = inference,
-                       labels = "clones", 
-                       clone_labels = clone_labels, 
-                       legend_position = "topleft")
+longitudinal.tree = longitudinal.tree.plot(inference = inference, 
+                                           labels = "clones", 
+                                           clone_labels = clone_labels, 
+                                           legend_position = "topleft")
 ```
 
 ![Image](LACE-Ex.jpg)
