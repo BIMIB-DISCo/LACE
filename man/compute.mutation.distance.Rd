@@ -9,6 +9,9 @@ compute.mutation.distance(inference)
 \arguments{
 \item{inference}{Results of the inference by LACE.}
 }
+\value{
+A matrix mutation_distance with the mutation distance computed from LACE corrected genotype.
+}
 \description{
 Compute mutation distance from LACE corrected genotype.
 }
