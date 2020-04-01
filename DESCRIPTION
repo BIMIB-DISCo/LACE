@@ -1,5 +1,5 @@
 Package: LACE
-Version: 0.99.1
+Version: 0.99.2
 Date: 2020-04-01
 Title: Longitudinal Analysis of Cancer Evolution (LACE)
 Authors@R: c(person("Daniele","Ramazzotti",role=c("cre","aut"),email="daniele.ramazzotti@unimib.it"),
