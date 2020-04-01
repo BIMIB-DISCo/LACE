@@ -16,7 +16,8 @@
 #'                  verbose = FALSE)
 #'
 #' @param D Mutation data from multiple experiments for a list of driver genes; it can be either a list with a data matrix per time point or a SingleCellExperiment object with 
-#' assays field being a list with a data matrix per time point.
+#' assays field being one unique data matrix pooling all single cells observed at each time point and rowData field being a vector of labels, reporting the time point where each single cell 
+#' present in the assays field was sequenced (ordering of cells in assays field and rowData field must be the same).
 #' @param lik_w Weight for each data point. If not provided, weights to correct for sample sizes are used.
 #' @param alpha False positive error rate provided as list of elements; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at 
 #' maximum-likelihood is returned.
@@ -46,6 +47,7 @@
 #' @import SingleCellExperiment
 #' @importFrom Rfast rowMaxs
 #' @importFrom stats runif
+#' @importFrom SummarizedExperiment assays
 #'
 LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
     
@@ -54,9 +56,12 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
 
     # Handle SingleCellExperiment objects
     if(typeof(D)=="S4") {
+        curr_data <- assays(D)[[1]]
+        curr_experiment <- rowData(D)[[1]]
+        curr_experiment_unique <- unique(curr_experiment)
         curr_D <- list()
-        for(i in 1:length(assays(D))) {
-            curr_D[[i]] <- assays(D)[[i]]
+        for(i in 1:length(curr_experiment_unique)) {
+            curr_D[[as.character(curr_experiment_unique[[i]])]] <- curr_data[which(curr_experiment==curr_experiment_unique[[i]]),,drop=FALSE]
         }
         D <- curr_D
     }
