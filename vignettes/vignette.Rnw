@@ -67,7 +67,7 @@ background = "#f3f3ff"
 \section{Changelog} 
 
 \begin{itemize}
-\item[1.0.0] package released on March 2020. 
+\item[1.0.0] package released on April 2020. 
 \end{itemize}
 
 \section{Using the LACE R package}

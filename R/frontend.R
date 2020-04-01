@@ -15,7 +15,8 @@
 #'                  seed = 12345,
 #'                  verbose = FALSE)
 #'
-#' @param D Mutation data from multiple experiments for a list of driver genes.
+#' @param D Mutation data from multiple experiments for a list of driver genes; it can be either a list with a data matrix per time point or a SingleCellExperiment object with 
+#' assays field being a list with a data matrix per time point.
 #' @param lik_w Weight for each data point. If not provided, weights to correct for sample sizes are used.
 #' @param alpha False positive error rate provided as list of elements; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at 
 #' maximum-likelihood is returned.
@@ -42,6 +43,7 @@
 #' solutions (B and C) with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones. 
 #' @export LACE
 #' @import parallel
+#' @import SingleCellExperiment
 #' @importFrom Rfast rowMaxs
 #' @importFrom stats runif
 #'
@@ -49,6 +51,15 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     
     # Set the seed
     set.seed(seed)
+
+    # Handle SingleCellExperiment objects
+    if(typeof(D)=="S4") {
+        curr_D <- list()
+        for(i in 1:length(assays(D))) {
+            curr_D[[i]] <- assays(D)[[i]]
+        }
+        D <- curr_D
+    }
 
     # Remove any indistinguishable event from input data prior inference
     if(check_indistinguishable) {

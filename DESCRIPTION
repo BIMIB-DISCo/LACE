@@ -1,6 +1,6 @@
 Package: LACE
-Version: 1.1.0
-Date: 2020-03-31
+Version: 0.99.1
+Date: 2020-04-01
 Title: Longitudinal Analysis of Cancer Evolution (LACE)
 Authors@R: c(person("Daniele","Ramazzotti",role=c("cre","aut"),email="daniele.ramazzotti@unimib.it"),
     person("Fabrizio","Angaroni",role=c("aut"),email="fabrizio.angaroni@unimib.it"),
@@ -16,6 +16,7 @@ Imports:
     parallel,
     RColorBrewer,
     Rfast,
+    SingleCellExperiment,
     stats,
     utils
 Suggests:
@@ -33,5 +34,5 @@ License: file LICENSE
 URL: https://github.com/BIMIB-DISCo/LACE
 BugReports: https://github.com/BIMIB-DISCo/LACE
 biocViews: BiomedicalInformatics
-RoxygenNote: 7.0.2
+RoxygenNote: 7.1.0
 VignetteBuilder: knitr
