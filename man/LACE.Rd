@@ -24,7 +24,8 @@ LACE(
 )
 }
 \arguments{
-\item{D}{Mutation data from multiple experiments for a list of driver genes.}
+\item{D}{Mutation data from multiple experiments for a list of driver genes; it can be either a list with a data matrix per time point or a SingleCellExperiment object with 
+assays field being a list with a data matrix per time point.}
 
 \item{lik_w}{Weight for each data point. If not provided, weights to correct for sample sizes are used.}
 

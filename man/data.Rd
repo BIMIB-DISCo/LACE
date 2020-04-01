@@ -4,7 +4,9 @@
 \name{data}
 \alias{data}
 \title{mutation data from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.}
-\format{list of mutation data for four time points}
+\format{
+list of mutation data for four time points
+}
 \source{
 Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.
 }
