@@ -25,7 +25,8 @@ LACE(
 }
 \arguments{
 \item{D}{Mutation data from multiple experiments for a list of driver genes; it can be either a list with a data matrix per time point or a SingleCellExperiment object with 
-assays field being a list with a data matrix per time point.}
+assays field being one unique data matrix pooling all single cells observed at each time point and rowData field being a vector of labels, reporting the time point where each single cell 
+present in the assays field was sequenced (ordering of cells in assays field and rowData field must be the same).}
 
 \item{lik_w}{Weight for each data point. If not provided, weights to correct for sample sizes are used.}
 
