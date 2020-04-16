@@ -308,9 +308,11 @@ longitudinal.tree.plot <- function( inference, show_plot = TRUE, filename = "lg_
     g <- delete_edge_attr(graph = g, name = "extincion")
     
     # fixing clone y position based on the time point 
-    for(tp in seq(from = 1, to = max(cl_vertex$TP)-1)) {
-        m_c <- min(cl_vertex$coord.y[which(cl_vertex$TP == tp)]) - 1
-        cl_vertex$coord.y[which(cl_vertex$TP == tp+1 & cl_vertex$coord.y >= m_c)] <- m_c
+    if(length(unique(cl_vertex$TP))>1) {
+        for(tp in seq(from = 1, to = max(cl_vertex$TP)-1)) {
+            m_c <- min(cl_vertex$coord.y[which(cl_vertex$TP == tp)]) - 1
+            cl_vertex$coord.y[which(cl_vertex$TP == tp+1 & cl_vertex$coord.y >= m_c)] <- m_c
+        }
     }
     
     # Fixing overlapping points 
