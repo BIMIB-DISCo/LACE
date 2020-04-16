@@ -64,12 +64,6 @@ background = "#f3f3ff"
 
 \tableofcontents
 
-\section{Changelog} 
-
-\begin{itemize}
-\item[1.0.0] package released on April 2020. 
-\end{itemize}
-
 \section{Using the LACE R package}
 
 We now present an example of longitudinal analysis of cancer evolution with LACE using single-cell data obtained from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855. The data comprises point mutations for four time points: (1) before treatment, (2) 4 days treatment, (3) 28 days treatment and finally (4) 57 days treatment. 
