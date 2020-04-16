@@ -2,8 +2,8 @@
 #' @title LACE
 #'
 #' @examples
-#' data(data)
-#' inference = LACE(D = data,
+#' data(longitudinal_sc_variants)
+#' inference = LACE(D = longitudinal_sc_variants,
 #'                  lik_w = c(0.2308772,0.2554386,0.2701754,0.2435088),
 #'                  alpha = list(c(0.10,0.05,0.05,0.05)),
 #'                  beta = list(c(0.10,0.05,0.05,0.05)),

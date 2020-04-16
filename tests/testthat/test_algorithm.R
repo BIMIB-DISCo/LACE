@@ -1,4 +1,4 @@
-data("data")
+data("longitudinal_sc_variants")
 
 context("LACE")
 
