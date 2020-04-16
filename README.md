@@ -50,8 +50,8 @@ time points: (1) before treatment, (2) 4 days treatment, (3) 28 days treatment a
 
 ```r
 library("LACE")
-data(data)
-names(data)
+data(longitudinal_sc_variants)
+names(longitudinal_sc_variants)
 
 ## [1] "T1_before_treatment"  "T2_4_days_treatment"  "T3_28_days_treatment" "T4_57_days_treatment"
 ```
@@ -93,7 +93,7 @@ head(beta)
 We can now perform the inference as follow. 
 
 ```r
-inference = LACE(D = data, 
+inference = LACE(D = longitudinal_sc_variants, 
     lik_w = lik_weights, 
     alpha = alpha, 
     beta = beta, 

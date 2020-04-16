@@ -159,7 +159,7 @@ initialize.B <- function( D, seed = NULL ) {
     m <- ncol(D[[1]])
     
     # Initialize B
-    B <- array(0,c((m+1),(m+1)))
+    B <- array(0L,c((m+1),(m+1)))
     rownames(B) <- c('r',1:m)
     colnames(B) <- c('r',sample(1:m))
     diag(B) <- 1
@@ -278,11 +278,11 @@ compute.C <- function( B, D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, 
         curr_cells_D <- D[[i]][,idx_srt,drop=FALSE]
         
         # Find assignment at maximum log likelihood for current cell
-        lik_matrix <- array(0,c(nrow(D[[i]]),(ncol(B)-1)))
+        lik_matrix <- array(0L,c(nrow(D[[i]]),(ncol(B)-1)))
         
         for(k in 2:nrow(B)) {
             
-            curr_clone_C = matrix(rep(0,(nrow(B)-1)),nrow=1)
+            curr_clone_C = matrix(rep(0L,(nrow(B)-1)),nrow=1)
             curr_clone_C[1,(k-1)] <- 1
             
             # Save mapping between ordering in B and dataset D

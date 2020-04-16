@@ -2,8 +2,8 @@
 #' @title LACE
 #'
 #' @examples
-#' data(data)
-#' inference = LACE(D = data,
+#' data(longitudinal_sc_variants)
+#' inference = LACE(D = longitudinal_sc_variants,
 #'                  lik_w = c(0.2308772,0.2554386,0.2701754,0.2435088),
 #'                  alpha = list(c(0.10,0.05,0.05,0.05)),
 #'                  beta = list(c(0.10,0.05,0.05,0.05)),
@@ -15,9 +15,9 @@
 #'                  seed = 12345,
 #'                  verbose = FALSE)
 #'
-#' @param D Mutation data from multiple experiments for a list of driver genes; it can be either a list with a data matrix per time point or a SingleCellExperiment object with 
-#' assays field being one unique data matrix pooling all single cells observed at each time point and rowData field being a vector of labels, reporting the time point where each single cell 
-#' present in the assays field was sequenced (ordering of cells in assays field and rowData field must be the same).
+#' @param D Mutation data from multiple experiments for a list of driver genes. It can be either a list with a data matrix per time point or a SummarizedExperiment object. 
+#' In this latter, the object must contain two fields: assays and rowData. Assays stores one unique data matrix pooling all single cells observed at each time point and rowData stores a vector of labels reporting the time point when each single cell was sequenced.
+#' Ordering of cells in assays field and rowData field must be the same.
 #' @param lik_w Weight for each data point. If not provided, weights to correct for sample sizes are used.
 #' @param alpha False positive error rate provided as list of elements; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at 
 #' maximum-likelihood is returned.
@@ -44,17 +44,16 @@
 #' solutions (B and C) with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones. 
 #' @export LACE
 #' @import parallel
-#' @import SingleCellExperiment
+#' @import SummarizedExperiment
 #' @importFrom Rfast rowMaxs
 #' @importFrom stats runif
-#' @importFrom SummarizedExperiment assays
 #'
 LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
     
     # Set the seed
     set.seed(seed)
 
-    # Handle SingleCellExperiment objects
+    # Handle SummarizedExperiment objects
     if(typeof(D)=="S4") {
         curr_data <- assays(D)[[1]]
         curr_experiment <- rowData(D)[[1]]
@@ -196,15 +195,15 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     inference_attachments <- unlist(inference[[best]][["C"]])
     inference_attachments_ordered <- inference_attachments
     for(curr_C_index in 1:length(inference_attachments)) {
-        inference_attachments_ordered[curr_C_index] <- as.numeric(colnames(inference_B)[inference_attachments[curr_C_index]])
+        inference_attachments_ordered[curr_C_index] <- as.integer(colnames(inference_B)[inference_attachments[curr_C_index]])
     }
     inference_attachments <- inference_attachments_ordered
-    idx_B_curr <- sort.int(as.numeric(colnames(inference_B)),index.return=TRUE)$ix
+    idx_B_curr <- sort.int(as.integer(colnames(inference_B)),index.return=TRUE)$ix
     inference_B <- inference_B[idx_B_curr,]
     inference_B <- inference_B[,idx_B_curr]
-    inference_C <- array(0,c(length(inference_attachments),ncol(inference_B)))
+    inference_C <- array(0L,c(length(inference_attachments),ncol(inference_B)))
     for(curr_C_index in 1:nrow(inference_C)) {
-        inference_C[curr_C_index,inference_attachments[curr_C_index]] <- 1
+        inference_C[curr_C_index,inference_attachments[curr_C_index]] <- 1L
     }
     corrected_genotypes <- inference_C %*% inference_B
     cells_names <- NULL
