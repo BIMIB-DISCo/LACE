@@ -38,7 +38,7 @@ check.indistinguishable <- function( data ) {
 # Build adjacency matrix from B as returned from the function learn.longitudinal.phylogeny
 as.adj.matrix <- function( B ) {
     
-    adj_matrix <- array(0,c((dim(B)[1]-1),(dim(B)[2]-1)))
+    adj_matrix <- array(0L,c((dim(B)[1]-1),(dim(B)[2]-1)))
     rownames(adj_matrix) <- colnames(B)[2:ncol(B)]
     colnames(adj_matrix) <- colnames(B)[2:ncol(B)]
     
@@ -66,7 +66,7 @@ as.adj.matrix <- function( B ) {
 # Build adjacency matrix from B as returned from the function learn.longitudinal.phylogeny (unsorted)
 as.adj.matrix.unsorted <- function( B ) {
     
-    adj_matrix = array(0,c((dim(B)[1]-1),(dim(B)[2]-1)))
+    adj_matrix = array(0L,c((dim(B)[1]-1),(dim(B)[2]-1)))
     rownames(adj_matrix) <- colnames(B)[(2:ncol(B))]
     colnames(adj_matrix) <- colnames(B)[(2:ncol(B))]
     

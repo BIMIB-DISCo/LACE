@@ -196,15 +196,15 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     inference_attachments <- unlist(inference[[best]][["C"]])
     inference_attachments_ordered <- inference_attachments
     for(curr_C_index in 1:length(inference_attachments)) {
-        inference_attachments_ordered[curr_C_index] <- as.numeric(colnames(inference_B)[inference_attachments[curr_C_index]])
+        inference_attachments_ordered[curr_C_index] <- as.integer(colnames(inference_B)[inference_attachments[curr_C_index]])
     }
     inference_attachments <- inference_attachments_ordered
-    idx_B_curr <- sort.int(as.numeric(colnames(inference_B)),index.return=TRUE)$ix
+    idx_B_curr <- sort.int(as.integer(colnames(inference_B)),index.return=TRUE)$ix
     inference_B <- inference_B[idx_B_curr,]
     inference_B <- inference_B[,idx_B_curr]
-    inference_C <- array(0,c(length(inference_attachments),ncol(inference_B)))
+    inference_C <- array(0L,c(length(inference_attachments),ncol(inference_B)))
     for(curr_C_index in 1:nrow(inference_C)) {
-        inference_C[curr_C_index,inference_attachments[curr_C_index]] <- 1
+        inference_C[curr_C_index,inference_attachments[curr_C_index]] <- 1L
     }
     corrected_genotypes <- inference_C %*% inference_B
     cells_names <- NULL
