@@ -22,10 +22,8 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
         if(any(is.na(D[[i]]))) {
             D[[i]][which(is.na(D[[i]]),arr.ind=TRUE)] <- -3
         }
-		storage.mode(D[[i]]) <- "integer"
+        storage.mode(D[[i]]) <- "integer"
     }
-	
-	
     
     # Repeat for num_rs number of restarts
     for(i in 1:num_rs) {
@@ -42,7 +40,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
             }
             else {
                 B <- initialization
-				storage.mode(B) <- "integer"
+                storage.mode(B) <- "integer"
             }
             
         }
@@ -305,7 +303,7 @@ compute.C <- function( B, D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, 
         else {
             lik_time <- sum(log(rowMaxs(lik_matrix,value=TRUE)))
         }
-		
+        
         storage.mode(C_list_time) <- "integer"
         C_res[[i]] <- C_list_time
         lik_matrix_res[[i]] <- lik_matrix

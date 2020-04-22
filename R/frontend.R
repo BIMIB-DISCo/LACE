@@ -65,20 +65,19 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         D <- curr_D
     }
 
-	# Set storage mode to integer
-	for(i in 1:length(D){
-		storage.mode(D[[i]]) <- "integer"
-	}
-	
-	if(!is.null(initialization)){
-		storage.mode(initialization) <- "integer"
-	}
+    # Set storage mode to integer
+    for(i in 1:length(D)) {
+        storage.mode(D[[i]]) <- "integer"
+    }
+    
+    if(!is.null(initialization)){
+        storage.mode(initialization) <- "integer"
+    }
 
     # Remove any indistinguishable event from input data prior inference
     if(check_indistinguishable) {
         D <- check.indistinguishable(D)
     }
-
 
     # Initialize weights to compute weighted joint likelihood
     if(is.null(lik_w)) {
