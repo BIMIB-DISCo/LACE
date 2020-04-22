@@ -22,7 +22,10 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
         if(any(is.na(D[[i]]))) {
             D[[i]][which(is.na(D[[i]]),arr.ind=TRUE)] <- -3
         }
+		storage.mode(D[[i]]) <- "integer"
     }
+	
+	
     
     # Repeat for num_rs number of restarts
     for(i in 1:num_rs) {
@@ -39,6 +42,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
             }
             else {
                 B <- initialization
+				storage.mode(B) <- "integer"
             }
             
         }
@@ -162,8 +166,8 @@ initialize.B <- function( D, seed = NULL ) {
     B <- array(0L,c((m+1),(m+1)))
     rownames(B) <- c('r',1:m)
     colnames(B) <- c('r',sample(1:m))
-    diag(B) <- 1
-    B[,1] <- 1
+    diag(B) <- 1L
+    B[,1] <- 1L
     
     # Add arcs with probability 50%
     p <- 0.50
@@ -175,7 +179,7 @@ initialize.B <- function( D, seed = NULL ) {
         
     }
     
-    B[which(B>1)] <- 1
+    B[which(B>1)] <- 1L
     
     return(B)
     
@@ -215,7 +219,7 @@ move.B <- function( B, seed = NULL ) {
         
         # Performing move on ch_1
         ch_1_bkp <- B[ch_1,1:ch_1]
-        B[ch_1,1:(ch_1-1)] <- c(1,rep(0,(ch_1-2)))
+        B[ch_1,1:(ch_1-1)] <- c(1L,rep(0L,(ch_1-2)))
         B[ch_1,] <- B[ch_1,] + B[ch_2,]
         
         # Performing move on children of ch_1
@@ -225,7 +229,7 @@ move.B <- function( B, seed = NULL ) {
                 
                 if(all(ch_1_bkp==B[i,1:ch_1])) {
                     
-                    B[i,1:(ch_1-1)] <- c(1,rep(0,(ch_1-2)))
+                    B[i,1:(ch_1-1)] <- c(1L,rep(0L,(ch_1-2)))
                     B[i,] <- B[i,] + B[ch_2,]
                     
                 }
@@ -234,7 +238,7 @@ move.B <- function( B, seed = NULL ) {
             
         }
         
-        B[which(B>1)] <- 1
+        B[which(B>1)] <- 1L
         
     }
     # Perform full relabeling with 5% probability
@@ -283,7 +287,7 @@ compute.C <- function( B, D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, 
         for(k in 2:nrow(B)) {
             
             curr_clone_C = matrix(rep(0L,(nrow(B)-1)),nrow=1)
-            curr_clone_C[1,(k-1)] <- 1
+            curr_clone_C[1,(k-1)] <- 1L
             
             # Save mapping between ordering in B and dataset D
             # Factorization D = C dot B. r_D_tilde represents a combination of mutations and clones
@@ -301,7 +305,8 @@ compute.C <- function( B, D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, 
         else {
             lik_time <- sum(log(rowMaxs(lik_matrix,value=TRUE)))
         }
-        
+		
+        storage.mode(C_list_time) <- "integer"
         C_res[[i]] <- C_list_time
         lik_matrix_res[[i]] <- lik_matrix
         lik_res <- c(lik_res,lik_time)
