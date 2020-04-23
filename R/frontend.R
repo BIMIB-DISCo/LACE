@@ -16,8 +16,8 @@
 #'                  verbose = FALSE)
 #'
 #' @param D Mutation data from multiple experiments for a list of driver genes. It can be either a list with a data matrix per time point or a SummarizedExperiment object. 
-#' In this latter, the object must contain two fields: assays and rowData. Assays stores one unique data matrix pooling all single cells observed at each time point and rowData stores a vector of labels reporting the time point when each single cell was sequenced.
-#' Ordering of cells in assays field and rowData field must be the same.
+#' In this latter, the object must contain two fields: assays and colData. Assays stores one unique data matrix pooling all single cells observed at each time point and colData stores a vector of labels reporting the time point when each single cell was sequenced.
+#' Ordering of cells in assays field and colData field must be the same.
 #' @param lik_w Weight for each data point. If not provided, weights to correct for sample sizes are used.
 #' @param alpha False positive error rate provided as list of elements; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at 
 #' maximum-likelihood is returned.
@@ -55,12 +55,12 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
 
     # Handle SummarizedExperiment objects
     if(typeof(D)=="S4") {
-        curr_data <- assays(D)[[1]]
-        curr_experiment <- rowData(D)[[1]]
+        curr_data <- t(assays(D)[[1]])
+        curr_experiment <- colData(D)[[1]]
         curr_experiment_unique <- unique(curr_experiment)
         curr_D <- list()
         for(i in 1:length(curr_experiment_unique)) {
-            curr_D[[as.character(curr_experiment_unique[[i]])]] <- curr_data[which(curr_experiment==curr_experiment_unique[[i]]),,drop=FALSE]
+            curr_D[[as.character(curr_experiment_unique[i])]] <- curr_data[which(curr_experiment==curr_experiment_unique[i]),,drop=FALSE]
         }
         D <- curr_D
     }
