@@ -86,10 +86,9 @@ The input data (D) can be either a list as shown above or a SummarizedExperiment
 In the latter case, the object needs to include genomic data (0: mutation absent, 1: mutation detected or NA: missing information) in assay field. 
 Following guidelines, the rows of such matrix are variants, while colums are single cells concatenated for all the time points. Furthermore, a rowData field needs to be specified and must be a data.frame with a column named "TimePoint" reporting the label of the experiment for each single cell; we highlight that the ordering of the labels in rowData must match the one of the columns in the assay field. 
 We next show an example.
-<<req_se1>>=
-library("SummarizedExperiment")
 
-<<req_se2>>=
+<<req_se>>=
+library("SummarizedExperiment", warn.conflicts=FALSE, quietly=TRUE)
 T1 = t(longitudinal_sc_variants[[1]])
 T2 = t(longitudinal_sc_variants[[2]])
 T3 = t(longitudinal_sc_variants[[3]])
