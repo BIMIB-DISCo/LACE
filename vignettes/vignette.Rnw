@@ -88,7 +88,7 @@ Following guidelines, the rows of such matrix are variants, while colums are sin
 We next show an example.
 
 <<req_se>>=
-library("SummarizedExperiment", warn.conflicts=FALSE, quietly=TRUE)
+library("SummarizedExperiment",attach.required=FALSE)
 T1 = t(longitudinal_sc_variants[[1]])
 T2 = t(longitudinal_sc_variants[[2]])
 T3 = t(longitudinal_sc_variants[[3]])
