@@ -1,9 +1,9 @@
 # Longitudinal Analysis of Cancer Evolution (LACE)
 ================
 
-[![Actions Status](https://github.com/BIMIB-DISCo/TRONCO/workflows/check-master/badge.svg)](https://github.com/BIMIB-DISCo/TRONCO/actions?query=workflow%3Acheck-master)
-[![Actions Status](https://github.com/BIMIB-DISCo/TRONCO/workflows/check-development/badge.svg)](https://github.com/BIMIB-DISCo/TRONCO/actions?query=workflow%3Acheck-development)
-[![codecov](https://codecov.io/gh/BIMIB-DISCo/TRONCO/branch/master/graph/badge.svg)](https://codecov.io/gh/BIMIB-DISCo/TRONCO)
+[![Actions Status](https://github.com/BIMIB-DISCo/LACE/workflows/check-master/badge.svg)](https://github.com/BIMIB-DISCo/LACE/actions?query=workflow%3Acheck-master)
+[![Actions Status](https://github.com/BIMIB-DISCo/LACE/workflows/check-development/badge.svg)](https://github.com/BIMIB-DISCo/LACE/actions?query=workflow%3Acheck-development)
+[![codecov](https://codecov.io/gh/BIMIB-DISCo/LACE/branch/master/graph/badge.svg)](https://codecov.io/gh/BIMIB-DISCo/LACE)
 
 ================
 
