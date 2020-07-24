@@ -1,10 +1,9 @@
 # Longitudinal Analysis of Cancer Evolution (LACE)
 ================
 
-| Branch              | Stato CI      |
-|---------------------|---------------|
-| master | [![Build Status](https://travis-ci.org/BIMIB-DISCo/LACE.svg?branch=master)](https://travis-ci.org/BIMIB-DISCo/LACE) |
-| development | [![Build Status](https://travis-ci.org/BIMIB-DISCo/LACE.svg?branch=development)](https://travis-ci.org/BIMIB-DISCo/LACE) |
+[![Actions Status](https://github.com/BIMIB-DISCo/TRONCO/workflows/check-master/badge.svg)](https://github.com/BIMIB-DISCo/TRONCO/actions?query=workflow%3Acheck-master)
+[![Actions Status](https://github.com/BIMIB-DISCo/TRONCO/workflows/check-development/badge.svg)](https://github.com/BIMIB-DISCo/TRONCO/actions?query=workflow%3Acheck-development)
+[![codecov](https://codecov.io/gh/BIMIB-DISCo/TRONCO/branch/master/graph/badge.svg)](https://codecov.io/gh/BIMIB-DISCo/TRONCO)
 
 ================
 
