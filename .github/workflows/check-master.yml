@@ -315,6 +315,12 @@ jobs:
         if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true'
         run: R CMD INSTALL .
 
+      - name: Establish git credentials
+        run: |
+          install.packages("usethis")
+          usethis::use_git_config(user.name = "danro9685", user.email = "daniele.ramazzotti@yahoo.com")
+        shell: Rscript {0}  
+
       - name: Deploy package
         if: github.ref == 'refs/heads/master' && env.run_pkgdown == 'true'
         run: |
