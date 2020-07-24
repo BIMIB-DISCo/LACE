@@ -1,4 +1,4 @@
-# Longitudinal Analysis of Cancer Evolution (LACE)
+Longitudinal Analysis of Cancer Evolution (LACE)
 ================
 
 [![Actions Status](https://github.com/BIMIB-DISCo/LACE/workflows/check-master/badge.svg)](https://github.com/BIMIB-DISCo/LACE/actions?query=workflow%3Acheck-master)
