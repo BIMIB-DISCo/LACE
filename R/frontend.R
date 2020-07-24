@@ -98,7 +98,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     }
     
     if(verbose) {
-        cat(paste0("Starting inference for a total of ",length(alpha)," difference values of alpha and beta.","\n"))
+        cat(paste0("Starting inference for a total of ",length(alpha)," different values of alpha and beta.","\n"))
     }
 
     # Setting up parallel execution

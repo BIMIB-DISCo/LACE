@@ -72,7 +72,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
         for(j in 1:num_iter) {
             
             if(verbose && (j %% 100)==0) {
-                cat(paste0("Performed iteration number ",as.character(as.integer(j))," out of ",as.character(as.integer(num_iter))," | Current best log likelihood ",joint_lik_best,"\n"))
+                cat(paste0("Performed iteration number ",as.character(as.integer(j))," out of ",as.character(as.integer(num_iter))," | Current best log-likelihood ",joint_lik_best,"\n"))
             }
             
             # Try move on B
