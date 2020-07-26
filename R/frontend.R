@@ -44,8 +44,8 @@
 #' solutions (B and C) with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones. 
 #' @export LACE
 #' @import parallel
-#' @import Rfast
 #' @import SummarizedExperiment
+#' @importFrom Rfast rowMaxs
 #' @importFrom stats runif
 #'
 LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
