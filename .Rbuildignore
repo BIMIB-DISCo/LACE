@@ -1,8 +1,0 @@
-^README.md$
-^LICENSE.md$
-^.gitignore$
-^.travis.yml$
-^.git/.*$
-^_pkgdown\.yml$
-^docs$
-^pkgdown$
