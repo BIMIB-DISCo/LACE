@@ -67,9 +67,9 @@ jobs:
           ## Find what Bioconductor RELEASE branch we are working on
           ## otherwise, assume we are working on bioc-devel.
           ##if echo "$GITHUB_REF" | grep -q "RELEASE_"; then
-          ##    biocversion="$(basename -- $GITHUB_REF | tr '[:upper:]' '[:lower:]')"
+          biocversion="$(basename -- $GITHUB_REF | tr '[:upper:]' '[:lower:]')"
           ##else
-          biocversion="devel"
+          ##    biocversion="devel"
           ##fi
           ## Define the image name and print the information
           imagename="bioconductor/bioconductor_docker:${biocversion}"
@@ -172,10 +172,11 @@ jobs:
         run: |
           ### Find what branch we are working on
           #if echo "$GITHUB_REF" | grep -q "master"; then
-          biocversion="devel"
-          #elif echo "$GITHUB_REF" | grep -q "RELEASE_"; then
-          #    biocversion="release"
-          #fi
+          biocversion="$(basename -- $GITHUB_REF | tr '[:upper:]' '[:lower:]')"
+          ### biocversion="devel"
+          ### elif echo "$GITHUB_REF" | grep -q "RELEASE_"; then
+          ###     biocversion="release"
+          ### fi
 
           ## Define the R and Bioconductor version numbers
           biocversionnum=$(Rscript -e "info <- BiocManager:::.version_map_get_online('https://bioconductor.org/config.yaml'); res <- subset(info, BiocStatus == '${biocversion}')[, 'Bioc']; cat(as.character(res))")
