@@ -155,6 +155,11 @@ jobs:
           'soul', 'placeins', 'ragged2e', 'ms', 'footmisc', 'changepage',
           'caption', 'xstring', 'mathtools', 'pgf', 'environ', 'trimspaces',
           'pdfcrop'))
+        shell: Rscript {0}        
+
+      - name: Install R packages
+        run: |
+          install.packages('Rfast')
         shell: Rscript {0}
 
       - name: Query dependencies
