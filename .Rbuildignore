@@ -3,6 +3,12 @@
 ^.gitignore$
 ^.travis.yml$
 ^.git/.*$
+^.github/.*$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
+^doc$
+^Meta$
+^vignettes/.*Rmd$
+^vignettes/.*gml$
+
