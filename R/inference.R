@@ -364,22 +364,22 @@ compute.C <- function( B, D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, 
         lik_time <- 0
         
         # Go through all the cells
-        curr_cells_D <- D[[i]][,idx_srt,drop=FALSE]
+        curr_cells_D <- cbind(rep(1,nrow(D[[i]][,idx_srt,drop=FALSE])),D[[i]][,idx_srt,drop=FALSE])
         
         # Find assignment at maximum log likelihood for current cell
-        lik_matrix <- array(0L,c(nrow(D[[i]]),(ncol(B)-1)))
+        lik_matrix <- array(0L,c(nrow(D[[i]]),ncol(B)))
         
-        for(k in 2:nrow(B)) {
+        for(k in 1:nrow(B)) {
             
-            curr_clone_C = matrix(rep(0L,(nrow(B)-1)),nrow=1)
-            curr_clone_C[1,(k-1)] <- 1L
+            curr_clone_C = matrix(rep(0L,nrow(B)),nrow=1)
+            curr_clone_C[1,k] <- 1L
             
             # Save mapping between ordering in B and dataset D
             # Factorization D = C dot B. r_D_tilde represents a combination of mutations and clones
-            r_D_tilde <- (curr_clone_C %*% B[-1,-1,drop=FALSE])*2
+            r_D_tilde <- (curr_clone_C %*% B)*2
             
             sum_cell_clone <- as.matrix(sweep(curr_cells_D,MARGIN=2,r_D_tilde,"+"))
-            lik_matrix[,(k-1)] <- (curr_beta^rowSums(sum_cell_clone==2)) * ((1-curr_beta)^rowSums(sum_cell_clone==0)) * ((curr_alpha)^rowSums(sum_cell_clone==1)) * ((1-curr_alpha)^rowSums(sum_cell_clone==3))
+            lik_matrix[,k] <- (curr_beta^rowSums(sum_cell_clone==2)) * ((1-curr_beta)^rowSums(sum_cell_clone==0)) * ((curr_alpha)^rowSums(sum_cell_clone==1)) * ((1-curr_alpha)^rowSums(sum_cell_clone==3))
             
         }
         
@@ -392,7 +392,7 @@ compute.C <- function( B, D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, 
         }
         
         storage.mode(C_list_time) <- "integer"
-        C_res[[i]] <- C_list_time
+        C_res[[i]] <- (C_list_time-1)
         lik_matrix_res[[i]] <- lik_matrix
         lik_res <- c(lik_res,lik_time)
         joint_lik_res <- joint_lik_res + (lik_time * lik_w[i])
