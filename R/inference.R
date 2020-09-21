@@ -1,5 +1,5 @@
 # Main function for phylogeny reconstruction with longitudinal data
-learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, beta = 10^-2, initialization = NULL, keep_equivalent = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, seed = NULL, verbose = TRUE ) {
+learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, beta = 10^-2, initialization = NULL, keep_equivalent = FALSE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, error_move = FALSE, seed = NULL, verbose = TRUE ) {
     
     # Set the seed
     set.seed(seed)
@@ -13,6 +13,8 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
     # Initialize global result variables (best solution among all restarts)
     B_global <- NULL
     C_global <- NULL
+    alpha_global <- NULL
+    beta_global <- NULL
     lik_global <- NULL
     joint_lik_global <- NULL
     equivalent_solutions_global <- list()
@@ -36,7 +38,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
         if(i==1) {
             
             if(is.null(initialization)) {
-                B <- initialize.B(D,seed=round(runif(1)*10000))
+                B <- initialize.B(D)
             }
             else {
                 B <- initialization
@@ -60,12 +62,14 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
         # Initialize result variables (best solution for the current restart)
         B_best <- B
         C_best <- C
+        alpha_best <- alpha
+        beta_best <- beta
         lik_best <- lik
         joint_lik_best <- joint_lik
         count_lik_best_cons <- 0
         if(keep_equivalent) {
             equivalent_solutions <- list()
-            equivalent_solutions[[1]] <- list(B=B_best,C=C_best,relative_likelihoods=lik_best,joint_likelihood=joint_lik_best)
+            equivalent_solutions[[1]] <- list(B=B_best,C=C_best,alpha=alpha_best,beta=beta_best,relative_likelihoods=lik_best,joint_likelihood=joint_lik_best)
         }
         
         # Repeat until num_iter number of iterations is reached
@@ -76,10 +80,13 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
             }
             
             # Try move on B
-            B_tmp <- move.B(B,seed=round(runif(1)*10000))
+            move_tmp <- move.B(B,alpha,beta,error_move)
+            B_tmp <- move_tmp$B
+            alpha_tmp <- move_tmp$alpha
+            beta_tmp <- move_tmp$beta
             
             # Compute C at maximun likelihood given B_tmp and returns its likelihood
-            res <- compute.C(B_tmp,D,lik_w,alpha,beta,different.error.rates,marginalize)
+            res <- compute.C(B_tmp,D,lik_w,alpha_tmp,beta_tmp,different.error.rates,marginalize)
             C_tmp <- res$C
             lik_tmp <- res$lik
             joint_lik_tmp <- res$joint_lik
@@ -89,16 +96,20 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
                 
                 B_best <- B_tmp
                 C_best <- C_tmp
+                alpha_best <- alpha_tmp
+                beta_best <- beta_tmp
                 lik_best <- lik_tmp
                 joint_lik_best <- joint_lik_tmp
                 count_lik_best_cons <- 0
                 B <- B_tmp
                 C <- C_tmp
+                alpha <- alpha_tmp
+                beta <- beta_tmp
                 lik <- lik_tmp
                 joint_lik <- joint_lik_tmp
                 if(keep_equivalent) {
                     equivalent_solutions <- list()
-                    equivalent_solutions[[1]] <- list(B=B_best,C=C_best,relative_likelihoods=lik_best,joint_likelihood=joint_lik_best)
+                    equivalent_solutions[[1]] <- list(B=B_best,C=C_best,alpha=alpha_best,beta=beta_best,relative_likelihoods=lik_best,joint_likelihood=joint_lik_best)
                 }
                 
             }
@@ -106,7 +117,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
 
                 if(joint_lik_tmp == joint_lik_best) {
                     if(keep_equivalent) {
-                        equivalent_solutions[[(length(equivalent_solutions)+1)]] <- list(B=B_tmp,C=C_tmp,relative_likelihoods=lik_tmp,joint_likelihood=joint_lik_tmp)
+                        equivalent_solutions[[(length(equivalent_solutions)+1)]] <- list(B=B_tmp,C=C_tmp,alpha=alpha_tmp,beta=beta_tmp,relative_likelihoods=lik_tmp,joint_likelihood=joint_lik_tmp)
                     }
                 }
                 
@@ -127,6 +138,8 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
                     
                     B <- B_tmp
                     C <- C_tmp
+                    alpha <- alpha_tmp
+                    beta <- beta_tmp
                     lik <- lik_tmp
                     joint_lik <- joint_lik_tmp
                     
@@ -140,6 +153,8 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
             
             B_global <- B_best
             C_global <- C_best
+            alpha_global <- alpha_best
+            beta_global <- beta_best
             lik_global <- lik_best
             joint_lik_global <- joint_lik_best
             if(keep_equivalent) {
@@ -150,7 +165,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
         
     }
     
-    return(list(B=B_global,C=C_global,lik=lik_global,joint_lik=joint_lik_global,equivalent_solutions=equivalent_solutions_global))
+    return(list(B=B_global,C=C_global,alpha=alpha_global,beta=beta_global,lik=lik_global,joint_lik=joint_lik_global,equivalent_solutions=equivalent_solutions_global))
     
 }
 
@@ -184,70 +199,142 @@ initialize.B <- function( D, seed = NULL ) {
 }
 
 # Performing either relabeling or edge changing moves on B
-move.B <- function( B, seed = NULL ) {
+move.B <- function( B, alpha, beta, error_move, seed = NULL ) {
     
     # Random probability of choosing a move
     p <- runif(1)
-    
-    # Perform pairwise relabeling with 55% probability
-    if(p<0.55) {
-        
-        # Relabeling
-        chosen <- sample(2:ncol(B),2,replace=FALSE)
-        tmp <- colnames(B)[chosen[1]]
-        colnames(B)[chosen[1]] <- colnames(B)[chosen[2]]
-        colnames(B)[chosen[2]] <- tmp
-        
-    }
-    # Perform structural moves with 40% probability
-    else if(p>=0.55&&p<0.95) {
-        
-        # Change one arch
-        is_not_valid <- TRUE
-        while(is_not_valid) {
-            ch_1 <- sample(3:nrow(B),1)
-            ch_2 <- sample(1:(ch_1-1),1)
+
+    # With no estimation of error rates within the MCMC
+    if(error_move==FALSE) {
+        # Perform pairwise relabeling with 55% probability
+        if(p<0.55) {
             
-            # A pair of two nodes is valid if the nodes are not already directly connected
-            if(!(all(B[ch_1,1:ch_2]==B[ch_2,1:ch_2])&&sum(B[ch_1,])==(sum(B[ch_2,])+1))) {
-                
-                is_not_valid <- FALSE
-            }
+            # Relabeling
+            chosen <- sample(2:ncol(B),2,replace=FALSE)
+            tmp <- colnames(B)[chosen[1]]
+            colnames(B)[chosen[1]] <- colnames(B)[chosen[2]]
+            colnames(B)[chosen[2]] <- tmp
+            
         }
-        
-        # Performing move on ch_1
-        ch_1_bkp <- B[ch_1,1:ch_1]
-        B[ch_1,1:(ch_1-1)] <- c(1L,rep(0L,(ch_1-2)))
-        B[ch_1,] <- B[ch_1,] + B[ch_2,]
-        
-        # Performing move on children of ch_1
-        if(ch_1 != nrow(B)) {
+        # Perform structural moves with 40% probability
+        else if(p>=0.55&&p<0.95) {
             
-            for(i in (ch_1+1):nrow(B)) {
+            # Change one arch
+            is_not_valid <- TRUE
+            while(is_not_valid) {
+                ch_1 <- sample(3:nrow(B),1)
+                ch_2 <- sample(1:(ch_1-1),1)
                 
-                if(all(ch_1_bkp==B[i,1:ch_1])) {
+                # A pair of two nodes is valid if the nodes are not already directly connected
+                if(!(all(B[ch_1,1:ch_2]==B[ch_2,1:ch_2])&&sum(B[ch_1,])==(sum(B[ch_2,])+1))) {
                     
-                    B[i,1:(ch_1-1)] <- c(1L,rep(0L,(ch_1-2)))
-                    B[i,] <- B[i,] + B[ch_2,]
+                    is_not_valid <- FALSE
+                }
+            }
+            
+            # Performing move on ch_1
+            ch_1_bkp <- B[ch_1,1:ch_1]
+            B[ch_1,1:(ch_1-1)] <- c(1L,rep(0L,(ch_1-2)))
+            B[ch_1,] <- B[ch_1,] + B[ch_2,]
+            
+            # Performing move on children of ch_1
+            if(ch_1 != nrow(B)) {
+                
+                for(i in (ch_1+1):nrow(B)) {
+                    
+                    if(all(ch_1_bkp==B[i,1:ch_1])) {
+                        
+                        B[i,1:(ch_1-1)] <- c(1L,rep(0L,(ch_1-2)))
+                        B[i,] <- B[i,] + B[ch_2,]
+                        
+                    }
                     
                 }
                 
             }
             
+            B[which(B>1)] <- 1L
+            
         }
-        
-        B[which(B>1)] <- 1L
-        
+        # Perform full relabeling with 5% probability
+        else if(p>=0.95) {
+            
+            # Random relabeling of all clones
+            colnames(B) <- c('r',sample(1:(ncol(B)-1)))
+            
+        }
     }
-    # Perform full relabeling with 5% probability
-    else if(p>=0.95) {
-        
-        # Random relabeling of all clones
-        colnames(B) <- c('r',sample(1:(ncol(B)-1)))
-        
+    # With estimation of error rates within the MCMC
+    else {
+        # Perform moves on error rates with 10% probability
+        if(p<0.10) {
+
+            for(err_val in 1:length(alpha)) {
+                alpha[[err_val]] <- min(max(rnorm(1,mean=alpha[[err_val]],sd=(alpha[[err_val]]/3)),0.0001),0.9999)
+                beta[[err_val]] <- min(max(rnorm(1,mean=beta[[err_val]],sd=(beta[[err_val]]/3)),0.0001),0.9999)
+            }
+
+        }
+        # Perform pairwise relabeling with 50% probability
+        else if(p>=0.10&&p<0.60) {
+            
+            # Relabeling
+            chosen <- sample(2:ncol(B),2,replace=FALSE)
+            tmp <- colnames(B)[chosen[1]]
+            colnames(B)[chosen[1]] <- colnames(B)[chosen[2]]
+            colnames(B)[chosen[2]] <- tmp
+            
+        }
+        # Perform structural moves with 35% probability
+        else if(p>=0.60&&p<0.95) {
+            
+            # Change one arch
+            is_not_valid <- TRUE
+            while(is_not_valid) {
+                ch_1 <- sample(3:nrow(B),1)
+                ch_2 <- sample(1:(ch_1-1),1)
+                
+                # A pair of two nodes is valid if the nodes are not already directly connected
+                if(!(all(B[ch_1,1:ch_2]==B[ch_2,1:ch_2])&&sum(B[ch_1,])==(sum(B[ch_2,])+1))) {
+                    
+                    is_not_valid <- FALSE
+                }
+            }
+            
+            # Performing move on ch_1
+            ch_1_bkp <- B[ch_1,1:ch_1]
+            B[ch_1,1:(ch_1-1)] <- c(1L,rep(0L,(ch_1-2)))
+            B[ch_1,] <- B[ch_1,] + B[ch_2,]
+            
+            # Performing move on children of ch_1
+            if(ch_1 != nrow(B)) {
+                
+                for(i in (ch_1+1):nrow(B)) {
+                    
+                    if(all(ch_1_bkp==B[i,1:ch_1])) {
+                        
+                        B[i,1:(ch_1-1)] <- c(1L,rep(0L,(ch_1-2)))
+                        B[i,] <- B[i,] + B[ch_2,]
+                        
+                    }
+                    
+                }
+                
+            }
+            
+            B[which(B>1)] <- 1L
+            
+        }
+        # Perform full relabeling with 5% probability
+        else if(p>=0.95) {
+            
+            # Random relabeling of all clones
+            colnames(B) <- c('r',sample(1:(ncol(B)-1)))
+            
+        }
     }
     
-    return(B)
+    return(list(B=B,alpha=alpha,beta=beta))
 
 }
 

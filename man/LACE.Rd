@@ -17,6 +17,7 @@ LACE(
   n_try_bs = 500,
   learning_rate = 1,
   marginalize = FALSE,
+  error_move = FALSE,
   num_processes = Inf,
   seed = NULL,
   verbose = TRUE,
@@ -53,6 +54,8 @@ probability proportional to the difference in likelihood; values of learning_rat
 during mcmc while values lower than 1 decrease such probability.}
 
 \item{marginalize}{Boolean. Shall I marginalize C when computing likelihood?}
+
+\item{error_move}{Boolean. Shall I include estimation of error rates in the MCMC moves?}
 
 \item{num_processes}{Number of processes to be used during parallel execution. To execute in single process mode, 
 this parameter needs to be set to either NA or NULL.}
