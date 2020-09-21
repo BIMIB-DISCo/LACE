@@ -36,3 +36,6 @@ vignettes/*.pdf
 *.knit.md
 
 docs
+doc
+Meta
+/vignettes/lg_output.xml

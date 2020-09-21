@@ -1,11 +1,12 @@
 Package: LACE
-Version: 1.0.1
-Date: 2020-07-27
+Version: 1.1.3
+Date: 2020-09-21
 Title: Longitudinal Analysis of Cancer Evolution (LACE)
 Authors@R: c(person("Daniele","Ramazzotti",role=c("aut"),email="daniele.ramazzotti@unimib.it"),
     person("Fabrizio","Angaroni",role=c("aut"),email="fabrizio.angaroni@unimib.it"),
     person("Davide","Maspero",role=c("cre","aut"),email="d.maspero@campus.unimib.it"),
-    person("Alex","Graudenzi",role=c("aut"),email="alex.graudenzi@unimib.it"))
+    person("Alex","Graudenzi",role=c("aut"),email="alex.graudenzi@unimib.it"),
+    person("Luca","De Sano",role=c("ctb"),email="luca.desano@gmail.com"))
 Depends:
     R (>= 4.0.0)
 Imports:

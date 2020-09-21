@@ -33,6 +33,7 @@
 #' probability proportional to the difference in likelihood; values of learning_rate greater than 1 inclease the chance of accepting solutions at lower likelihood 
 #' during mcmc while values lower than 1 decrease such probability.
 #' @param marginalize Boolean. Shall I marginalize C when computing likelihood?
+#' @param error_move Boolean. Shall I include estimation of error rates in the MCMC moves?
 #' @param num_processes Number of processes to be used during parallel execution. To execute in single process mode, 
 #' this parameter needs to be set to either NA or NULL.
 #' @param seed Seed for reproducibility.
@@ -48,7 +49,7 @@
 #' @importFrom Rfast rowMaxs
 #' @importFrom stats runif
 #'
-LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
+LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, error_move = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
     
     # Set the seed
     set.seed(seed)
@@ -197,11 +198,15 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         lik <- c(lik,inference[[i]][["joint_lik"]])
     }
     best <- which(lik==max(lik))[1]
-    error_rates <- list(alpha=alpha[[best]],beta=beta[[best]])
+    error_rates <- list(alpha=inference[[best]][["alpha"]],beta=inference[[best]][["beta"]])
 
     # compute corrected genotypes
-    inference_B <- inference[[best]][["B"]][-1,-1]
-    inference_attachments <- unlist(inference[[best]][["C"]])
+    inference_B <- inference[[best]][["B"]]
+    rownames(inference_B)[1] <- 0
+    rownames(inference_B) <- (as.numeric(rownames(inference_B))+1)
+    colnames(inference_B)[1] <- 0
+    colnames(inference_B) <- (as.numeric(colnames(inference_B))+1)
+    inference_attachments <- (unlist(inference[[best]][["C"]])+1)
     inference_attachments_ordered <- inference_attachments
     for(curr_C_index in 1:length(inference_attachments)) {
         inference_attachments_ordered[curr_C_index] <- as.integer(colnames(inference_B)[inference_attachments[curr_C_index]])
@@ -220,7 +225,8 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         cells_names <- c(cells_names,rownames(D[[cn]]))
     }
     rownames(corrected_genotypes) <- cells_names
-    colnames(corrected_genotypes) <- colnames(D[[1]])
+    colnames(corrected_genotypes) <- c("Root",colnames(D[[1]]))
+    corrected_genotypes <- corrected_genotypes[,-1,drop=FALSE]
 
     # Renaming
     B <- inference[[best]][["B"]]
