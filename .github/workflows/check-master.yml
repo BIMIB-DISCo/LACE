@@ -202,7 +202,7 @@ jobs:
 
       - name: Cache R packages
         if: "!contains(github.event.head_commit.message, '/nocache')"
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: /home/runner/work/_temp/Library
           key: ${{ env.cache-version }}-${{ runner.os }}-biocdocker-biocbranch-${{ needs.define-docker-info.outputs.biocversion }}-r-${{ steps.findrversion.outputs.rversion }}-bioc-${{ steps.findrversion.outputs.biocversionnum }}-${{ hashFiles('.github/depends.Rds') }}
@@ -401,7 +401,7 @@ jobs:
 
       - name: Cache R packages
         if: "!contains(github.event.head_commit.message, '/nocache')"
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ env.R_LIBS_USER }}
           key: ${{ env.cache-version }}-${{ runner.os }}-biocbranch-${{ needs.define-docker-info.outputs.biocversion }}-r-${{ needs.R-CMD-check-bioc.outputs.rversion }}-bioc-${{ needs.define-docker-info.outputs.biocversion }}-${{ hashFiles('.github/depends.Rds') }}
