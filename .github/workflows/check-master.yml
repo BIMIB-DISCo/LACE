@@ -375,7 +375,8 @@ jobs:
       - name: Setup R from r-lib
         uses: r-lib/actions/setup-r@master
         with:
-          r-version: ${{ needs.R-CMD-check-bioc.outputs.rversion }}
+          ###r-version: ${{ needs.R-CMD-check-bioc.outputs.rversion }}
+          r-version: 'release'
 
       - name: Setup pandoc from r-lib
         uses: r-lib/actions/setup-pandoc@master
