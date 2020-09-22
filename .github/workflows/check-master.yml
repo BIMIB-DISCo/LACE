@@ -67,7 +67,7 @@ jobs:
           ##if echo "$GITHUB_REF" | grep -q "RELEASE_"; then
           ##biocversion="$(basename -- $GITHUB_REF | tr '[:upper:]' '[:lower:]')"
           ##else
-          biocversion="devel"
+          biocversion="master"
           ##fi
           ## Define the image name and print the information
           imagename="bioconductor/bioconductor_docker:${biocversion}"
@@ -90,7 +90,7 @@ jobs:
 
     ## Information used by the next job that will run on macOS and Windows
     outputs:
-      rversion: ${{ steps.findrversion.outputs.rversion }}
+      rversion: '4.0'
       biocversionnum: ${{ steps.findrversion.outputs.biocversionnum }}
 
     ## Environment variables unique to this job.
