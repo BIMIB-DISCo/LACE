@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">LACE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
       </span>
     </div>
 
@@ -126,25 +126,25 @@
     <p>Perform inference of the maximum likelihood clonal tree from longitudinal data.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>LACE</span>(
-  <span class='kw'>D</span>,
-  lik_w = <span class='kw'>NULL</span>,
-  alpha = <span class='kw'>NULL</span>,
-  beta = <span class='kw'>NULL</span>,
-  initialization = <span class='kw'>NULL</span>,
-  keep_equivalent = <span class='fl'>TRUE</span>,
-  check_indistinguishable = <span class='fl'>TRUE</span>,
-  num_rs = <span class='fl'>50</span>,
-  num_iter = <span class='fl'>10000</span>,
-  n_try_bs = <span class='fl'>500</span>,
-  learning_rate = <span class='fl'>1</span>,
-  marginalize = <span class='fl'>FALSE</span>,
-  error_move = <span class='fl'>FALSE</span>,
-  num_processes = <span class='fl'>Inf</span>,
-  seed = <span class='kw'>NULL</span>,
-  verbose = <span class='fl'>TRUE</span>,
-  log_file = <span class='st'>""</span>
-)</pre>
+    <pre class="usage"><span class='fu'>LACE</span><span class='op'>(</span>
+  <span class='va'>D</span>,
+  lik_w <span class='op'>=</span> <span class='cn'>NULL</span>,
+  alpha <span class='op'>=</span> <span class='cn'>NULL</span>,
+  beta <span class='op'>=</span> <span class='cn'>NULL</span>,
+  initialization <span class='op'>=</span> <span class='cn'>NULL</span>,
+  keep_equivalent <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  check_indistinguishable <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  num_rs <span class='op'>=</span> <span class='fl'>50</span>,
+  num_iter <span class='op'>=</span> <span class='fl'>10000</span>,
+  n_try_bs <span class='op'>=</span> <span class='fl'>500</span>,
+  learning_rate <span class='op'>=</span> <span class='fl'>1</span>,
+  marginalize <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  error_move <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  num_processes <span class='op'>=</span> <span class='cn'>Inf</span>,
+  seed <span class='op'>=</span> <span class='cn'>NULL</span>,
+  verbose <span class='op'>=</span> <span class='cn'>TRUE</span>,
+  log_file <span class='op'>=</span> <span class='st'>""</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -234,18 +234,18 @@ the likelihood of the solutions at each individual time points and the joint lik
 solutions (B and C) with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>longitudinal_sc_variants</span>)
-<span class='kw'>inference</span> <span class='op'>=</span> <span class='fu'>LACE</span>(D = <span class='kw'>longitudinal_sc_variants</span>,
-                 lik_w = <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.2308772</span>,<span class='fl'>0.2554386</span>,<span class='fl'>0.2701754</span>,<span class='fl'>0.2435088</span>),
-                 alpha = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.10</span>,<span class='fl'>0.05</span>,<span class='fl'>0.05</span>,<span class='fl'>0.05</span>)),
-                 beta = <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.10</span>,<span class='fl'>0.05</span>,<span class='fl'>0.05</span>,<span class='fl'>0.05</span>)),
-                 keep_equivalent = <span class='fl'>FALSE</span>,
-                 num_rs = <span class='fl'>5</span>,
-                 num_iter = <span class='fl'>10</span>,
-                 n_try_bs = <span class='fl'>5</span>,
-                 num_processes = <span class='fl'>NA</span>,
-                 seed = <span class='fl'>12345</span>,
-                 verbose = <span class='fl'>FALSE</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>longitudinal_sc_variants</span><span class='op'>)</span>
+<span class='va'>inference</span> <span class='op'>=</span> <span class='fu'>LACE</span><span class='op'>(</span>D <span class='op'>=</span> <span class='va'>longitudinal_sc_variants</span>,
+                 lik_w <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2308772</span>,<span class='fl'>0.2554386</span>,<span class='fl'>0.2701754</span>,<span class='fl'>0.2435088</span><span class='op'>)</span>,
+                 alpha <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.10</span>,<span class='fl'>0.05</span>,<span class='fl'>0.05</span>,<span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>,
+                 beta <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.10</span>,<span class='fl'>0.05</span>,<span class='fl'>0.05</span>,<span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>,
+                 keep_equivalent <span class='op'>=</span> <span class='cn'>FALSE</span>,
+                 num_rs <span class='op'>=</span> <span class='fl'>5</span>,
+                 num_iter <span class='op'>=</span> <span class='fl'>10</span>,
+                 n_try_bs <span class='op'>=</span> <span class='fl'>5</span>,
+                 num_processes <span class='op'>=</span> <span class='cn'>NA</span>,
+                 seed <span class='op'>=</span> <span class='fl'>12345</span>,
+                 verbose <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
 
 </div></pre>
   </div>
