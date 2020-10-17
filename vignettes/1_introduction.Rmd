@@ -23,9 +23,11 @@ The R version of *LACE* can be installed from Github. To do so, we need to insta
 
 
 ```{r eval=FALSE}
+# install LACE library
 if (!require("devtools")) install.packages("devtools")
 library("devtools")
 install_github("BIMIB-DISCo/LACE", ref = "master")
+
 # load LACE library
 library("LACE")
 ```
