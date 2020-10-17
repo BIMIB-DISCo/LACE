@@ -139,6 +139,8 @@ jobs:
         run: |
           sudo apt-get install libcurl4-openssl-dev
           sudo apt-get install libgsl-dev
+          sudo apt-get install libharfbuzz-dev
+          sudo apt-get install libfribidi-dev
 
       - uses: r-lib/actions/setup-tinytex@master
 
