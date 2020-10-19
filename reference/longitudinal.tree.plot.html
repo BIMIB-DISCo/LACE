@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">LACE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.7</span>
       </span>
     </div>
 
@@ -130,7 +130,7 @@
   <span class='va'>inference</span>,
   show_plot <span class='op'>=</span> <span class='cn'>TRUE</span>,
   filename <span class='op'>=</span> <span class='st'>"lg_output.xml"</span>,
-  labels <span class='op'>=</span> <span class='st'>"mutations"</span>,
+  labels_show <span class='op'>=</span> <span class='st'>"mutations"</span>,
   clone_labels <span class='op'>=</span> <span class='cn'>NULL</span>,
   show_prev <span class='op'>=</span> <span class='cn'>TRUE</span>,
   label.cex <span class='op'>=</span> <span class='fl'>1</span>,
@@ -138,10 +138,11 @@
   size <span class='op'>=</span> <span class='fl'>500</span>,
   size2 <span class='op'>=</span> <span class='cn'>NULL</span>,
   tk_plot <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  tp_lines <span class='op'>=</span> <span class='cn'>TRUE</span>,
   tp_mark <span class='op'>=</span> <span class='cn'>TRUE</span>,
   tp_mark_alpha <span class='op'>=</span> <span class='fl'>0.5</span>,
   legend <span class='op'>=</span> <span class='cn'>TRUE</span>,
-  legend_position <span class='op'>=</span> <span class='st'>"topleft"</span>,
+  legend_position <span class='op'>=</span> <span class='st'>"topright"</span>,
   legend_cex <span class='op'>=</span> <span class='fl'>0.8</span>
 <span class='op'>)</span></pre>
 
@@ -161,7 +162,7 @@
       <td><p>Specify the name of the file where to save the longitudinal tree. Dot or graphml formats are supported and are chosen based on the extenction of the filename (.dot or .xml).</p></td>
     </tr>
     <tr>
-      <th>labels</th>
+      <th>labels_show</th>
       <td><p>Specify which type of label should be placed on the tree; options are, 
 "mutations": parental edges are labeled with the acquired mutation between the two nodes (genotypes); 
 "clones": nodes (genotypes) are labeled with their last acquired mutation; 
@@ -197,6 +198,10 @@
       <td><p>If TRUE, uses tkplot function from igraph library to plot an interactive tree. Default is FALSE.</p></td>
     </tr>
     <tr>
+      <th>tp_lines</th>
+      <td><p>If TRUE (defaul) the function draws lines between timepoints.</p></td>
+    </tr>
+    <tr>
       <th>tp_mark</th>
       <td><p>If TRUE (defaul) the function draws different colored area under the nodes in different time points.</p></td>
     </tr>
@@ -229,17 +234,17 @@
                        labels <span class='op'>=</span> <span class='st'>"clones"</span>,
                        clone_labels <span class='op'>=</span> <span class='va'>clone_labels</span>,
                        legend_position <span class='op'>=</span> <span class='st'>"topleft"</span><span class='op'>)</span>
-</div><div class='img'><img src='longitudinal.tree.plot-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; IGRAPH 0eb2e56 DN-- 24 23 -- 
-#&gt; + attr: layout (g/n), name (v/c), branch_level (v/n), branch (v/n),
-#&gt; | label (v/c), last_mutation (v/c), TP (v/n), clone (v/n), prevalance
-#&gt; | (v/n), size (v/n), size2 (v/n), shape (v/c), label.dist (v/n),
-#&gt; | extincion (v/n), color (v/c), type (e/c), label (e/c), lty (e/n)
-#&gt; + edges from 0eb2e56 (vertex names):
-#&gt; [1] T1-ARPC2_2_218249894_C_T -&gt;T2-ARPC2_2_218249894_C_T 
-#&gt; [2] T2-ARPC2_2_218249894_C_T -&gt;T3-ARPC2_2_218249894_C_T 
-#&gt; [3] T3-ARPC2_2_218249894_C_T -&gt;T4-ARPC2_2_218249894_C_T 
-#&gt; [4] T1-PRAME_22_22551005_T_A -&gt;T2-PRAME_22_22551005_T_A 
-#&gt; [5] T2-PRAME_22_22551005_T_A -&gt;T3-PRAME_22_22551005_T_A 
+</div><div class='img'><img src='longitudinal.tree.plot-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; IGRAPH 8ee68cd DN-- 25 24 -- 
+#&gt; + attr: name (v/c), branch_level (v/n), branch (v/n), label (v/c),
+#&gt; | last_mutation (v/c), TP (v/n), clone (v/n), prevalance (v/n), size
+#&gt; | (v/n), size2 (v/n), shape (v/c), label.dist (v/n), label.degree
+#&gt; | (v/n), extincion (v/n), color (v/c), coord.x (v/l), coord.y (v/l),
+#&gt; | type (e/c), extincion (e/l), label (e/c), name (e/c), lty (e/n)
+#&gt; + edges from 8ee68cd (vertex names):
+#&gt; [1] T1-ARPC2_2_218249894_C_T-&gt;T2-ARPC2_2_218249894_C_T
+#&gt; [2] T2-ARPC2_2_218249894_C_T-&gt;T3-ARPC2_2_218249894_C_T
+#&gt; [3] T3-ARPC2_2_218249894_C_T-&gt;T4-ARPC2_2_218249894_C_T
+#&gt; [4] T1-PRAME_22_22551005_T_A-&gt;T2-PRAME_22_22551005_T_A
 #&gt; + ... omitted several edges</div><div class='input'>
 </div></pre>
   </div>

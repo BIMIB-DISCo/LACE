@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
          http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
 <!-- Created by igraph -->
-  <key id="g_layout" for="graph" attr.name="layout" attr.type="double"/>
   <key id="v_name" for="node" attr.name="name" attr.type="string"/>
   <key id="v_branch_level" for="node" attr.name="branch_level" attr.type="double"/>
   <key id="v_branch" for="node" attr.name="branch" attr.type="double"/>
@@ -17,16 +16,39 @@
   <key id="v_size2" for="node" attr.name="size2" attr.type="double"/>
   <key id="v_shape" for="node" attr.name="shape" attr.type="string"/>
   <key id="v_label.dist" for="node" attr.name="label.dist" attr.type="double"/>
+  <key id="v_label.degree" for="node" attr.name="label.degree" attr.type="double"/>
   <key id="v_extincion" for="node" attr.name="extincion" attr.type="double"/>
   <key id="v_color" for="node" attr.name="color" attr.type="string"/>
+  <key id="v_coord.x" for="node" attr.name="coord.x" attr.type="boolean"/>
+  <key id="v_coord.y" for="node" attr.name="coord.y" attr.type="boolean"/>
   <key id="e_type" for="edge" attr.name="type" attr.type="string"/>
+  <key id="e_extincion" for="edge" attr.name="extincion" attr.type="boolean"/>
   <key id="e_label" for="edge" attr.name="label" attr.type="string"/>
+  <key id="e_name" for="edge" attr.name="name" attr.type="string"/>
   <key id="e_lty" for="edge" attr.name="lty" attr.type="double"/>
   <graph id="G" edgedefault="directed">
-    <data key="g_layout">0.4</data>
     <node id="n0">
-      <data key="v_name">T1-ARPC2_2_218249894_C_T</data>
+      <data key="v_name">T1-Root</data>
       <data key="v_branch_level">1</data>
+      <data key="v_branch">1</data>
+      <data key="v_label">Root (.00)</data>
+      <data key="v_last_mutation">Root</data>
+      <data key="v_TP">1</data>
+      <data key="v_clone">0</data>
+      <data key="v_prevalance">0</data>
+      <data key="v_size">0</data>
+      <data key="v_size2">0</data>
+      <data key="v_shape">circle</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
+      <data key="v_extincion">0</data>
+      <data key="v_color">#DDDDDD</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
+    </node>
+    <node id="n1">
+      <data key="v_name">T1-ARPC2_2_218249894_C_T</data>
+      <data key="v_branch_level">2</data>
       <data key="v_branch">1</data>
       <data key="v_label">ARPC2 (.20)</data>
       <data key="v_last_mutation">ARPC2_2_218249894_C_T</data>
@@ -36,11 +58,14 @@
       <data key="v_size">11.2450821514812</data>
       <data key="v_size2">11.2450821514812</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">0</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
-      <data key="v_color">#FF9D9D</data>
+      <data key="v_color">#E07D7D</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n1">
+    <node id="n2">
       <data key="v_name">T1-PRAME_22_22551005_T_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">2</data>
@@ -52,11 +77,14 @@
       <data key="v_size">10.6475651861929</data>
       <data key="v_size2">10.6475651861929</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">0</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#9DFF9D</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n2">
+    <node id="n3">
       <data key="v_name">T1-HNRNPC_14_21211843_C_T</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">4</data>
@@ -68,11 +96,14 @@
       <data key="v_size">6.92564100986743</data>
       <data key="v_size2">6.92564100986743</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">0</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#FFDA9D</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n3">
+    <node id="n4">
       <data key="v_name">T1-COL1A2_7_94422978_C_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">5</data>
@@ -84,11 +115,14 @@
       <data key="v_size">13.3707436364211</data>
       <data key="v_size2">13.3707436364211</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">0</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#E09DFF</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n4">
+    <node id="n5">
       <data key="v_name">T1-RPL5_1_92837514_C_G</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">3</data>
@@ -100,11 +134,14 @@
       <data key="v_size">8.0874063207353</data>
       <data key="v_size2">8.0874063207353</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">0</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#9D9DFF</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n5">
+    <node id="n6">
       <data key="v_name">T1-CCT8_21_29063389_G_A</data>
       <data key="v_branch_level">2</data>
       <data key="v_branch">5</data>
@@ -116,13 +153,16 @@
       <data key="v_size">10.2298497347063</data>
       <data key="v_size2">10.2298497347063</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">0</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#BC7DE0</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n6">
+    <node id="n7">
       <data key="v_name">T2-ARPC2_2_218249894_C_T</data>
-      <data key="v_branch_level">1</data>
+      <data key="v_branch_level">2</data>
       <data key="v_branch">1</data>
       <data key="v_label"> (.26)</data>
       <data key="v_last_mutation">ARPC2_2_218249894_C_T</data>
@@ -132,11 +172,14 @@
       <data key="v_size">12.8966695186242</data>
       <data key="v_size2">12.8966695186242</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
-      <data key="v_color">#FF9D9D</data>
+      <data key="v_color">#E07D7D</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n7">
+    <node id="n8">
       <data key="v_name">T2-PRAME_22_22551005_T_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">2</data>
@@ -148,11 +191,14 @@
       <data key="v_size">13.1171413782571</data>
       <data key="v_size2">13.1171413782571</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#9DFF9D</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n8">
+    <node id="n9">
       <data key="v_name">T2-HNRNPC_14_21211843_C_T</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">4</data>
@@ -164,11 +210,14 @@
       <data key="v_size">8.29600862914653</data>
       <data key="v_size2">8.29600862914653</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#FFDA9D</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n9">
+    <node id="n10">
       <data key="v_name">T2-COL1A2_7_94422978_C_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">5</data>
@@ -180,11 +229,14 @@
       <data key="v_size">11.2328487847296</data>
       <data key="v_size2">11.2328487847296</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#E09DFF</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n10">
+    <node id="n11">
       <data key="v_name">T2-RPL5_1_92837514_C_G</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">3</data>
@@ -196,11 +248,14 @@
       <data key="v_size">0</data>
       <data key="v_size2">0</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#9D9DFF</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n11">
+    <node id="n12">
       <data key="v_name">T2-CCT8_21_29063389_G_A</data>
       <data key="v_branch_level">2</data>
       <data key="v_branch">5</data>
@@ -212,13 +267,16 @@
       <data key="v_size">10.1604940215676</data>
       <data key="v_size2">10.1604940215676</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#BC7DE0</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n12">
+    <node id="n13">
       <data key="v_name">T3-ARPC2_2_218249894_C_T</data>
-      <data key="v_branch_level">1</data>
+      <data key="v_branch_level">2</data>
       <data key="v_branch">1</data>
       <data key="v_label"> (.29)</data>
       <data key="v_last_mutation">ARPC2_2_218249894_C_T</data>
@@ -228,11 +286,14 @@
       <data key="v_size">13.5614298170941</data>
       <data key="v_size2">13.5614298170941</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
-      <data key="v_color">#FF9D9D</data>
+      <data key="v_color">#E07D7D</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n13">
+    <node id="n14">
       <data key="v_name">T3-PRAME_22_22551005_T_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">2</data>
@@ -244,11 +305,14 @@
       <data key="v_size">10.9658744041326</data>
       <data key="v_size2">10.9658744041326</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#9DFF9D</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n14">
+    <node id="n15">
       <data key="v_name">T3-HNRNPC_14_21211843_C_T</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">4</data>
@@ -260,11 +324,14 @@
       <data key="v_size">5.9470803871759</data>
       <data key="v_size2">5.9470803871759</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#FFDA9D</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n15">
+    <node id="n16">
       <data key="v_name">T3-COL1A2_7_94422978_C_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">5</data>
@@ -276,11 +343,14 @@
       <data key="v_size">12.4747010616985</data>
       <data key="v_size2">12.4747010616985</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#E09DFF</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n16">
+    <node id="n17">
       <data key="v_name">T3-RPL5_1_92837514_C_G</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">3</data>
@@ -292,11 +362,14 @@
       <data key="v_size">0</data>
       <data key="v_size2">0</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#9D9DFF</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n17">
+    <node id="n18">
       <data key="v_name">T3-CCT8_21_29063389_G_A</data>
       <data key="v_branch_level">2</data>
       <data key="v_branch">5</data>
@@ -308,13 +381,16 @@
       <data key="v_size">11.8941607743518</data>
       <data key="v_size2">11.8941607743518</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#BC7DE0</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n18">
+    <node id="n19">
       <data key="v_name">T4-ARPC2_2_218249894_C_T</data>
-      <data key="v_branch_level">1</data>
+      <data key="v_branch_level">2</data>
       <data key="v_branch">1</data>
       <data key="v_label"> (.25)</data>
       <data key="v_last_mutation">ARPC2_2_218249894_C_T</data>
@@ -324,11 +400,14 @@
       <data key="v_size">12.6156626101008</data>
       <data key="v_size2">12.6156626101008</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
-      <data key="v_color">#FF9D9D</data>
+      <data key="v_color">#E07D7D</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n19">
+    <node id="n20">
       <data key="v_name">T4-PRAME_22_22551005_T_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">2</data>
@@ -340,11 +419,14 @@
       <data key="v_size">12.4169783409763</data>
       <data key="v_size2">12.4169783409763</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#9DFF9D</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n20">
+    <node id="n21">
       <data key="v_name">T4-HNRNPC_14_21211843_C_T</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">4</data>
@@ -356,11 +438,14 @@
       <data key="v_size">8.63735373678339</data>
       <data key="v_size2">8.63735373678339</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#FFDA9D</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n21">
+    <node id="n22">
       <data key="v_name">T4-COL1A2_7_94422978_C_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">5</data>
@@ -372,11 +457,14 @@
       <data key="v_size">6.3078313050504</data>
       <data key="v_size2">6.3078313050504</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#E09DFF</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n22">
+    <node id="n23">
       <data key="v_name">T4-RPL5_1_92837514_C_G</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">3</data>
@@ -388,11 +476,14 @@
       <data key="v_size">10.2198547643328</data>
       <data key="v_size2">10.2198547643328</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#9D9DFF</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <node id="n23">
+    <node id="n24">
       <data key="v_name">T4-CCT8_21_29063389_G_A</data>
       <data key="v_branch_level">2</data>
       <data key="v_branch">5</data>
@@ -404,123 +495,179 @@
       <data key="v_size">10.2198547643328</data>
       <data key="v_size2">10.2198547643328</data>
       <data key="v_shape">circle</data>
-      <data key="v_label.dist">-1.25</data>
+      <data key="v_label.dist">-1</data>
+      <data key="v_label.degree">0</data>
       <data key="v_extincion">0</data>
       <data key="v_color">#BC7DE0</data>
+      <data key="v_coord.x">true</data>
+      <data key="v_coord.y">true</data>
     </node>
-    <edge source="n0" target="n6">
-      <data key="e_type">persistence</data>
-      <data key="e_label"></data>
-      <data key="e_lty">2</data>
-    </edge>
-    <edge source="n6" target="n12">
-      <data key="e_type">persistence</data>
-      <data key="e_label"></data>
-      <data key="e_lty">2</data>
-    </edge>
-    <edge source="n12" target="n18">
-      <data key="e_type">persistence</data>
-      <data key="e_label"></data>
-      <data key="e_lty">2</data>
-    </edge>
     <edge source="n1" target="n7">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n7" target="n13">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n13" target="n19">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n2" target="n8">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n8" target="n14">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n14" target="n20">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n3" target="n9">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n9" target="n15">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n15" target="n21">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n4" target="n10">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n10" target="n16">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n16" target="n22">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n5" target="n11">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n11" target="n17">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n17" target="n23">
       <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name"></data>
       <data key="e_lty">2</data>
+    </edge>
+    <edge source="n6" target="n12">
+      <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
+      <data key="e_label"></data>
+      <data key="e_name"></data>
+      <data key="e_lty">2</data>
+    </edge>
+    <edge source="n12" target="n18">
+      <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
+      <data key="e_label"></data>
+      <data key="e_name"></data>
+      <data key="e_lty">2</data>
+    </edge>
+    <edge source="n18" target="n24">
+      <data key="e_type">persistence</data>
+      <data key="e_extincion">false</data>
+      <data key="e_label"></data>
+      <data key="e_name"></data>
+      <data key="e_lty">2</data>
+    </edge>
+    <edge source="n2" target="n3">
+      <data key="e_type">parental</data>
+      <data key="e_extincion">false</data>
+      <data key="e_label"></data>
+      <data key="e_name">HNRNPC_14_21211843_C_T</data>
+      <data key="e_lty">1</data>
     </edge>
     <edge source="n1" target="n2">
       <data key="e_type">parental</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name">PRAME_22_22551005_T_A</data>
       <data key="e_lty">1</data>
     </edge>
     <edge source="n0" target="n1">
       <data key="e_type">parental</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name">ARPC2_2_218249894_C_T</data>
       <data key="e_lty">1</data>
     </edge>
-    <edge source="n0" target="n4">
+    <edge source="n1" target="n5">
       <data key="e_type">parental</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name">RPL5_1_92837514_C_G</data>
       <data key="e_lty">1</data>
     </edge>
-    <edge source="n3" target="n5">
+    <edge source="n4" target="n6">
       <data key="e_type">parental</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name">CCT8_21_29063389_G_A</data>
       <data key="e_lty">1</data>
     </edge>
-    <edge source="n1" target="n3">
+    <edge source="n2" target="n4">
       <data key="e_type">parental</data>
+      <data key="e_extincion">false</data>
       <data key="e_label"></data>
+      <data key="e_name">COL1A2_7_94422978_C_A</data>
       <data key="e_lty">1</data>
     </edge>
   </graph>
