@@ -59,27 +59,27 @@ longitudinal.tree.plot <- function( inference,
     if(is.null(size2)) {
         size2 <- size
     }
-    
-    root <- list()
-    root$prev <- sum(unlist(lapply(inference$C, function(x){sum(x == 0)}))) /
-        sum(unlist(lapply(inference$C, function(x){length(x)})))
-    
-    root$prev <- round(root$prev, digits = 2)
-    
-    root$size <- 2*sqrt(size*root$prev/pi)
-    root$size2 <- 2*sqrt(size2*root$prev/pi)
-    
-    root$label <- "Root"
-    
-    if(show_prev) {
-        num_str <- sub("^(-?)0.", "\\1.", sprintf("%.2f", root$prev))
-        root$label <- paste0(root$label, " (", num_str , ")")
-    }
+    # 
+    # root <- list()
+    # root$prev <- sum(unlist(lapply(inference$C, function(x){sum(x == 0)}))) /
+    #     sum(unlist(lapply(inference$C, function(x){length(x)})))
+    # 
+    # root$prev <- round(root$prev, digits = 2)
+    # 
+    # root$size <- 2*sqrt(size*root$prev/pi)
+    # root$size2 <- 2*sqrt(size2*root$prev/pi)
+    # 
+    # root$label <- "Root"
+    # 
+    # if(show_prev) {
+    #     num_str <- sub("^(-?)0.", "\\1.", sprintf("%.2f", root$prev))
+    #     root$label <- paste0(root$label, " (", num_str , ")")
+    # }
     
     cl_vertex <- data.frame(prevalance = as.vector(inference$clones_prevalence[,-ncol(inference$clones_prevalence)]))
-    cl_vertex$clone <- rep(c(1:nrow(inference$clones_prevalence)),ncol(inference$clones_prevalence)-1)
+    cl_vertex$clone <- rep(c(0:(nrow(inference$clones_prevalence)-1)),ncol(inference$clones_prevalence)-1)
     cl_vertex$TP <- rep(1:(ncol(inference$clones_prevalence)-1), each = nrow(inference$clones_prevalence))
-    cl_vertex$last_mutation <- rep(unlist(lapply(inference$clones_summary, function(x){tail(x, 1)})), ncol(inference$clones_prevalence)-1)
+    cl_vertex$last_mutation <- rep(unlist(lapply(c("Root",inference$clones_summary), function(x){tail(x, 1)})), ncol(inference$clones_prevalence)-1)
     
     if(!is.null(clone_labels)) {
         if(length(clone_labels)!=length(inference$clones_summary)) {
@@ -87,12 +87,13 @@ longitudinal.tree.plot <- function( inference,
             cl_vertex$label <- ""
         }
         else {
-            cl_vertex$label <- rep(clone_labels, ncol(inference$clones_prevalence)-1)
+            cl_vertex$label <- rep(c("Root",clone_labels), ncol(inference$clones_prevalence)-1)
         }
     } else if((labels_show == "clones" || labels_show == "both") && labels_show != "none") {
-        cl_vertex$label <- rep(names(inference$clones_summary), ncol(inference$clones_prevalence)-1)
+        cl_vertex$label <- rep(c("Root",names(inference$clones_summary)), ncol(inference$clones_prevalence)-1)
     } else {
         cl_vertex$label <- ""
+        cl_vertex$label[cl_vertex$last_mutation == "Root"] <- "Root"
     }
     
     cl_vertex$branch <- NA
@@ -133,7 +134,7 @@ longitudinal.tree.plot <- function( inference,
     }
     
     # Processing parental relations    
-    adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = FALSE)
+    adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = TRUE)
     
     # Start from one leaf
     B_leaf <- which(apply(X = adjMatrix_base, MARGIN = 1, FUN = sum)==0)
@@ -143,7 +144,7 @@ longitudinal.tree.plot <- function( inference,
         while(length(cp_id)>0) {
             
             # Finding first time point in which appear son clone
-            TPs <- cl_vertex$TP[cl_vertex$clone == cs_id & cl_vertex$prevalance > 0 & cl_vertex$TP <= curTP]
+            TPs <- cl_vertex$TP[cl_vertex$clone == (cs_id-1) & cl_vertex$prevalance > 0 & cl_vertex$TP <= curTP]
             
             if(length(TPs)==0) {
                 cs_tp <- curTP
@@ -153,7 +154,7 @@ longitudinal.tree.plot <- function( inference,
             }
             
             # Finding the time point in which parental clone were present most close to the current time point
-            TPs <- cl_vertex$TP[cl_vertex$clone == cp_id & cl_vertex$prevalance > 0 & cl_vertex$TP <= cs_tp]
+            TPs <- cl_vertex$TP[cl_vertex$clone == (cp_id-1) & cl_vertex$prevalance > 0 & cl_vertex$TP <= cs_tp]
             
             if(length(TPs) == 0) {
                 # If the parental clone has ever had prevalence == 0 -> I use the same time point of the son clone
@@ -163,9 +164,9 @@ longitudinal.tree.plot <- function( inference,
                 cp_tp <- max(TPs)
             }
             
-            from_cc <- cl_vertex$names[cl_vertex$clone == cp_id & cl_vertex$TP == cp_tp]
-            to_cc <- cl_vertex$names[cl_vertex$clone == cs_id & cl_vertex$TP == cs_tp]
-            mut <- cl_vertex$last_mutation[cl_vertex$clone == cs_id & cl_vertex$TP == cs_tp]
+            from_cc <- cl_vertex$names[cl_vertex$clone == (cp_id-1) & cl_vertex$TP == cp_tp]
+            to_cc <- cl_vertex$names[cl_vertex$clone == (cs_id-1) & cl_vertex$TP == cs_tp]
+            mut <- cl_vertex$last_mutation[cl_vertex$clone == (cs_id-1) & cl_vertex$TP == cs_tp]
             cl_edges <- rbind(cl_edges, data.frame(from = from_cc, 
                                                    to = to_cc, 
                                                    type = "parental", 
@@ -318,8 +319,8 @@ longitudinal.tree.plot <- function( inference,
         color_palette$dark[i] <- cp[85]
     }
     
-    for(br in unique(cl_vertex$branch)) {
-        n_levels <- max(cl_vertex$branch_level)
+    for(br in unique(cl_vertex$branch[cl_vertex$last_mutation != "Root"])) {
+        n_levels <- max(cl_vertex$branch_level[cl_vertex$last_mutation != "Root"])
         
         min_level <- 6 
         
@@ -337,6 +338,7 @@ longitudinal.tree.plot <- function( inference,
     }
     
     cl_vertex$color[cl_vertex$names %in% as.character(cl_edges$to[cl_edges$extincion])] <- "#C0C0C0"
+    cl_vertex$color[cl_vertex$last_mutation == "Root"] <- "#DDDDDD"
     
     igraph::vertex_attr(graph = g, name = "branch") <- cl_vertex$branch
     igraph::vertex_attr(graph = g, name = "branch_level") <- cl_vertex$branch_level
@@ -351,24 +353,24 @@ longitudinal.tree.plot <- function( inference,
     cl_vertex$coord.y <- NA
     
     # Adding root
-    cl_vertex <- rbind(data.frame(names = "Root", 
-                                  branch_level = 0,
-                                  branch = 0,
-                                  label = root$label,
-                                  last_mutation = "",
-                                  TP = 1,
-                                  clone = 0,
-                                  prevalance = root$prev,
-                                  size = root$size,
-                                  size2 = root$size2,
-                                  shape = "circle",
-                                  label.dist = -2,
-                                  label.degree = 45,
-                                  extincion = 0,
-                                  coord.x = 0,
-                                  coord.y = 0,
-                                  color = "#DDDDDD"
-    ),cl_vertex)
+    # cl_vertex <- rbind(data.frame(names = "Root", 
+    #                               branch_level = 0,
+    #                               branch = 0,
+    #                               label = root$label,
+    #                               last_mutation = "",
+    #                               TP = 1,
+    #                               clone = 0,
+    #                               prevalance = root$prev,
+    #                               size = root$size,
+    #                               size2 = root$size2,
+    #                               shape = "circle",
+    #                               label.dist = -2,
+    #                               label.degree = 45,
+    #                               extincion = 0,
+    #                               coord.x = 0,
+    #                               coord.y = 0,
+    #                               color = "#DDDDDD"
+    # ),cl_vertex)
     
     # #ADDING ROOT IN EACH TIME POINT
     # root_vertexes <- data.frame()
@@ -428,27 +430,27 @@ longitudinal.tree.plot <- function( inference,
     # }
     # 
 
-    adjMatrix_overall <- igraph::get.adjacency(g, sparse = F, attr = "type", names = T)
-    ancestral_nodes <- colnames(adjMatrix_overall)[which(colSums(adjMatrix_overall != "")==0)] 
-    
-    for(an in ancestral_nodes) {
-        cl_edges <- rbind(data.frame(from = "Root",
-                                     to = an,
-                                     type = "Parental",
-                                     extincion = FALSE,
-                                     label = cl_vertex$last_mutation[cl_vertex$names == an],
-                                     name = cl_vertex$last_mutation[cl_vertex$names == an],
-                                     lty = 1
-        ),cl_edges)
-    }
+    # adjMatrix_overall <- igraph::get.adjacency(g, sparse = F, attr = "type", names = T)
+    # ancestral_nodes <- colnames(adjMatrix_overall)[which(colSums(adjMatrix_overall != "")==0)] 
+    # 
+    # for(an in ancestral_nodes) {
+    #     cl_edges <- rbind(data.frame(from = "Root",
+    #                                  to = an,
+    #                                  type = "Parental",
+    #                                  extincion = FALSE,
+    #                                  label = cl_vertex$last_mutation[cl_vertex$names == an],
+    #                                  name = cl_vertex$last_mutation[cl_vertex$names == an],
+    #                                  lty = 1
+    #     ),cl_edges)
+    # }
     
     
     adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = T)
     g <- igraph::graph_from_data_frame(cl_edges, directed=TRUE, vertices=cl_vertex)
     adjMatrix_overall <- igraph::get.adjacency(g, sparse = F, attr = "type", names = TRUE)
 
-    # Count total mutation number in each time point
-    timepoints <-unique(cl_vertex$TP)
+    # Count total level number in each time point
+    timepoints <- unique(cl_vertex$TP)
     
     mut_TP <- c()
     for(tp in timepoints) {
@@ -463,27 +465,27 @@ longitudinal.tree.plot <- function( inference,
             
             idx_anc_c <- which(colSums(adjMatrix_base_tp) == 0)
             
+            max_deep_tp = -1
             for(idx in idx_anc_c){
                 descend = list(
                     adjM = adjMatrix_base_tp,
-                    l_path = c(0),
+                    l_path = 0,
                     ind_lPath = 1,
                     row_v = idx
                 )
-                deep_tmp <- recursiveDescend(descend)
-                deep_tmp <- deep_tmp$max_deep
+                deep_tmp <- recursiveDescend(descend)$max_deep
+                max_deep_tp <- max(max_deep_tp,deep_tmp) 
             }
-            mut_TP <- c(mut_TP, max(deep_tmp))
+            mut_TP <- c(mut_TP, max_deep_tp)
         }
     }
-    mut_TP <- cumsum(mut_TP) + 1:length(mut_TP) -1
+    mut_TP <- cumsum(mut_TP) + 1:length(mut_TP)
     names(mut_TP) <- timepoints
     
     cl_df <- list(cl_vertex = cl_vertex, cl_edges = cl_edges)
     idx_next_v <-  which(colSums(adjMatrix_overall != "") == 0)
     
     # Root
-    idx_Vc = idx_next_v
     Xc = 0
     Yc = 0
     
@@ -582,8 +584,8 @@ longitudinal.tree.plot <- function( inference,
     #     }
     # }
     
-    time_point_grp <- split(cl_vertex$names, cl_vertex$TP)
-    time_point_grp[[1]] <- NULL
+    time_point_grp <- split(cl_vertex$names[cl_vertex$last_mutation!="Root"], cl_vertex$TP[cl_vertex$last_mutation!="Root"])
+    #time_point_grp[[1]] <- NULL
     
     ratio = par("din")[1] / par("din")[2]
     
@@ -628,23 +630,23 @@ longitudinal.tree.plot <- function( inference,
             TPs <- sort(unique(cl_vertex$TP))
             
             min_x <- min(g_mod$layout[,1], na.rm = T)
+            min_x <- ifelse(test = min_x < 0, yes = min_x*1.3, no = min_x*0.7)
             
-            for(i in 2:(length(TPs)-1)) {
+            for(i in 1:(length(TPs))) {
                 
-                range_Y_curr <- range(g_mod$layout[cl_vertex$TP == TPs[i],2], na.rm = T)
-                range_Y_prev<- range(g_mod$layout[cl_vertex$TP == TPs[i-1],2], na.rm = T)
-                range_Y_next<- range(g_mod$layout[cl_vertex$TP == TPs[i+1],2], na.rm = T)
+                if(i < length(TPs)) {
+                    range_Y_curr <- range(g_mod$layout[cl_vertex$TP == TPs[i],2], na.rm = T)
+                    range_Y_next<- range(g_mod$layout[cl_vertex$TP == TPs[i+1],2], na.rm = T)
+                    
+                    pos_l <- mean(c(range_Y_curr[1],range_Y_next[2]))
+                    
+                    abline(h = pos_l)
+                }
+                pos_text <- mean(range(g_mod$layout[cl_vertex$TP == TPs[i],2], na.rm = T))
                 
-                pos_l <- mean(c(range_Y_curr[1],range_Y_next[2]))
-                
-                abline(h = pos_l)
-                
-                pos_text <- mean(c(range_Y_next[2],range_Y_prev[1]))
-                text(min_x, pos_text, paste0('TP: ', i-1))
+                text(min_x, pos_text, paste0('TP: ', TPs[i]))
                 
             }
-            
-            text(min_x, -1.03, paste0('TP: ', i))
             
         }
     }

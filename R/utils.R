@@ -236,6 +236,7 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
     if(length(idx_next_v) == 0) {
         return(cl_df)
     } else if(length(idx_next_v) > 1){
+        
         # BRANCH
         deep <- c()
         
