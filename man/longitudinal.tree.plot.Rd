@@ -8,7 +8,7 @@ longitudinal.tree.plot(
   inference,
   show_plot = TRUE,
   filename = "lg_output.xml",
-  labels = "mutations",
+  labels_show = "mutations",
   clone_labels = NULL,
   show_prev = TRUE,
   label.cex = 1,
@@ -16,10 +16,11 @@ longitudinal.tree.plot(
   size = 500,
   size2 = NULL,
   tk_plot = FALSE,
+  tp_lines = TRUE,
   tp_mark = TRUE,
   tp_mark_alpha = 0.5,
   legend = TRUE,
-  legend_position = "topleft",
+  legend_position = "topright",
   legend_cex = 0.8
 )
 }
@@ -30,7 +31,7 @@ longitudinal.tree.plot(
 
 \item{filename}{Specify the name of the file where to save the longitudinal tree. Dot or graphml formats are supported and are chosen based on the extenction of the filename (.dot or .xml).}
 
-\item{labels}{Specify which type of label should be placed on the tree; options are, 
+\item{labels_show}{Specify which type of label should be placed on the tree; options are, 
 "mutations": parental edges are labeled with the acquired mutation between the two nodes (genotypes); 
 "clones": nodes (genotypes) are labeled with their last acquired mutation; 
 "both": either nodes and edges are labeled as specified above; 
@@ -49,6 +50,8 @@ longitudinal.tree.plot(
 \item{size2}{Specify the size of the second dimension of the nodes. If NULL (default), it is set equal to "size".}
 
 \item{tk_plot}{If TRUE, uses tkplot function from igraph library to plot an interactive tree. Default is FALSE.}
+
+\item{tp_lines}{If TRUE (defaul) the function draws lines between timepoints.}
 
 \item{tp_mark}{If TRUE (defaul) the function draws different colored area under the nodes in different time points.}
 
