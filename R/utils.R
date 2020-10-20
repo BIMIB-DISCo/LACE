@@ -178,7 +178,7 @@ checkSegmentIntersect <- function( ax1, ay1, ax2, ay2, bx1, by1, bx2, by2 ) {
 
 }
 
-#' Compute mutation distance from LACE corrected genotype.
+#' Compute mutation distance among variants from LACE corrected genotype and use it to perform hierarchical clustering.
 #' @title compute.mutation.distance
 #'
 #' @examples
@@ -186,14 +186,53 @@ checkSegmentIntersect <- function( ax1, ay1, ax2, ay2, bx1, by1, bx2, by2 ) {
 #' mutation_distance <- compute.mutation.distance(inference)
 #'
 #' @param inference Results of the inference by LACE.
-#' @return A matrix mutation_distance with the mutation distance computed from LACE corrected genotype.
+#' @return A matrix mutation_distance with the mutation distance among variants computed from LACE corrected genotype and related hierarchical clustering.
 #' @export compute.mutation.distance
-#' @importFrom stats dist
+#' @importFrom stats dist hclust
 #'
 compute.mutation.distance <- function( inference ) {
-
-    mutation_distance <- as.matrix(dist(t(inference$corrected_genotype),method="euclidean"))
+    
+    mutation_distance <- dist(t(inference$corrected_genotype),method="euclidean")
+    mutation_distance <- list(distance_matrix=as.matrix(mutation_distance),hierarchical_clustering=hclust(mutation_distance,method="complete"))
     return(mutation_distance)
+
+}
+
+#' Compute error rates for the considered variants comparing observed data to LACE corrected genotype.
+#' @title compute.variants.error.rates
+#'
+#' @examples
+#' data(longitudinal_sc_variants)
+#' data(inference)
+#' variants_error_rates <- compute.variants.error.rates(longitudinal_sc_variants,inference)
+#'
+#' @param D Mutation data from multiple experiments for a list of driver genes provided as a data matrix per time point. 
+#' @param inference Results of the inference by LACE.
+#' @return A matrix variants_error_rates with the estimated error rates for the considered variants.
+#' @export compute.variants.error.rates
+#'
+compute.variants.error.rates <- function( D, inference ) {
+    
+    variants_error_rates <- array(NA,c(ncol(D[[1]]),2))
+    rownames(variants_error_rates) <- colnames(D[[1]])
+    colnames(variants_error_rates) <- c("False_Positive_Rate","False_Negative_Rate")
+    
+    corrected_genotype <- inference$corrected_genotype
+    observed_genotype <- NULL
+    for(i in 1:length(D)) {
+        observed_genotype <- rbind(observed_genotype,D[[i]])
+    }
+
+    for(i in rownames(variants_error_rates)) {
+        tp <- length(which(observed_genotype[,i]==1&corrected_genotype[,i]==1))
+        fn <- length(which(observed_genotype[,i]==0&corrected_genotype[,i]==1))
+        tn <- length(which(observed_genotype[,i]==0&corrected_genotype[,i]==0))
+        fp <- length(which(observed_genotype[,i]==1&corrected_genotype[,i]==0))
+        variants_error_rates[i,"False_Positive_Rate"] <- fp/(fp+tn)
+        variants_error_rates[i,"False_Negative_Rate"] <- fn/(fn+tp)
+    }
+
+    return(variants_error_rates)
 
 }
 
