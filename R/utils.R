@@ -215,7 +215,7 @@ compute.variants.error.rates <- function( D, inference ) {
     
     variants_error_rates <- array(NA,c(ncol(D[[1]]),2))
     rownames(variants_error_rates) <- colnames(D[[1]])
-    colnames(variants_error_rates) <- c("False_Positive_Rate","False_Negative_Rate")
+    colnames(variants_error_rates) <- c("Percentage_False_Positives","Percentage_False_Negatives")
     
     corrected_genotype <- inference$corrected_genotype
     observed_genotype <- NULL
@@ -224,12 +224,10 @@ compute.variants.error.rates <- function( D, inference ) {
     }
 
     for(i in rownames(variants_error_rates)) {
-        tp <- length(which(observed_genotype[,i]==1&corrected_genotype[,i]==1))
         fn <- length(which(observed_genotype[,i]==0&corrected_genotype[,i]==1))
-        tn <- length(which(observed_genotype[,i]==0&corrected_genotype[,i]==0))
         fp <- length(which(observed_genotype[,i]==1&corrected_genotype[,i]==0))
-        variants_error_rates[i,"False_Positive_Rate"] <- fp/(fp+tn)
-        variants_error_rates[i,"False_Negative_Rate"] <- fn/(fn+tp)
+        variants_error_rates[i,"Percentage_False_Positives"] <- fp/nrow(observed_genotype)
+        variants_error_rates[i,"Percentage_False_Negatives"] <- fn/nrow(observed_genotype)
     }
 
     return(variants_error_rates)
