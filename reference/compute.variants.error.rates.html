@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • LACE</title>
+<title>compute.variants.error.rates — compute.variants.error.rates • LACE</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,8 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="compute.variants.error.rates — compute.variants.error.rates" />
+<meta property="og:description" content="Compute error rates for the considered variants comparing observed data to LACE corrected genotype." />
 
 
 
@@ -58,7 +59,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -114,72 +115,43 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>compute.variants.error.rates</h1>
+    <small class="dont-index">Source: <a href='https://github.com/BIMIB-DISCo/LACE/blob/master/R/utils.R'><code>R/utils.R</code></a></small>
+    <div class="hidden name"><code>compute.variants.error.rates.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>Compute error rates for the considered variants comparing observed data to LACE corrected genotype.</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
+    <pre class="usage"><span class='fu'>compute.variants.error.rates</span><span class='op'>(</span><span class='va'>D</span>, <span class='va'>inference</span><span class='op'>)</span></pre>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="LACE.html">LACE()</a></code> </p>
-        </td>
-        <td><p>LACE</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="compute.mutation.distance.html">compute.mutation.distance()</a></code> </p>
-        </td>
-        <td><p>compute.mutation.distance</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="compute.variants.error.rates.html">compute.variants.error.rates()</a></code> </p>
-        </td>
-        <td><p>compute.variants.error.rates</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="inference.html">inference</a></code> </p>
-        </td>
-        <td><p>results obtained with the function LACE on the provided input data from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="longitudinal.tree.plot.html">longitudinal.tree.plot()</a></code> </p>
-        </td>
-        <td><p>longitudinal.tree.plot</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="longitudinal_sc_variants.html">longitudinal_sc_variants</a></code> </p>
-        </td>
-        <td><p>mutation data from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.</p></td>
-      </tr>
-    </tbody>
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>D</th>
+      <td><p>Mutation data from multiple experiments for a list of driver genes provided as a data matrix per time point.</p></td>
+    </tr>
+    <tr>
+      <th>inference</th>
+      <td><p>Results of the inference by LACE.</p></td>
+    </tr>
     </table>
-  </div>
 
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A matrix variants_error_rates with the estimated error rates for the considered variants.</p>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>longitudinal_sc_variants</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span><span class='op'>(</span><span class='va'>inference</span><span class='op'>)</span>
+<span class='va'>variants_error_rates</span> <span class='op'>&lt;-</span> <span class='fu'>compute.variants.error.rates</span><span class='op'>(</span><span class='va'>longitudinal_sc_variants</span>,<span class='va'>inference</span><span class='op'>)</span>
+
+</div></pre>
+  </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>
