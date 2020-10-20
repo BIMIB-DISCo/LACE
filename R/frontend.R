@@ -47,7 +47,7 @@
 #' @import parallel
 #' @import SummarizedExperiment
 #' @importFrom Rfast rowMaxs
-#' @importFrom stats runif
+#' @importFrom stats runif rnorm
 #'
 LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, error_move = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
     

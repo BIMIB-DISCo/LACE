@@ -10,10 +10,10 @@ compute.mutation.distance(inference)
 \item{inference}{Results of the inference by LACE.}
 }
 \value{
-A matrix mutation_distance with the mutation distance computed from LACE corrected genotype.
+A matrix mutation_distance with the mutation distance among variants computed from LACE corrected genotype and related hierarchical clustering.
 }
 \description{
-Compute mutation distance from LACE corrected genotype.
+Compute mutation distance among variants from LACE corrected genotype and use it to perform hierarchical clustering.
 }
 \examples{
 data(inference)
