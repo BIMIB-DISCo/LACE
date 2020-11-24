@@ -10,6 +10,7 @@
 #'                        legend_position = "topleft")
 #'
 #' @param inference Results of the inference by LACE.
+#' @param rem_unseen_leafs If TRUE (default) remove all the leafs that have never been observed (prevalence = 0 in each time point)
 #' @param show_plot If TRUE (default) output the longitudinal tree to the current graphical device.
 #' @param filename Specify the name of the file where to save the longitudinal tree. Dot or graphml formats are supported and are chosen based on the extenction of the filename (.dot or .xml).
 #' @param labels_show Specify which type of label should be placed on the tree; options are, 
@@ -20,7 +21,6 @@
 #' @param clone_labels Character vector that specifies the name of the nodes (genotypes). If it is NULL (default), nodes will be labeled as specified by "label" parameter.
 #' @param show_prev If TRUE (default) add to clones label the correspongind prevalance.
 #' @param label.cex Specify the size of the labels.
-#' @param iter_max Maximum number of iteration to be used to remove intersecting edges.
 #' @param size Specify size of the nodes. The final area is proportional with the node prevalence.
 #' @param size2 Specify the size of the second dimension of the nodes. If NULL (default), it is set equal to "size".
 #' @param tk_plot If TRUE, uses tkplot function from igraph library to plot an interactive tree. Default is FALSE.
@@ -29,6 +29,7 @@
 #' @param tp_mark_alpha Specify the alpha value of the area drawed when tp_mark = TRUE.
 #' @param legend If TRUE (default) a legend will be displayed on the plot.
 #' @param legend_position Specify the legend position.
+#' @param label_offset Move the mutation labels horizontally (default = 4)
 #' @param legend_cex Specify size of the legend text.
 #' @return An igraph object g with the longitudinal tree inferred by LACE. 
 #' @export longitudinal.tree.plot
@@ -39,13 +40,13 @@
 #' @import utils
 #'
 longitudinal.tree.plot <- function( inference, 
+                                    rem_unseen_leafs = TRUE,
                                     show_plot = TRUE, 
                                     filename = "lg_output.xml", 
                                     labels_show = "mutations", 
                                     clone_labels = NULL, 
                                     show_prev = TRUE, 
                                     label.cex = 1, 
-                                    iter_max = 100, 
                                     size = 500, 
                                     size2 = NULL, 
                                     tk_plot = FALSE, 
@@ -54,6 +55,7 @@ longitudinal.tree.plot <- function( inference,
                                     tp_mark_alpha = 0.5, 
                                     legend = TRUE, 
                                     legend_position = "topright", 
+                                    label_offset = 4, 
                                     legend_cex = 0.8 ) {
     
     if(is.null(size2)) {
@@ -76,10 +78,51 @@ longitudinal.tree.plot <- function( inference,
     #     root$label <- paste0(root$label, " (", num_str , ")")
     # }
     
+    
+    adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = TRUE)
+    
+    M_leafs <- which(apply(X = adjMatrix_base, MARGIN = 1, FUN = sum)==0)
+    Clone_Mut <- sapply(inference$clones_summary, function(x){tail(x,1)}, USE.NAMES = T)
+    C_leafs <- Clone_Mut[match(names(M_leafs), Clone_Mut)]
+    
+    
+    if(rem_unseen_leafs == TRUE) {
+
+        uns_cl_mut <- C_leafs[which(inference$clones_prevalence[match(names(C_leafs),rownames(inference$clones_prevalence)), "Total"] == 0)]
+
+            while(length(uns_cl_mut) > 0) {
+                
+                # Delete each clone and corresponding mutation from B, clone_prevalence and clone_summary
+                del_mut <- as.character(uns_cl_mut)
+                del_clone <- names(uns_cl_mut)
+                
+                inference$B <- inference$B[!(rownames(inference$B) %in% del_clone), !(colnames(inference$B) %in% del_mut)]
+                inference$clones_prevalence <- inference$clones_prevalence[!(rownames(inference$clones_prevalence) %in% del_clone),]
+                inference$clones_summary <- inference$clones_summary[!(names(inference$clones_summary) %in% del_clone)]
+                
+                # Repeate
+                adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = TRUE)
+                M_leafs <- which(apply(X = adjMatrix_base, MARGIN = 1, FUN = sum)==0)
+                Clone_Mut <- sapply(inference$clones_summary, function(x){tail(x,1)}, USE.NAMES = T)
+                C_leafs <- Clone_Mut[match(names(M_leafs), Clone_Mut)]
+                uns_cl_mut <- C_leafs[which(inference$clones_prevalence[match(names(C_leafs),rownames(inference$clones_prevalence)), "Total"] == 0)]
+            }
+    }
+    
     cl_vertex <- data.frame(prevalance = as.vector(inference$clones_prevalence[,-ncol(inference$clones_prevalence)]))
     cl_vertex$clone <- rep(c(0:(nrow(inference$clones_prevalence)-1)),ncol(inference$clones_prevalence)-1)
     cl_vertex$TP <- rep(1:(ncol(inference$clones_prevalence)-1), each = nrow(inference$clones_prevalence))
-    cl_vertex$last_mutation <- rep(unlist(lapply(c("Root",inference$clones_summary), function(x){tail(x, 1)})), ncol(inference$clones_prevalence)-1)
+    cl_vertex$last_mutation <- rep(c("Root",Clone_Mut), ncol(inference$clones_prevalence)-1)
+    
+
+    
+    # for(l in names(M_leafs)) {
+    #     tot_prev <- sum(cl_vertex$prevalance[cl_vertex$last_mutation == l])
+    #     if(tot_prev==0) {
+    #         cl_vertex$prevalance[cl_vertex$last_mutation == l & cl_vertex$TP==max(cl_vertex$TP)] <- 10^-3
+    #     }
+    # }
+    
     
     if(!is.null(clone_labels)) {
         if(length(clone_labels)!=length(inference$clones_summary)) {
@@ -133,12 +176,13 @@ longitudinal.tree.plot <- function( inference,
         }
     }
     
-    # Processing parental relations    
-    adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = TRUE)
     
-    # Start from one leaf
-    B_leaf <- which(apply(X = adjMatrix_base, MARGIN = 1, FUN = sum)==0)
-    for(cs_id in B_leaf) {
+    # Processing parental relations    
+    
+    cl_edges_parental <- data.frame(stringsAsFactors = FALSE)
+    
+    # Start from one leaf of M_leafs
+    for(cs_id in M_leafs) {
         curTP <- max(cl_vertex$TP)
         cp_id <- which(adjMatrix_base[,cs_id]==1)
         while(length(cp_id)>0) {
@@ -148,8 +192,7 @@ longitudinal.tree.plot <- function( inference,
             
             if(length(TPs)==0) {
                 cs_tp <- curTP
-            }
-            else {
+            } else {
                 cs_tp <- min(TPs)
             }
             
@@ -157,21 +200,20 @@ longitudinal.tree.plot <- function( inference,
             TPs <- cl_vertex$TP[cl_vertex$clone == (cp_id-1) & cl_vertex$prevalance > 0 & cl_vertex$TP <= cs_tp]
             
             if(length(TPs) == 0) {
-                # If the parental clone has ever had prevalence == 0 -> I use the same time point of the son clone
+                # If the parental clone has ever prevalence == 0 -> I use the same time point of the son clone
                 cp_tp = cs_tp
-            }
-            else {
+            } else {
                 cp_tp <- max(TPs)
             }
             
             from_cc <- cl_vertex$names[cl_vertex$clone == (cp_id-1) & cl_vertex$TP == cp_tp]
             to_cc <- cl_vertex$names[cl_vertex$clone == (cs_id-1) & cl_vertex$TP == cs_tp]
             mut <- cl_vertex$last_mutation[cl_vertex$clone == (cs_id-1) & cl_vertex$TP == cs_tp]
-            cl_edges <- rbind(cl_edges, data.frame(from = from_cc, 
-                                                   to = to_cc, 
-                                                   type = "parental", 
-                                                   extincion = FALSE, 
-                                                   stringsAsFactors = FALSE))
+            cl_edges_parental <- rbind(cl_edges_parental, data.frame(from = from_cc, 
+                                                                     to = to_cc, 
+                                                                     type = "parental", 
+                                                                     extincion = FALSE, 
+                                                                     stringsAsFactors = FALSE))
             
             # Now son clone becomes parental clone
             curTP <- cp_tp
@@ -181,29 +223,63 @@ longitudinal.tree.plot <- function( inference,
         }
     }
     
-    cl_edges <- cl_edges[!duplicated.data.frame(cl_edges[,c("from", "to", "type")]),]
+    # Fix duplicate parental relation (keep earliest) ones
     
-    # Fixing missing prevalence relations
-    included_clones_names <- unique(c(as.character(cl_edges$from), as.character(cl_edges$to)))
-    for(icn in included_clones_names) {
-        ic <- cl_vertex$clone[cl_vertex$names == icn]
-        ic_tp <- cl_vertex$TP[cl_vertex$names == icn]
+    cl_edges_parental$from_cl <- cl_vertex$clone[match(cl_edges_parental$from, cl_vertex$names)]
+    cl_edges_parental$to_cl <- cl_vertex$clone[match(cl_edges_parental$to, cl_vertex$names)]
+    cl_edges_parental$to_tp <- cl_vertex$TP[match(cl_edges_parental$to, cl_vertex$names)]
+    
+    cl_edges_parental <- cl_edges_parental[order(cl_edges_parental$to_tp),]
+    
+    cl_edges_parental <- cl_edges_parental[!duplicated(cl_edges_parental[,c("from_cl", "to_cl")], fromLast = F), c("from","to","type","extincion")]
+    
+    cl_edges <- rbind(cl_edges, cl_edges_parental)
+    # Fixing missing persistence relations
+    fixing_clones <- data.frame(names = unique(as.character(cl_edges$from)))
+    
+    fixing_clones$clones <- cl_vertex$clone[match(fixing_clones$names,cl_vertex$names)]
+    fixing_clones$TP <- cl_vertex$TP[match(fixing_clones$names,cl_vertex$names)]
+    
+    fixing_clones <- fixing_clones[duplicated(fixing_clones$clones) | duplicated(fixing_clones$clones, fromLast = T),]
+    fixing_clones <- fixing_clones[order(fixing_clones$TP),]
+    
+    for(fxc in unique(fixing_clones$clones)){
         
-        next_cln <- cl_vertex$names[cl_vertex$clone == ic & cl_vertex$TP == (ic_tp + 1)]
-        if(length(next_cln) == 0) {
-            next
-        }
-        else {
-            if(sum(cl_edges$from == icn & cl_edges$to == next_cln) == 0 && next_cln %in% included_clones_names) {
-                cl_edges <- rbind(cl_edges, data.frame(from = icn, 
-                                                       to = next_cln, 
-                                                       type = "persistence", 
-                                                       extincion = FALSE, 
-                                                       stringsAsFactors = FALSE))
+        fixing_clones_i <- fixing_clones[fixing_clones$clones == fxc,]
+        for(i in 1:(nrow(fixing_clones_i)-1)) {
+            
+            if(sum(cl_edges$from == fixing_clones_i$names[i] & cl_edges$to == fixing_clones_i$names[i+1] & cl_edges$type ==  "persistence") == 0) {
+                cl_edges <- rbind(cl_edges, data.frame(from = fixing_clones_i$names[i], 
+                                                       to = fixing_clones_i$names[i+1],
+                                                       type = "persistence",
+                                                       extincion = FALSE,
+                                                       stringsAsFactors = FALSE)
+                )
             }
+            
         }
         
     }
+    
+    # for(icn in included_clones_names) {
+    #     ic <- cl_vertex$clone[cl_vertex$names == icn]
+    #     ic_tp <- cl_vertex$TP[cl_vertex$names == icn]
+    #     
+    #     next_cln <- cl_vertex$names[cl_vertex$clone == ic & cl_vertex$TP == (ic_tp + 1)]
+    #     if(length(next_cln) == 0) {
+    #         next
+    #     }
+    #     else {
+    #         if(sum(cl_edges$from == icn & cl_edges$to == next_cln) == 0 && next_cln %in% included_clones_names) {
+    #             cl_edges <- rbind(cl_edges, data.frame(from = icn, 
+    #                                                    to = next_cln, 
+    #                                                    type = "persistence", 
+    #                                                    extincion = FALSE, 
+    #                                                    stringsAsFactors = FALSE))
+    #         }
+    #     }
+    #     
+    # }
     
     # Setting edges labels
     cl_edges$label <- ""
@@ -233,7 +309,7 @@ longitudinal.tree.plot <- function( inference,
     # Setting the size of the extincted clones
     cl_vertex$size[cl_vertex$names %in% as.character(cl_edges$to[cl_edges$extincion])] <- 2*sqrt(size*0.01)
     cl_vertex$size2[cl_vertex$names %in% as.character(cl_edges$to[cl_edges$extincion])] <- 2*sqrt(size2*0.01)
-    cl_vertex$shape[cl_vertex$names %in% as.character(cl_edges$to[cl_edges$extincion])] <- "rectangle"
+    cl_vertex$shape[cl_vertex$names %in% as.character(cl_edges$to[cl_edges$extincion])] <- "vrectangle"
     
     cl_vertex$label.dist <- -1
     cl_vertex$label.degree <- 0
@@ -256,6 +332,7 @@ longitudinal.tree.plot <- function( inference,
     if(show_prev) {
         num_str <- sub("^(-?)0.", "\\1.", sprintf("%.2f", cl_vertex$prevalance))
         cl_vertex$label <- paste0(cl_vertex$label, " (", num_str , ")")
+        cl_vertex$label[cl_vertex$prevalance == 0.0] <- ""
         
     }
     
@@ -429,7 +506,7 @@ longitudinal.tree.plot <- function( inference,
     #     ),cl_edges)
     # }
     # 
-
+    
     # adjMatrix_overall <- igraph::get.adjacency(g, sparse = F, attr = "type", names = T)
     # ancestral_nodes <- colnames(adjMatrix_overall)[which(colSums(adjMatrix_overall != "")==0)] 
     # 
@@ -444,11 +521,14 @@ longitudinal.tree.plot <- function( inference,
     #     ),cl_edges)
     # }
     
-    
-    adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = T)
     g <- igraph::graph_from_data_frame(cl_edges, directed=TRUE, vertices=cl_vertex)
     adjMatrix_overall <- igraph::get.adjacency(g, sparse = F, attr = "type", names = TRUE)
-
+    
+    adjMatrix_overall[which(adjMatrix_overall=="")] <- 0
+    adjMatrix_overall[which(adjMatrix_overall=="persistence")] <- 2
+    adjMatrix_overall[which(adjMatrix_overall=="parental")] <- 1
+    storage.mode(adjMatrix_overall) <- "integer"
+    
     # Count total level number in each time point
     timepoints <- unique(cl_vertex$TP)
     
@@ -471,6 +551,7 @@ longitudinal.tree.plot <- function( inference,
                     adjM = adjMatrix_base_tp,
                     l_path = 0,
                     ind_lPath = 1,
+                    mut_list = NA,
                     row_v = idx
                 )
                 deep_tmp <- recursiveDescend(descend)$max_deep
@@ -479,11 +560,13 @@ longitudinal.tree.plot <- function( inference,
             mut_TP <- c(mut_TP, max_deep_tp)
         }
     }
+    
+    
     mut_TP <- cumsum(mut_TP) + 1:length(mut_TP)
     names(mut_TP) <- timepoints
     
     cl_df <- list(cl_vertex = cl_vertex, cl_edges = cl_edges)
-    idx_next_v <-  which(colSums(adjMatrix_overall != "") == 0)
+    idx_next_v <-  which(colSums(adjMatrix_overall != 0) == 0)
     
     # Root
     Xc = 0
@@ -497,10 +580,15 @@ longitudinal.tree.plot <- function( inference,
                                          adjMatrix_base=adjMatrix_base,
                                          adjMatrix_overall=adjMatrix_overall,
                                          mut_TP=mut_TP,
-                                         labels_show=labels_show)
+                                         labels_show=labels_show,
+                                         label_offset=label_offset)
     
     cl_vertex <- cl_df$cl_vertex[order(cl_df$cl_vertex$TP, cl_df$cl_vertex$coord.y),]
     cl_edges <- cl_df$cl_edges
+    
+    
+    
+    
     
     g_mod <- igraph::graph_from_data_frame(d = cl_edges, directed=TRUE, vertices=cl_vertex)
     
