@@ -31,7 +31,7 @@
       <data key="v_name">T1-Root</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">1</data>
-      <data key="v_label">Root (.00)</data>
+      <data key="v_label"></data>
       <data key="v_last_mutation">Root</data>
       <data key="v_TP">1</data>
       <data key="v_clone">0</data>
@@ -240,7 +240,7 @@
       <data key="v_name">T2-RPL5_1_92837514_C_G</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">3</data>
-      <data key="v_label"> (.00)</data>
+      <data key="v_label"></data>
       <data key="v_last_mutation">RPL5_1_92837514_C_G</data>
       <data key="v_TP">2</data>
       <data key="v_clone">5</data>
@@ -354,7 +354,7 @@
       <data key="v_name">T3-RPL5_1_92837514_C_G</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">3</data>
-      <data key="v_label"> (.00)</data>
+      <data key="v_label"></data>
       <data key="v_last_mutation">RPL5_1_92837514_C_G</data>
       <data key="v_TP">3</data>
       <data key="v_clone">5</data>
