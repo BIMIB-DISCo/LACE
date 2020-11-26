@@ -419,7 +419,7 @@ jobs:
         run: |
           ## Enable installing XML from source if needed
           brew install libxml2
-          echo "{XML_CONFIG}={/usr/local/opt/libxml2/bin/xml2-config}" >> $XML_CONFIG
+          echo "XML_CONFIG=/usr/local/opt/libxml2/bin/xml2-config" >> $XML_CONFIG
           ###echo "::set-env name=XML_CONFIG::/usr/local/opt/libxml2/bin/xml2-config"
 
           ## Required to install magick as noted at
