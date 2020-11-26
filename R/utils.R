@@ -130,14 +130,17 @@ as.B <- function( adj_matrix ) {
 
 # check that point Q is not on segments A-B
 checkQonAB <- function( Ax, Ay, Bx, By, Qx, Qy ) {
+
     if((Qx <= max(Ax,Bx)) && (Qx >= min(Ax, Bx)) && (Qy <= max(Ay, By)) && (Qy >= min(Ay, By))) {
         return(TRUE)
     }
     return(FALSE)
+
 }
 
 # check segments orientation
-orientation <- function( Ax, Ay, Bx, By, Qx, Qy ) {    
+orientation <- function( Ax, Ay, Bx, By, Qx, Qy ) {
+
     res <- ((Qy - Ay) * (Bx - Qx)) - ((Qx - Ax)*(By - Qy))
     if(res > 0) {
         return(1)
@@ -148,6 +151,7 @@ orientation <- function( Ax, Ay, Bx, By, Qx, Qy ) {
     else {
         return(0)
     }
+
 }
 
 # check if two segments interserct
@@ -238,7 +242,7 @@ recursiveDescend <- function( descend ) {
     
     # Check next node,
     next_v <- which(descend$adjM[descend$row_v,] > 0)
-    #if not than return
+    # If not than return
     if(length(next_v)==0) {
         descend$max_deep <- max(descend$l_path)
         return(descend)
@@ -246,33 +250,21 @@ recursiveDescend <- function( descend ) {
         # brach!
         curr_level <- descend$l_path[descend$ind_lPath]
         for(v in next_v){
-            # if(descend$adjM[descend$row_v,v] > 1) {
-            #     descend$row_v = v
-            #     descend$ind_lPath = descend$ind_lPath + 1
-            #     descend$l_path[descend$ind_lPath] = curr_level + 0
-            #     descend <- recursiveDescend(descend = descend)
-            # } else {
             descend$row_v = v
             descend$ind_lPath = descend$ind_lPath + 1
             descend$l_path[descend$ind_lPath] = curr_level + 1
             descend$mut_list <- c(descend$mut_list, as.numeric(v))
             descend <- recursiveDescend(descend = descend)
-            #}
         }
     } else  {
-        # if(descend$adjM[next_v,descend$row_v] > 1) {
-        #     descend$l_path[descend$ind_lPath] = descend$l_path[descend$ind_lPath]
-        #     descend$row_v = next_v
-        #     descend <- recursiveDescend(descend = descend)
-        # } else {
         descend$l_path[descend$ind_lPath] = descend$l_path[descend$ind_lPath] + 1
         descend$row_v = next_v
         descend$mut_list <- c(descend$mut_list, as.numeric(next_v))
         descend <- recursiveDescend(descend = descend)
-        #}
     }
     descend$max_deep <- max(descend$l_path)
     return(descend)
+
 }
 
 
@@ -289,25 +281,6 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
         return(cl_df)
     } else if(length(idx_next_v) > 1){
         
-        # BRANCH
-        # deep <- c()
-        # for(v in idx_next_v){
-        #     if(adjMatrix_overall[idx_Vc,v] == "persistence") {
-        #         deep <- c(deep, 0)
-        #     } else {
-        #         descend = list(
-        #             adjM = adjMatrix_base,
-        #             l_path = c(1),
-        #             ind_lPath = 1,
-        #             row_v = which(colnames(adjMatrix_base) == cl_df$cl_vertex$last_mutation[cl_df$cl_vertex$names == colnames(adjMatrix_overall)[v]])
-        #         )
-        #         deep_tmp <- recursiveDescend(descend)
-        #         deep <- c(deep, deep_tmp$max_deep)
-        #         
-        #     }
-        # }
-        # 
-        
         deep <- c()
         for(v in idx_next_v){
             descend = list(
@@ -320,18 +293,13 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
             deep_tmp <- recursiveDescend(descend)
             
             dif_clones <- unique(cl_df$cl_vertex$clone[cl_df$cl_vertex$names %in% colnames(adjMatrix_overall)[deep_tmp$mut_list]])
-            deep <- c(deep, length(dif_clones))
-            
-            #deep <- c(deep, deep_tmp$max_deep)
         }
         ord <- order(-cl_df$cl_vertex$TP[match(names(idx_next_v),cl_df$cl_vertex$names)], deep, decreasing = F)
         
         idx_next_v <- idx_next_v[ord]
         deep <- deep[ord]
-        
-        
+
         offset_X = 0
-        #offset_label = -3
         for(i in 1:length(idx_next_v)){
             
             Vn_name <- colnames(adjMatrix_overall)[idx_next_v[i]]
@@ -351,24 +319,9 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
                 }
                 
                 X = (Xc + offset_X + 1)
-                
-                # descend = list(
-                #     adjM = adjMatrix_overall,
-                #     l_path = c(1),
-                #     ind_lPath = 1,
-                #     mut_list = colnames(adjMatrix_overall)[idx_next_v[i]],
-                #     row_v = idx_next_v[i]
-                # )
-                # 
-                # deep_tmp <- recursiveDescend(descend)
-                # 
-                # dif_clones <- unique(cl_vertex$clone[cl_vertex$names %in% deep_tmp$mut_list])
-                # deep = length(dif_clones)
-                # 
+
                 offset_X = offset_X + deep[i]
-                
-                #offset_label = -2*offset_label 
-                
+
                 idx_row_edges = which(cl_df$cl_edges$from == cl_df$cl_vertex$names[cl_vertex_idx_Vc] & cl_df$cl_edges$to == Vn_name)
                 mutation_name <- cl_df$cl_vertex$last_mutation[cl_df$cl_vertex$names == Vn_name]
                 
@@ -401,7 +354,7 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
                                           branch = NA,
                                           label = "",
                                           last_mutation = "",
-                                          TP = NA,#cl_df$cl_vertex$TP[cl_vertex_idx_Vc],
+                                          TP = NA, 
                                           clone = cl_df$cl_vertex$clone[cl_vertex_idx_Vc],
                                           prevalance = NA,
                                           size = 0,
@@ -419,7 +372,7 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
                                               branch = NA,
                                               label = ifelse(test = labels_show %in% c("both", "mutations"), yes = mutation_name, no = ""),
                                               last_mutation = "",
-                                              TP = NA, #cl_df$cl_vertex$TP[cl_vertex_idx_Vc],
+                                              TP = NA, 
                                               clone = cl_df$cl_vertex$clone[cl_vertex_idx_Vc],
                                               prevalance = NA,
                                               size = 6,
@@ -531,5 +484,3 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
     return(cl_df)
     
 }
-
-
