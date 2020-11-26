@@ -260,8 +260,8 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
 
     # Include Root in clones_prevalence
     clones_prevalence <- rbind(rep(NA,ncol(clones_prevalence)),clones_prevalence)
-    rownames(clones_prevalence)[1] <- "Root_0"
-    clones_prevalence["Root_0",] <- (1-colSums(clones_prevalence,na.rm=TRUE))
+    rownames(clones_prevalence)[1] <- "Root"
+    clones_prevalence["Root",] <- (1-colSums(clones_prevalence,na.rm=TRUE))
 
     # Compute clones' summary
     clones_summary <- list()
