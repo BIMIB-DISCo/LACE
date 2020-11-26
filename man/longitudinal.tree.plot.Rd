@@ -6,13 +6,13 @@
 \usage{
 longitudinal.tree.plot(
   inference,
+  rem_unseen_leafs = TRUE,
   show_plot = TRUE,
   filename = "lg_output.xml",
   labels_show = "mutations",
   clone_labels = NULL,
   show_prev = TRUE,
   label.cex = 1,
-  iter_max = 100,
   size = 500,
   size2 = NULL,
   tk_plot = FALSE,
@@ -21,11 +21,14 @@ longitudinal.tree.plot(
   tp_mark_alpha = 0.5,
   legend = TRUE,
   legend_position = "topright",
+  label_offset = 4,
   legend_cex = 0.8
 )
 }
 \arguments{
 \item{inference}{Results of the inference by LACE.}
+
+\item{rem_unseen_leafs}{If TRUE (default) remove all the leafs that have never been observed (prevalence = 0 in each time point)}
 
 \item{show_plot}{If TRUE (default) output the longitudinal tree to the current graphical device.}
 
@@ -43,8 +46,6 @@ longitudinal.tree.plot(
 
 \item{label.cex}{Specify the size of the labels.}
 
-\item{iter_max}{Maximum number of iteration to be used to remove intersecting edges.}
-
 \item{size}{Specify size of the nodes. The final area is proportional with the node prevalence.}
 
 \item{size2}{Specify the size of the second dimension of the nodes. If NULL (default), it is set equal to "size".}
@@ -60,6 +61,8 @@ longitudinal.tree.plot(
 \item{legend}{If TRUE (default) a legend will be displayed on the plot.}
 
 \item{legend_position}{Specify the legend position.}
+
+\item{label_offset}{Move the mutation labels horizontally (default = 4)}
 
 \item{legend_cex}{Specify size of the legend text.}
 }

@@ -10,6 +10,7 @@
 #'                        legend_position = "topleft")
 #'
 #' @param inference Results of the inference by LACE.
+#' @param rem_unseen_leafs If TRUE (default) remove all the leafs that have never been observed (prevalence = 0 in each time point)
 #' @param show_plot If TRUE (default) output the longitudinal tree to the current graphical device.
 #' @param filename Specify the name of the file where to save the longitudinal tree. Dot or graphml formats are supported and are chosen based on the extenction of the filename (.dot or .xml).
 #' @param labels_show Specify which type of label should be placed on the tree; options are, 
@@ -20,7 +21,6 @@
 #' @param clone_labels Character vector that specifies the name of the nodes (genotypes). If it is NULL (default), nodes will be labeled as specified by "label" parameter.
 #' @param show_prev If TRUE (default) add to clones label the correspongind prevalance.
 #' @param label.cex Specify the size of the labels.
-#' @param iter_max Maximum number of iteration to be used to remove intersecting edges.
 #' @param size Specify size of the nodes. The final area is proportional with the node prevalence.
 #' @param size2 Specify the size of the second dimension of the nodes. If NULL (default), it is set equal to "size".
 #' @param tk_plot If TRUE, uses tkplot function from igraph library to plot an interactive tree. Default is FALSE.
@@ -29,6 +29,7 @@
 #' @param tp_mark_alpha Specify the alpha value of the area drawed when tp_mark = TRUE.
 #' @param legend If TRUE (default) a legend will be displayed on the plot.
 #' @param legend_position Specify the legend position.
+#' @param label_offset Move the mutation labels horizontally (default = 4)
 #' @param legend_cex Specify size of the legend text.
 #' @return An igraph object g with the longitudinal tree inferred by LACE. 
 #' @export longitudinal.tree.plot
@@ -39,13 +40,13 @@
 #' @import utils
 #'
 longitudinal.tree.plot <- function( inference, 
+                                    rem_unseen_leafs = TRUE,
                                     show_plot = TRUE, 
                                     filename = "lg_output.xml", 
                                     labels_show = "mutations", 
                                     clone_labels = NULL, 
                                     show_prev = TRUE, 
                                     label.cex = 1, 
-                                    iter_max = 100, 
                                     size = 500, 
                                     size2 = NULL, 
                                     tk_plot = FALSE, 
@@ -54,33 +55,48 @@ longitudinal.tree.plot <- function( inference,
                                     tp_mark_alpha = 0.5, 
                                     legend = TRUE, 
                                     legend_position = "topright", 
+                                    label_offset = 4, 
                                     legend_cex = 0.8 ) {
     
     if(is.null(size2)) {
         size2 <- size
     }
-    # 
-    # root <- list()
-    # root$prev <- sum(unlist(lapply(inference$C, function(x){sum(x == 0)}))) /
-    #     sum(unlist(lapply(inference$C, function(x){length(x)})))
-    # 
-    # root$prev <- round(root$prev, digits = 2)
-    # 
-    # root$size <- 2*sqrt(size*root$prev/pi)
-    # root$size2 <- 2*sqrt(size2*root$prev/pi)
-    # 
-    # root$label <- "Root"
-    # 
-    # if(show_prev) {
-    #     num_str <- sub("^(-?)0.", "\\1.", sprintf("%.2f", root$prev))
-    #     root$label <- paste0(root$label, " (", num_str , ")")
-    # }
+
+    adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = TRUE)
+    
+    M_leafs <- which(apply(X = adjMatrix_base, MARGIN = 1, FUN = sum)==0)
+    Clone_Mut <- sapply(inference$clones_summary, function(x){tail(x,1)}, USE.NAMES = T)
+    C_leafs <- Clone_Mut[match(names(M_leafs), Clone_Mut)]
+    
+    
+    if(rem_unseen_leafs == TRUE) {
+
+        uns_cl_mut <- C_leafs[which(inference$clones_prevalence[match(names(C_leafs),rownames(inference$clones_prevalence)), "Total"] == 0)]
+
+            while(length(uns_cl_mut) > 0) {
+                
+                # Delete each clone and corresponding mutation from B, clone_prevalence and clone_summary
+                del_mut <- as.character(uns_cl_mut)
+                del_clone <- names(uns_cl_mut)
+                
+                inference$B <- inference$B[!(rownames(inference$B) %in% del_clone), !(colnames(inference$B) %in% del_mut)]
+                inference$clones_prevalence <- inference$clones_prevalence[!(rownames(inference$clones_prevalence) %in% del_clone),]
+                inference$clones_summary <- inference$clones_summary[!(names(inference$clones_summary) %in% del_clone)]
+                
+                # Repeate
+                adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = TRUE)
+                M_leafs <- which(apply(X = adjMatrix_base, MARGIN = 1, FUN = sum)==0)
+                Clone_Mut <- sapply(inference$clones_summary, function(x){tail(x,1)}, USE.NAMES = T)
+                C_leafs <- Clone_Mut[match(names(M_leafs), Clone_Mut)]
+                uns_cl_mut <- C_leafs[which(inference$clones_prevalence[match(names(C_leafs),rownames(inference$clones_prevalence)), "Total"] == 0)]
+            }
+    }
     
     cl_vertex <- data.frame(prevalance = as.vector(inference$clones_prevalence[,-ncol(inference$clones_prevalence)]))
     cl_vertex$clone <- rep(c(0:(nrow(inference$clones_prevalence)-1)),ncol(inference$clones_prevalence)-1)
     cl_vertex$TP <- rep(1:(ncol(inference$clones_prevalence)-1), each = nrow(inference$clones_prevalence))
-    cl_vertex$last_mutation <- rep(unlist(lapply(c("Root",inference$clones_summary), function(x){tail(x, 1)})), ncol(inference$clones_prevalence)-1)
-    
+    cl_vertex$last_mutation <- rep(c("Root",Clone_Mut), ncol(inference$clones_prevalence)-1)
+
     if(!is.null(clone_labels)) {
         if(length(clone_labels)!=length(inference$clones_summary)) {
             warning("Label number is different from the number of clones.")
@@ -100,7 +116,7 @@ longitudinal.tree.plot <- function( inference,
     cl_vertex$branch_level <- 0
     cl_vertex$names <- paste0("T", cl_vertex$TP, "-", cl_vertex$last_mutation)
     
-    # names must be the first column
+    # Names must be the first column
     cl_vertex <- cl_vertex[,order(ncol(cl_vertex):1)]
     
     cl_edges <- data.frame(stringsAsFactors = FALSE)
@@ -132,13 +148,12 @@ longitudinal.tree.plot <- function( inference,
             }
         }
     }
+
+    # Processing parental relations
+    cl_edges_parental <- data.frame(stringsAsFactors = FALSE)
     
-    # Processing parental relations    
-    adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = TRUE)
-    
-    # Start from one leaf
-    B_leaf <- which(apply(X = adjMatrix_base, MARGIN = 1, FUN = sum)==0)
-    for(cs_id in B_leaf) {
+    # Start from one leaf of M_leafs
+    for(cs_id in M_leafs) {
         curTP <- max(cl_vertex$TP)
         cp_id <- which(adjMatrix_base[,cs_id]==1)
         while(length(cp_id)>0) {
@@ -148,8 +163,7 @@ longitudinal.tree.plot <- function( inference,
             
             if(length(TPs)==0) {
                 cs_tp <- curTP
-            }
-            else {
+            } else {
                 cs_tp <- min(TPs)
             }
             
@@ -157,21 +171,20 @@ longitudinal.tree.plot <- function( inference,
             TPs <- cl_vertex$TP[cl_vertex$clone == (cp_id-1) & cl_vertex$prevalance > 0 & cl_vertex$TP <= cs_tp]
             
             if(length(TPs) == 0) {
-                # If the parental clone has ever had prevalence == 0 -> I use the same time point of the son clone
+                # If the parental clone has ever prevalence == 0 -> I use the same time point of the son clone
                 cp_tp = cs_tp
-            }
-            else {
+            } else {
                 cp_tp <- max(TPs)
             }
             
             from_cc <- cl_vertex$names[cl_vertex$clone == (cp_id-1) & cl_vertex$TP == cp_tp]
             to_cc <- cl_vertex$names[cl_vertex$clone == (cs_id-1) & cl_vertex$TP == cs_tp]
             mut <- cl_vertex$last_mutation[cl_vertex$clone == (cs_id-1) & cl_vertex$TP == cs_tp]
-            cl_edges <- rbind(cl_edges, data.frame(from = from_cc, 
-                                                   to = to_cc, 
-                                                   type = "parental", 
-                                                   extincion = FALSE, 
-                                                   stringsAsFactors = FALSE))
+            cl_edges_parental <- rbind(cl_edges_parental, data.frame(from = from_cc, 
+                                                                     to = to_cc, 
+                                                                     type = "parental", 
+                                                                     extincion = FALSE, 
+                                                                     stringsAsFactors = FALSE))
             
             # Now son clone becomes parental clone
             curTP <- cp_tp
@@ -181,30 +194,45 @@ longitudinal.tree.plot <- function( inference,
         }
     }
     
-    cl_edges <- cl_edges[!duplicated.data.frame(cl_edges[,c("from", "to", "type")]),]
+    # Fix duplicate parental relation (keep earliest) ones
     
-    # Fixing missing prevalence relations
-    included_clones_names <- unique(c(as.character(cl_edges$from), as.character(cl_edges$to)))
-    for(icn in included_clones_names) {
-        ic <- cl_vertex$clone[cl_vertex$names == icn]
-        ic_tp <- cl_vertex$TP[cl_vertex$names == icn]
+    cl_edges_parental$from_cl <- cl_vertex$clone[match(cl_edges_parental$from, cl_vertex$names)]
+    cl_edges_parental$to_cl <- cl_vertex$clone[match(cl_edges_parental$to, cl_vertex$names)]
+    cl_edges_parental$to_tp <- cl_vertex$TP[match(cl_edges_parental$to, cl_vertex$names)]
+    
+    cl_edges_parental <- cl_edges_parental[order(cl_edges_parental$to_tp),]
+    
+    cl_edges_parental <- cl_edges_parental[!duplicated(cl_edges_parental[,c("from_cl", "to_cl")], fromLast = F), c("from","to","type","extincion")]
+    
+    cl_edges <- rbind(cl_edges, cl_edges_parental)
+    
+    # Fixing missing persistence relations
+    fixing_clones <- data.frame(names = unique(as.character(cl_edges$from)))
+    
+    fixing_clones$clones <- cl_vertex$clone[match(fixing_clones$names,cl_vertex$names)]
+    fixing_clones$TP <- cl_vertex$TP[match(fixing_clones$names,cl_vertex$names)]
+    
+    fixing_clones <- fixing_clones[duplicated(fixing_clones$clones) | duplicated(fixing_clones$clones, fromLast = T),]
+    fixing_clones <- fixing_clones[order(fixing_clones$TP),]
+    
+    for(fxc in unique(fixing_clones$clones)){
         
-        next_cln <- cl_vertex$names[cl_vertex$clone == ic & cl_vertex$TP == (ic_tp + 1)]
-        if(length(next_cln) == 0) {
-            next
-        }
-        else {
-            if(sum(cl_edges$from == icn & cl_edges$to == next_cln) == 0 && next_cln %in% included_clones_names) {
-                cl_edges <- rbind(cl_edges, data.frame(from = icn, 
-                                                       to = next_cln, 
-                                                       type = "persistence", 
-                                                       extincion = FALSE, 
-                                                       stringsAsFactors = FALSE))
+        fixing_clones_i <- fixing_clones[fixing_clones$clones == fxc,]
+        for(i in 1:(nrow(fixing_clones_i)-1)) {
+            
+            if(sum(cl_edges$from == fixing_clones_i$names[i] & cl_edges$to == fixing_clones_i$names[i+1] & cl_edges$type ==  "persistence") == 0) {
+                cl_edges <- rbind(cl_edges, data.frame(from = fixing_clones_i$names[i], 
+                                                       to = fixing_clones_i$names[i+1],
+                                                       type = "persistence",
+                                                       extincion = FALSE,
+                                                       stringsAsFactors = FALSE)
+                )
             }
+            
         }
         
     }
-    
+
     # Setting edges labels
     cl_edges$label <- ""
     cl_edges$name <- ""
@@ -233,7 +261,7 @@ longitudinal.tree.plot <- function( inference,
     # Setting the size of the extincted clones
     cl_vertex$size[cl_vertex$names %in% as.character(cl_edges$to[cl_edges$extincion])] <- 2*sqrt(size*0.01)
     cl_vertex$size2[cl_vertex$names %in% as.character(cl_edges$to[cl_edges$extincion])] <- 2*sqrt(size2*0.01)
-    cl_vertex$shape[cl_vertex$names %in% as.character(cl_edges$to[cl_edges$extincion])] <- "rectangle"
+    cl_vertex$shape[cl_vertex$names %in% as.character(cl_edges$to[cl_edges$extincion])] <- "vrectangle"
     
     cl_vertex$label.dist <- -1
     cl_vertex$label.degree <- 0
@@ -256,6 +284,7 @@ longitudinal.tree.plot <- function( inference,
     if(show_prev) {
         num_str <- sub("^(-?)0.", "\\1.", sprintf("%.2f", cl_vertex$prevalance))
         cl_vertex$label <- paste0(cl_vertex$label, " (", num_str , ")")
+        cl_vertex$label[cl_vertex$prevalance == 0.0] <- ""
         
     }
     
@@ -272,13 +301,7 @@ longitudinal.tree.plot <- function( inference,
     cl_edges$lty <- ifelse(cl_edges$type == "persistence", yes = 2, no = 1)
     
     g <- igraph::graph_from_data_frame(cl_edges, directed=TRUE, vertices=cl_vertex)
-    
-    # get coordinate for each vertex
-    # org_coordinates <- layout_(g, as_tree())
-    # 
-    # cl_vertex$coord.x <- round(org_coordinates[,1], digits = 3)
-    # cl_vertex$coord.y <- round(org_coordinates[,2], digits = 3)
-    
+
     parental_clones <- which(apply(X = adjMatrix_base, MARGIN = 2, function(x) sum(x == 1))==0)
     
     c_br <- 1
@@ -345,110 +368,18 @@ longitudinal.tree.plot <- function( inference,
     igraph::vertex_attr(graph = g, name = "color") <- cl_vertex$color
     
     igraph::delete_edge_attr(graph = g, name = "extincion")
-    
-    
-    ### NEW LAYOUT
-    
+
     cl_vertex$coord.x <- NA
     cl_vertex$coord.y <- NA
-    
-    # Adding root
-    # cl_vertex <- rbind(data.frame(names = "Root", 
-    #                               branch_level = 0,
-    #                               branch = 0,
-    #                               label = root$label,
-    #                               last_mutation = "",
-    #                               TP = 1,
-    #                               clone = 0,
-    #                               prevalance = root$prev,
-    #                               size = root$size,
-    #                               size2 = root$size2,
-    #                               shape = "circle",
-    #                               label.dist = -2,
-    #                               label.degree = 45,
-    #                               extincion = 0,
-    #                               coord.x = 0,
-    #                               coord.y = 0,
-    #                               color = "#DDDDDD"
-    # ),cl_vertex)
-    
-    # #ADDING ROOT IN EACH TIME POINT
-    # root_vertexes <- data.frame()
-    # 
-    # for(TP in 1:length(inference$C)) {
-    #     root_vertexes <- rbind(root_vertexes, 
-    #                            data.frame(names = paste0("Root_t", TP), 
-    #                                       branch_level = 0,
-    #                                       branch = 0,
-    #                                       label = root$label,
-    #                                       last_mutation = "",
-    #                                       TP = TP,
-    #                                       clone = 0,
-    #                                       prevalance = root$prev,
-    #                                       size = root$size,
-    #                                       size2 = root$size2,
-    #                                       shape = "circle",
-    #                                       label.dist = -2,
-    #                                       label.degree = 45,
-    #                                       extincion = 0,
-    #                                       coord.x = 0,
-    #                                       coord.y = TP-1,
-    #                                       color = "#DDDDDD"
-    #                            ))
-    #     
-    # }
-    # 
-    # cl_vertex <- rbind(root_vertexes,cl_vertex)
-    # 
-    # root_edges <- data.frame()
-    # for(TP in 1:(length(inference$C)-1)) {
-    #     root_edges <- rbind(root_edges,
-    #                         data.frame(from = paste0("Root_t", TP), 
-    #                                    to = paste0("Root_t", (TP+1)),
-    #                                    type = "persistence",
-    #                                    extincion = FALSE,
-    #                                    label = "",
-    #                                    name = "",
-    #                                    lty = 2
-    #                         ))
-    # }
-    # 
-    # cl_edges <- rbind(root_edges,cl_edges)
-    # 
-    # adjMatrix_overall <- igraph::get.adjacency(g, sparse = F, attr = "type", names = T)
-    # ancestral_nodes <- colnames(adjMatrix_overall)[which(colSums(adjMatrix_overall != "")==0)] 
-    # 
-    # for(an in ancestral_nodes) {
-    #     cl_edges <- rbind(data.frame(from = "Root_t1",
-    #                                  to = an,
-    #                                  type = "Parental",
-    #                                  extincion = FALSE,
-    #                                  label = cl_vertex$last_mutation[cl_vertex$names == an],
-    #                                  name = cl_vertex$last_mutation[cl_vertex$names == an],
-    #                                  lty = 1
-    #     ),cl_edges)
-    # }
-    # 
 
-    # adjMatrix_overall <- igraph::get.adjacency(g, sparse = F, attr = "type", names = T)
-    # ancestral_nodes <- colnames(adjMatrix_overall)[which(colSums(adjMatrix_overall != "")==0)] 
-    # 
-    # for(an in ancestral_nodes) {
-    #     cl_edges <- rbind(data.frame(from = "Root",
-    #                                  to = an,
-    #                                  type = "Parental",
-    #                                  extincion = FALSE,
-    #                                  label = cl_vertex$last_mutation[cl_vertex$names == an],
-    #                                  name = cl_vertex$last_mutation[cl_vertex$names == an],
-    #                                  lty = 1
-    #     ),cl_edges)
-    # }
-    
-    
-    adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = T)
     g <- igraph::graph_from_data_frame(cl_edges, directed=TRUE, vertices=cl_vertex)
     adjMatrix_overall <- igraph::get.adjacency(g, sparse = F, attr = "type", names = TRUE)
-
+    
+    adjMatrix_overall[which(adjMatrix_overall=="")] <- 0
+    adjMatrix_overall[which(adjMatrix_overall=="persistence")] <- 2
+    adjMatrix_overall[which(adjMatrix_overall=="parental")] <- 1
+    storage.mode(adjMatrix_overall) <- "integer"
+    
     # Count total level number in each time point
     timepoints <- unique(cl_vertex$TP)
     
@@ -471,6 +402,7 @@ longitudinal.tree.plot <- function( inference,
                     adjM = adjMatrix_base_tp,
                     l_path = 0,
                     ind_lPath = 1,
+                    mut_list = NA,
                     row_v = idx
                 )
                 deep_tmp <- recursiveDescend(descend)$max_deep
@@ -479,11 +411,13 @@ longitudinal.tree.plot <- function( inference,
             mut_TP <- c(mut_TP, max_deep_tp)
         }
     }
+    
+    
     mut_TP <- cumsum(mut_TP) + 1:length(mut_TP)
     names(mut_TP) <- timepoints
     
     cl_df <- list(cl_vertex = cl_vertex, cl_edges = cl_edges)
-    idx_next_v <-  which(colSums(adjMatrix_overall != "") == 0)
+    idx_next_v <-  which(colSums(adjMatrix_overall != 0) == 0)
     
     # Root
     Xc = 0
@@ -497,99 +431,22 @@ longitudinal.tree.plot <- function( inference,
                                          adjMatrix_base=adjMatrix_base,
                                          adjMatrix_overall=adjMatrix_overall,
                                          mut_TP=mut_TP,
-                                         labels_show=labels_show)
+                                         labels_show=labels_show,
+                                         label_offset=label_offset)
     
     cl_vertex <- cl_df$cl_vertex[order(cl_df$cl_vertex$TP, cl_df$cl_vertex$coord.y),]
     cl_edges <- cl_df$cl_edges
     
+    
+    
+    
+    
     g_mod <- igraph::graph_from_data_frame(d = cl_edges, directed=TRUE, vertices=cl_vertex)
-    
-    # # fixing clone y position based on the time point 
-    # if(length(unique(cl_vertex$TP))>1) {
-    #     for(tp in seq(from = 1, to = max(cl_vertex$TP)-1)) {
-    #         m_c <- min(cl_vertex$coord.y[which(cl_vertex$TP == tp)]) - 1
-    #         cl_vertex$coord.y[which(cl_vertex$TP == tp+1 & cl_vertex$coord.y >= m_c)] <- m_c
-    #     }
-    # }
-    # 
-    # # Fixing overlapping points 
-    # for(c_x in unique(cl_vertex$coord.x)) {
-    #     idx_coord_y <- which(cl_vertex$coord.x == c_x)[order(org_coordinates[which(cl_vertex$coord.x == c_x,), 2], decreasing = TRUE)]
-    #     if(length(idx_coord_y) < 2) {
-    #         next;
-    #     }
-    #     for(i in 1:(length(idx_coord_y)-1)) {
-    #         if(cl_vertex$coord.y[idx_coord_y[i]] <= cl_vertex$coord.y[idx_coord_y[i+1]]) {
-    #             cl_vertex$coord.y[idx_coord_y[i+1]] = cl_vertex$coord.y[idx_coord_y[i]] - 1
-    #         }
-    #     }
-    # }
-    # 
-    # deltaX <- 2*(sum(abs(range(cl_vertex$coord.x))) / length(cl_vertex$coord.x))
-    # 
-    # # Fixing overlapping edges
-    # found = TRUE
-    # maxIter = iter_max
-    # while(found & maxIter > 0) {
-    #     found = FALSE
-    #     maxIter <- maxIter - 1
-    #     for(i in 1:(nrow(cl_edges)-1)) {
-    #         for(j in 2:nrow(cl_edges)) {
-    #             
-    #             if(i == j) {
-    #                 next;
-    #             }
-    #             
-    #             edgeA_1 = as.character(cl_edges$from[i])
-    #             edgeA_2 = as.character(cl_edges$to[i])
-    #             edgeB_1 = as.character(cl_edges$from[j])
-    #             edgeB_2 = as.character(cl_edges$to[j])
-    #             
-    #             ax1 <- cl_vertex$coord.x[which(cl_vertex$names == edgeA_1)]
-    #             ay1 <- cl_vertex$coord.y[which(cl_vertex$names == edgeA_1)]
-    #             ax2 <- cl_vertex$coord.x[which(cl_vertex$names == edgeA_2)]
-    #             ay2 <- cl_vertex$coord.y[which(cl_vertex$names == edgeA_2)]      
-    #             
-    #             bx1 <- cl_vertex$coord.x[which(cl_vertex$names == edgeB_1)]
-    #             by1 <- cl_vertex$coord.y[which(cl_vertex$names == edgeB_1)]
-    #             bx2 <- cl_vertex$coord.x[which(cl_vertex$names == edgeB_2)]
-    #             by2 <- cl_vertex$coord.y[which(cl_vertex$names == edgeB_2)]   
-    #             
-    #             # Check if two ends are on the same place (if truw, increase the Y values)
-    #             if(ax2 == bx2 && ay2 == by2) {
-    #                 ax2 <- ax2 + deltaX
-    #                 cl_vertex$coord.x[which(cl_vertex$names == edgeA_2)] <- ax2
-    #             }
-    #             
-    #             # Check if parental clone have y values minor respect to the son clones ones
-    #             if(ay1 <= ay2) {
-    #                 ay2 <- ay1 - 1
-    #                 cl_vertex$coord.y[which(cl_vertex$names == edgeA_2)] <- ay2
-    #             }
-    #             if(by1 <= by2) {
-    #                 by2 <- by1 - 1
-    #                 cl_vertex$coord.y[which(cl_vertex$names == edgeB_2)] <- by2
-    #             }      
-    #             
-    #             if(length(unique(c(edgeA_1,edgeA_2,edgeB_1,edgeB_2))) < 4 ) {
-    #                 next;
-    #             }
-    #             
-    #             if(checkSegmentIntersect(ax1,ay1,ax2,ay2,bx1,by1,bx2,by2)) {
-    #                 found = TRUE
-    #                 cl_vertex$coord.x[which(cl_vertex$names == edgeA_2)] <- bx2
-    #                 cl_vertex$coord.x[which(cl_vertex$names == edgeB_2)] <- ax2 
-    #             }
-    #         }
-    #     }
-    # }
-    
+
     time_point_grp <- split(cl_vertex$names[cl_vertex$last_mutation!="Root"], cl_vertex$TP[cl_vertex$last_mutation!="Root"])
-    #time_point_grp[[1]] <- NULL
     
     ratio = par("din")[1] / par("din")[2]
     
-    #g$layout <- norm_coords(as.matrix(cl_vertex[,c("coord.x", "coord.y")]), xmin = -1*(ratio), xmax = 1*(ratio), ymin = -1, ymax = 1)
     g_mod$layout <- igraph::norm_coords(as.matrix(cl_vertex[,c("coord.x", "coord.y")]), xmin = -1*ratio, xmax = 1*ratio, ymin = 1, ymax = -1)
     
     if(tk_plot) {
