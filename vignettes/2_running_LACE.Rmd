@@ -14,8 +14,6 @@ time points: (1) before treatment, (2) 4 days treatment, (3) 28 days treatment a
 library("LACE")
 data(longitudinal_sc_variants)
 names(longitudinal_sc_variants)
-
-## [1] "T1_before_treatment"  "T2_4_days_treatment"  "T3_28_days_treatment" "T4_57_days_treatment"
 ```
 
 We setup the main parameter in oder to perform the inference. First of all, as the four data points may potentially provide sequencing for an unbalanced 
@@ -36,9 +34,7 @@ beta = list()
 beta[[1]] = c(0.10,0.05,0.05,0.05)
 beta[[2]] = c(0.10,0.05,0.05,0.05)
 head(alpha)
-
 head(beta)
-
 ```
 
 ## Inference
