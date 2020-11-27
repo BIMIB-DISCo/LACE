@@ -28,12 +28,8 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
     }
     
     # Repeat for num_rs number of restarts
-    for(i in 1:num_rs) {
-        
-        if(verbose) {
-            cat(paste0("Performing restart number ",as.character(as.integer(i))," out of ",as.character(as.integer(num_rs))), "\n")
-        }
-        
+    i = 1
+	while(i <= num_rs) {
         # Initialize B
         if(i==1) {
             
@@ -73,10 +69,10 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
         }
         
         # Repeat until num_iter number of iterations is reached
-        for(j in 1:num_iter) {
-            
+        j = 1
+		while(j <= num_iter) {
             if(verbose && (j %% 100)==0) {
-                cat(paste0("Performed iteration number ",as.character(as.integer(j))," out of ",as.character(as.integer(num_iter))," | Current best log-likelihood ",joint_lik_best,"\n"))
+                cat(paste0("Performed iteration number ", as.character(as.integer(j))," of ", as.character(as.integer(i)),"/",as.character(as.integer(num_rs))," restart | Current best log-likelihood ",joint_lik_best,"\n"))
             }
             
             # Try move on B
@@ -146,7 +142,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
                 }
                 
             }
-            
+			j = j + 1
         }
         
         if(is.null(joint_lik_global) || (joint_lik_best>joint_lik_global)) {
@@ -162,7 +158,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
             }
             
         }
-        
+        i = i + 1
     }
     
     return(list(B=B_global,C=C_global,alpha=alpha_global,beta=beta_global,lik=lik_global,joint_lik=joint_lik_global,equivalent_solutions=equivalent_solutions_global))
