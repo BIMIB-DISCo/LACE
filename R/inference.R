@@ -71,8 +71,16 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
         # Repeat until num_iter number of iterations is reached
         j = 1
 		while(j <= num_iter) {
+		    
             if(verbose && (j %% 100)==0) {
-                cat(paste0("Performed iteration number ", as.character(as.integer(j))," of ", as.character(as.integer(i)),"/",as.character(as.integer(num_rs))," restart | Current best log-likelihood ",joint_lik_best,"\n"))
+                
+                cat("\r",
+                    "Current best lik. = ",format(joint_lik_best, digit = 2, nsmall = 2), 
+                    " Overall best lik. = ", format(joint_lik_global, digit = 2, nsmall = 2),
+                    " | Restart # ",i,"/",num_rs," | Iter # ",j, " | Likelihood not improved for ", count_lik_best_cons,"/",n_try_bs," iterations",
+                    "     ",#Brutally clear the end of the line
+                    sep='')
+                
             }
             
             # Try move on B
@@ -121,9 +129,9 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
                 if(count_lik_best_cons > n_try_bs) {
                     
                     # Warning message
-                    if(verbose) {
-                        cat(paste0("Not improving likelihood of best solution after ",as.character(as.integer(n_try_bs)), " iterations. Skipping to next restart.\n"))
-                    }
+                    # if(verbose) {
+                    #     cat(paste0("Not improving likelihood of best solution after ",as.character(as.integer(n_try_bs)), " iterations. Skipping to next restart.\n"))
+                    # }
                     break
                     
                 }
