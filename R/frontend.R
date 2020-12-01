@@ -70,14 +70,23 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     for(i in 1:length(D)) {
         storage.mode(D[[i]]) <- "integer"
     }
-    
-    if(!is.null(initialization)){
-        storage.mode(initialization) <- "integer"
-    }
 
     # Remove any indistinguishable event from input data prior inference
     if(check_indistinguishable) {
         D <- check.indistinguishable(D)
+    }
+    
+    # Initialize the tree
+    if(!is.null(initialization)){
+        
+        for(i in 2:ncol(initialization)) {
+            colnames(initialization)[i] = as.character(which(colnames(D[[1]])==colnames(initialization)[i]))
+        }
+        rownames(initialization)[2:nrow(initialization)] = 1:(nrow(initialization)-1)
+        rownames(initialization)[1] = "r"
+        colnames(initialization)[1] = "r"
+        
+        storage.mode(initialization) <- "integer"
     }
 
     # Initialize weights to compute weighted joint likelihood
@@ -97,6 +106,9 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         alpha = list(rep(0.01,length(D)))
         beta = list(rep(0.05,length(D)))
     }
+    
+    
+    
     
     if(verbose) {
         cat(paste0("Starting inference for a total of ",length(alpha)," different values of alpha and beta.","\n"))
