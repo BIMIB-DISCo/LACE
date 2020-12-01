@@ -128,10 +128,16 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
                 count_lik_best_cons <- count_lik_best_cons + 1
                 if(count_lik_best_cons > n_try_bs) {
                     
-                    # Warning message
-                    # if(verbose) {
-                    #     cat(paste0("Not improving likelihood of best solution after ",as.character(as.integer(n_try_bs)), " iterations. Skipping to next restart.\n"))
-                    # }
+                    # Skipping to the next restart
+                    if(verbose) {
+                        cat("\r",
+                            "Current best lik. = ",format(joint_lik_best, digit = 2, nsmall = 2), 
+                            " Overall best lik. = ", format(joint_lik_global, digit = 2, nsmall = 2),
+                            " | Restart # ",i,"/",num_rs," | Iter # ",j, " | Likelihood not improved for ", (count_lik_best_cons-1),"/",n_try_bs," iterations",
+                            "     ", #Brutally clear the end of the line
+                            "\n",
+                            sep='')
+                    }
                     break
                     
                 }
