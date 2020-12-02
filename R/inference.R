@@ -76,7 +76,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
                 
                 cat("\r",
                     "Current best lik. = ",format(joint_lik_best, digit = 2, nsmall = 2), 
-                    " Overall best lik. = ", format(joint_lik_global, digit = 2, nsmall = 2),
+                    " Overall best lik. = ", format(max(joint_lik_global,joint_lik_best), digit = 2, nsmall = 2),
                     " | Restart # ",i,"/",num_rs," | Iter # ",j, " | Likelihood not improved for ", count_lik_best_cons,"/",n_try_bs," iterations",
                     "     ",#Brutally clear the end of the line
                     sep='')
@@ -132,7 +132,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
                     if(verbose) {
                         cat("\r",
                             "Current best lik. = ",format(joint_lik_best, digit = 2, nsmall = 2), 
-                            " Overall best lik. = ", format(joint_lik_global, digit = 2, nsmall = 2),
+                            " Overall best lik. = ", format(max(joint_lik_global,joint_lik_best), digit = 2, nsmall = 2),
                             " | Restart # ",i,"/",num_rs," | Iter # ",j, " | Likelihood not improved for ", (count_lik_best_cons-1),"/",n_try_bs," iterations",
                             "     ", #Brutally clear the end of the line
                             "\n",
