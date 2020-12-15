@@ -28,12 +28,8 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
     }
     
     # Repeat for num_rs number of restarts
-    for(i in 1:num_rs) {
-        
-        if(verbose) {
-            cat(paste0("Performing restart number ",as.character(as.integer(i))," out of ",as.character(as.integer(num_rs))), "\n")
-        }
-        
+    i = 1
+	while(i <= num_rs) {
         # Initialize B
         if(i==1) {
             
@@ -73,10 +69,18 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
         }
         
         # Repeat until num_iter number of iterations is reached
-        for(j in 1:num_iter) {
-            
+        j = 1
+		while(j <= num_iter) {
+		    
             if(verbose && (j %% 100)==0) {
-                cat(paste0("Performed iteration number ",as.character(as.integer(j))," out of ",as.character(as.integer(num_iter))," | Current best log-likelihood ",joint_lik_best,"\n"))
+                
+                cat("\r",
+                    "Current best lik. = ",format(joint_lik_best, digit = 2, nsmall = 2), 
+                    " Overall best lik. = ", format(max(joint_lik_global,joint_lik_best), digit = 2, nsmall = 2),
+                    " | Restart # ",i,"/",num_rs," | Iter # ",j, " | Likelihood not improved for ", count_lik_best_cons,"/",n_try_bs," iterations",
+                    "     ",#Brutally clear the end of the line
+                    sep='')
+                
             }
             
             # Try move on B
@@ -124,9 +128,15 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
                 count_lik_best_cons <- count_lik_best_cons + 1
                 if(count_lik_best_cons > n_try_bs) {
                     
-                    # Warning message
+                    # Skipping to the next restart
                     if(verbose) {
-                        cat(paste0("Not improving likelihood of best solution after ",as.character(as.integer(n_try_bs)), " iterations. Skipping to next restart.\n"))
+                        cat("\r",
+                            "Current best lik. = ",format(joint_lik_best, digit = 2, nsmall = 2), 
+                            " Overall best lik. = ", format(max(joint_lik_global,joint_lik_best), digit = 2, nsmall = 2),
+                            " | Restart # ",i,"/",num_rs," | Iter # ",j, " | Likelihood not improved for ", (count_lik_best_cons-1),"/",n_try_bs," iterations",
+                            "     ", #Brutally clear the end of the line
+                            "\n",
+                            sep='')
                     }
                     break
                     
@@ -146,7 +156,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
                 }
                 
             }
-            
+			j = j + 1
         }
         
         if(is.null(joint_lik_global) || (joint_lik_best>joint_lik_global)) {
@@ -162,7 +172,7 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
             }
             
         }
-        
+        i = i + 1
     }
     
     return(list(B=B_global,C=C_global,alpha=alpha_global,beta=beta_global,lik=lik_global,joint_lik=joint_lik_global,equivalent_solutions=equivalent_solutions_global))
