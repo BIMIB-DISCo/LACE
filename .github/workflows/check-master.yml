@@ -156,7 +156,7 @@ jobs:
           'soul', 'placeins', 'ragged2e', 'ms', 'footmisc', 'changepage',
           'caption', 'xstring', 'mathtools', 'pgf', 'environ', 'trimspaces',
           'pdfcrop'))
-        shell: Rscript {0}        
+        shell: Rscript {0}
 
       - name: Install R packages
         run: |

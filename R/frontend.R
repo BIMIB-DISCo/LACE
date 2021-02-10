@@ -163,7 +163,8 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
                                                             learning_rate = learning_rate, 
                                                             marginalize = marginalize, 
                                                             seed = round(runif(1)*10000), 
-                                                            verbose = verbose)
+                                                            verbose = verbose,
+                                                            log_file = log_file)
             
         }
 

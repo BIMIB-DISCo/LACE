@@ -1,5 +1,5 @@
 # Main function for phylogeny reconstruction with longitudinal data
-learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, beta = 10^-2, initialization = NULL, keep_equivalent = FALSE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, error_move = FALSE, seed = NULL, verbose = TRUE ) {
+learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, beta = 10^-2, initialization = NULL, keep_equivalent = FALSE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, error_move = FALSE, seed = NULL, verbose = TRUE, log_file = "") {
     
     # Set the seed
     set.seed(seed)
@@ -55,6 +55,14 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
         lik <- res$lik
         joint_lik <- res$joint_lik
         
+        if(log_file!=""){
+            if(i == 1) {
+                cat("R1:",round(joint_lik, digits = 2),",",sep="",file = log_file, append = FALSE)
+            } else {
+                cat("\nR",i,":",round(joint_lik, digits = 2),",",sep="",file = log_file, append = TRUE)
+            }
+        }
+        
         # Initialize result variables (best solution for the current restart)
         B_best <- B
         C_best <- C
@@ -94,6 +102,11 @@ learn.longitudinal.phylogeny <- function( D, lik_w = rep(1/length(D),length(D)),
             C_tmp <- res$C
             lik_tmp <- res$lik
             joint_lik_tmp <- res$joint_lik
+            
+            if(log_file!=""){
+                    cat(round(joint_lik_tmp, digits = 2),",",sep="",file = log_file, append = TRUE)
+            }
+            
             
             # If likelihood at current step is better than best likelihood, replace best model with current
             if(joint_lik_tmp > joint_lik_best) {
