@@ -156,7 +156,7 @@ jobs:
           'soul', 'placeins', 'ragged2e', 'ms', 'footmisc', 'changepage',
           'caption', 'xstring', 'mathtools', 'pgf', 'environ', 'trimspaces',
           'pdfcrop'))
-          tinytex::tlmgr_update('ms')
+          tinytex::tlmgr_update()
         shell: Rscript {0}
 
       - name: Install R packages
