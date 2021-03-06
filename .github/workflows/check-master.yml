@@ -388,7 +388,7 @@ jobs:
           'marginfix', 'titlesec', 'fancyhdr', 'enumitem', 'parskip', 'preprint',
           'soul', 'placeins', 'ragged2e', 'ms', 'footmisc', 'changepage',
           'caption', 'xstring', 'mathtools', 'pgf', 'environ', 'trimspaces',
-          'pdfcrop'))
+          'pdfcrop', 'everysel'))
         shell: Rscript {0}
 
       - name: Query dependencies
