@@ -130,17 +130,17 @@ as.B <- function( adj_matrix ) {
 
 # check that point Q is not on segments A-B
 checkQonAB <- function( Ax, Ay, Bx, By, Qx, Qy ) {
-
+    
     if((Qx <= max(Ax,Bx)) && (Qx >= min(Ax, Bx)) && (Qy <= max(Ay, By)) && (Qy >= min(Ay, By))) {
         return(TRUE)
     }
     return(FALSE)
-
+    
 }
 
 # check segments orientation
 orientation <- function( Ax, Ay, Bx, By, Qx, Qy ) {
-
+    
     res <- ((Qy - Ay) * (Bx - Qx)) - ((Qx - Ax)*(By - Qy))
     if(res > 0) {
         return(1)
@@ -151,7 +151,7 @@ orientation <- function( Ax, Ay, Bx, By, Qx, Qy ) {
     else {
         return(0)
     }
-
+    
 }
 
 # check if two segments interserct
@@ -264,13 +264,11 @@ recursiveDescend <- function( descend ) {
     }
     descend$max_deep <- max(descend$l_path)
     return(descend)
-
+    
 }
 
-
 recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, adjMatrix_overall, mut_TP, labels_show, label_offset) {
-    
-    
+
     cl_vertex_idx_Vc <- which(cl_df$cl_vertex$names == colnames(adjMatrix_overall)[idx_Vc])
     
     cl_df$cl_vertex$coord.x[cl_vertex_idx_Vc] <- Xc
@@ -298,7 +296,7 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
         
         idx_next_v <- idx_next_v[ord]
         deep <- deep[ord]
-
+        
         offset_X = 0
         for(i in 1:length(idx_next_v)){
             
@@ -309,9 +307,7 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
                 Y = mut_TP[as.character((cl_df$cl_vertex$TP[cl_df$cl_vertex$names == Vn_name]-1))] + 1
                 offset_X = offset_X + deep[i] - 1
             } else {
-                
-                
-                
+
                 if(cl_df$cl_vertex$TP[cl_vertex_idx_Vc] < cl_df$cl_vertex$TP[cl_df$cl_vertex$names == Vn_name]) {
                     Y = mut_TP[as.character((cl_df$cl_vertex$TP[cl_df$cl_vertex$names == Vn_name]-1))] + 1
                 } else {
@@ -319,9 +315,9 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
                 }
                 
                 X = (Xc + offset_X + 1)
-
+                
                 offset_X = offset_X + deep[i]
-
+                
                 idx_row_edges = which(cl_df$cl_edges$from == cl_df$cl_vertex$names[cl_vertex_idx_Vc] & cl_df$cl_edges$to == Vn_name)
                 mutation_name <- cl_df$cl_vertex$last_mutation[cl_df$cl_vertex$names == Vn_name]
                 
@@ -394,6 +390,7 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
             cl_df <- recursiveLongitudinalLayout(idx_next_v[i], X, Y, cl_df, adjMatrix_base, adjMatrix_overall, mut_TP, labels_show, label_offset)
         }
     } else {
+
         # NO BRANCH
         Vn_name <- colnames(adjMatrix_overall)[idx_next_v]
         
@@ -482,5 +479,38 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
     }
     
     return(cl_df)
+    
+}
+
+# Draw B
+draw.B <- function( B, mut_label = colnames(B)[-1], last_mut_node_label =  TRUE) {
+    
+    Broot <- Node$new('r')
+    Broot$mut <- B[1,]
+    
+    nClone <- nrow(B)
+    Clones <- list(Broot)
+    
+    for(rP in 1:(nrow(B)-1)) {
+        
+        for(rC in ((rP+1):nrow(B))) {
+            
+            if(all(Clones[[rP]]$mut[1:rP]==B[rC,1:rP])&&(sum(Clones[[rP]]$mut)==(sum(B[rC,])-1))) {
+                if(last_mut_node_label) {
+                    mutName <- tail(mut_label[which(B[rC,-1]==1)], 1)
+                } else {
+                    mutName <- paste(mut_label[which(B[rC,-1]==1)],collapse="")  
+                }
+                
+                Clones[[rC]] <- Clones[[rP]]$AddChild(mutName)
+                Clones[[rC]]$mut <- B[rC,]
+                
+            }
+            
+        }
+        
+    }
+    
+    return(Broot)
     
 }
