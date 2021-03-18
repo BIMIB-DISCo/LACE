@@ -23,7 +23,6 @@
 #' maximum-likelihood is returned.
 #' @param beta False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
 #' maximum-likelihood is returned.
-#' @param initialization Starting point of the mcmc; if not provided, a random starting point is used.
 #' @param keep_equivalent Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?
 #' @param check_indistinguishable Boolean. Shall I remove any indistinguishable event from input data prior inference?
 #' @param num_rs Number of restarts during mcmc inference.
@@ -49,11 +48,11 @@
 #' @importFrom Rfast rowMaxs
 #' @importFrom stats runif rnorm
 #'
-LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, error_move = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
+LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, error_move = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
     
     # Set the seed
     set.seed(seed)
-
+    
     # Handle SummarizedExperiment objects
     if(typeof(D)=="S4") {
         curr_data <- t(assays(D)[[1]])
@@ -65,30 +64,58 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         }
         D <- curr_D
     }
-
+    
     # Set storage mode to integer
     for(i in 1:length(D)) {
         storage.mode(D[[i]]) <- "integer"
     }
-
+    
     # Remove any indistinguishable event from input data prior inference
     if(check_indistinguishable) {
         D <- check.indistinguishable(D)
     }
     
-    # Initialize the tree
-    if(!is.null(initialization)){
-        
-        for(i in 2:ncol(initialization)) {
-            colnames(initialization)[i] = as.character(which(colnames(D[[1]])==colnames(initialization)[i]))
+    # set initial tree from where to start MCMC search
+    data <- D
+    data[which(is.na(data))] <- 0
+    marginal_probs <- matrix(colSums(data,na.rm=TRUE)/nrow(data),ncol=1)
+    rownames(marginal_probs) <- colnames(data)
+    colnames(marginal_probs) <- "Frequency"
+    joint_probs <- array(NA,c(ncol(data),ncol(data)))
+    rownames(joint_probs) <- colnames(data)
+    colnames(joint_probs) <- colnames(data)
+    for (i in seq_len(ncol(data))) {
+        for (j in seq_len(ncol(data))) {
+            val1 <- data[,i]
+            val2 <- data[,j]
+            joint_probs[i,j] <- (t(val1)%*%val2)
         }
-        rownames(initialization)[2:nrow(initialization)] = 1:(nrow(initialization)-1)
-        rownames(initialization)[1] = "r"
-        colnames(initialization)[1] = "r"
-        
-        storage.mode(initialization) <- "integer"
     }
-
+    joint_probs <- joint_probs/nrow(data)
+    adjacency_matrix <- array(0,c(ncol(data),ncol(data)))
+    rownames(adjacency_matrix) <- colnames(data)
+    colnames(adjacency_matrix) <- colnames(data)
+    pmi <- joint_probs
+    for(i in seq_len(nrow(pmi))) {
+        for(j in seq_len(ncol(pmi))) {
+            pmi[i,j] <- log(joint_probs[i,j]/(marginal_probs[i,"Frequency"]*marginal_probs[j,"Frequency"]))
+        }
+    }
+    ordering <- names(sort(marginal_probs[,"Frequency"],decreasing=TRUE))
+    adjacency_matrix <- adjacency_matrix[ordering,ordering]
+    adjacency_matrix[1,2] = 1
+    if(nrow(adjacency_matrix)>2) {
+        for(i in 3:nrow(adjacency_matrix)) {
+            curr_c <- rownames(adjacency_matrix)[i]
+            curr_candidate_p <- rownames(adjacency_matrix)[seq_len((i-1))]
+            adjacency_matrix[names(which.max(pmi[curr_candidate_p,curr_c]))[1],curr_c] <- 1
+        }
+    }
+    adjacency_matrix <- rbind(rep(0,nrow(adjacency_matrix)),adjacency_matrix)
+    adjacency_matrix <- cbind(rep(0,nrow(adjacency_matrix)),adjacency_matrix)
+    adjacency_matrix[1,2] = 1
+    initialization <- as.B(adj_matrix=adjacency_matrix,D=D)
+    
     # Initialize weights to compute weighted joint likelihood
     if(is.null(lik_w)) {
         total_sample_size <- 0
@@ -100,109 +127,65 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         }
         lik_w <- lik_w / sum(lik_w)
     }
-
+    
     # Initialize error rates alpha and beta
     if(is.null(alpha)) {
         alpha = list(rep(0.01,length(D)))
         beta = list(rep(0.05,length(D)))
     }
     
-    
-    
-    
     if(verbose) {
         cat(paste0("Starting inference for a total of ",length(alpha)," different values of alpha and beta.","\n"))
     }
-
+    
     # Setting up parallel execution
-    parallel <- NULL
-    close_parallel <- FALSE
-    if(is.null(parallel)&&length(alpha)>1) {
+    if(num_rs>1) {
         if(is.na(num_processes) || is.null(num_processes) || num_processes == 1) {
-            parallel <- NULL
+            num_processes = 1
         }
         else if(num_processes==Inf) {
             cores <- as.integer((detectCores()-1))
             if(cores < 2) {
-                parallel <- NULL
+                num_processes <- 1
             }
             else {
-                num_processes <- min(num_processes,length(alpha))
-                parallel <- makeCluster(num_processes,outfile=log_file)
-                close_parallel <- TRUE
+                num_processes <- min(cores,num_rs)
             }
         }
         else {
-            num_processes <- min(num_processes,length(alpha))
-            parallel <- makeCluster(num_processes,outfile=log_file)
-            close_parallel <- TRUE
+            num_processes <- min(num_processes,num_rs)
         }
         
-        if(verbose && !is.null(parallel)) {
+        if(verbose && num_processes>1) {
             cat("Executing",num_processes,"processes via parallel...","\n")
         }
-    }
-
-    # Now start the inference
-    if(is.null(parallel)) {
-
-        # Sequential computation
-        inference <- list()
-
-        for(i in 1:length(alpha)) {
-
-            inference[[i]] <- learn.longitudinal.phylogeny( D = D, 
-                                                            lik_w = lik_w, 
-                                                            alpha = alpha[[i]], 
-                                                            beta = beta[[i]], 
-                                                            initialization = initialization, 
-                                                            keep_equivalent = keep_equivalent, 
-                                                            num_rs = num_rs, 
-                                                            num_iter = num_iter, 
-                                                            n_try_bs = n_try_bs, 
-                                                            learning_rate = learning_rate, 
-                                                            marginalize = marginalize, 
-                                                            seed = round(runif(1)*10000), 
-                                                            verbose = verbose,
-                                                            log_file = log_file)
-            
-        }
-
-    }
-    else {
-
-        # Parallel computation
-        res_clusterEvalQ <- clusterEvalQ(parallel,library("Rfast"))
-        clusterExport(parallel,varlist=c("D","lik_w","alpha","beta","initialization","keep_equivalent","num_rs","num_iter","n_try_bs","learning_rate","marginalize","verbose"),envir=environment())
-        clusterExport(parallel,c("learn.longitudinal.phylogeny","initialize.B","move.B","compute.C"),envir=environment())
-        clusterSetRNGStream(parallel,iseed=round(runif(1)*100000))
-        inference <- parLapply(parallel,1:length(alpha),function(x) {
-            
-            if(verbose) {
-                cat('Performing inference for alpha =',paste0(alpha[[x]],collapse=" | "),'and beta =',paste0(beta[[x]],collapse=" | "),'\n')
-            }
-            
-            inference <- learn.longitudinal.phylogeny( D = D, 
-                                                       lik_w = lik_w, 
-                                                       alpha = alpha[[x]], 
-                                                       beta = beta[[x]], 
-                                                       initialization = initialization, 
-                                                       keep_equivalent = keep_equivalent, 
-                                                       num_rs = num_rs, 
-                                                       num_iter = num_iter, 
-                                                       n_try_bs = n_try_bs, 
-                                                       learning_rate = learning_rate, 
-                                                       marginalize = marginalize, 
-                                                       seed = round(runif(1)*10000), 
-                                                       verbose = FALSE)
-
-        })
-        
+    } else {
+        num_processes = 1
     }
     
-    # Close parallel
-    if(close_parallel) {
-        stopCluster(parallel)
+    # Now start the inference
+    
+    # Sequential computation
+    inference <- list()
+    
+    for(i in 1:length(alpha)) {
+        
+        inference[[i]] <- learn.longitudinal.phylogeny( D = D, 
+                                                        lik_w = lik_w, 
+                                                        alpha = alpha[[i]], 
+                                                        beta = beta[[i]], 
+                                                        initialization = initialization, 
+                                                        keep_equivalent = keep_equivalent, 
+                                                        num_rs = num_rs, 
+                                                        num_iter = num_iter, 
+                                                        n_try_bs = n_try_bs, 
+                                                        learning_rate = learning_rate, 
+                                                        marginalize = marginalize, 
+                                                        num_processes = num_processes,
+                                                        error_move = error_move,
+                                                        seed = round(runif(1)*10000), 
+                                                        verbose = verbose,
+                                                        log_file = log_file)
     }
 
     # Return the solution at maximum likelihood among the inferrend ones
@@ -212,7 +195,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     }
     best <- which(lik==max(lik))[1]
     error_rates <- list(alpha=inference[[best]][["alpha"]],beta=inference[[best]][["beta"]])
-
+    
     # compute corrected genotypes
     inference_B <- inference[[best]][["B"]]
     rownames(inference_B)[1] <- 0
@@ -240,7 +223,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     rownames(corrected_genotypes) <- cells_names
     colnames(corrected_genotypes) <- c("Root",colnames(D[[1]]))
     corrected_genotypes <- corrected_genotypes[,-1,drop=FALSE]
-
+    
     # Renaming
     B <- inference[[best]][["B"]]
     rownames(B) <- c("Root",paste0("Clone_",rownames(B)[2:nrow(B)]))
@@ -256,7 +239,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
     relative_likelihoods <- inference[[best]][["lik"]]
     names(relative_likelihoods) <- paste0("Experiment_",1:length(relative_likelihoods))
     joint_likelihood <- inference[[best]][["joint_lik"]]
-
+    
     # Compute clones' prevalence
     clones_prevalence <- array(NA,c((dim(B)[1]-1),(length(C)+1)))
     rownames(clones_prevalence) <- rownames(B)[2:nrow(B)]
@@ -270,12 +253,12 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         }
         clones_prevalence[i,"Total"] <- clone_number_cell / total_number_cell
     }
-
+    
     # Include Root in clones_prevalence
     clones_prevalence <- rbind(rep(NA,ncol(clones_prevalence)),clones_prevalence)
     rownames(clones_prevalence)[1] <- "Root"
     clones_prevalence["Root",] <- (1-colSums(clones_prevalence,na.rm=TRUE))
-
+    
     # Compute clones' summary
     clones_summary <- list()
     Bwor <- B[,-1]
@@ -285,37 +268,29 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = N
         clones_summary[[c]] <- mut_list
         i = i + 1
     }
-
+    
     # Finally, process equivalent solutions
     equivalent_solutions <- inference[[best]][["equivalent_solutions"]]
-    if(length(equivalent_solutions)>1) { # if we have at least one other solution besides the best one
-        duplicated <- NULL
-        for(i in 2:length(equivalent_solutions)) { # consider all solutions besides the first one
-            for(j in 1:i) { # check if we have equivalent solutions among the ones discovered before
-                if(i!=j) {
-                    curr_i <- equivalent_solutions[[i]][["B"]]
-                    curr_i <- as.adj.matrix(curr_i)
-                    curr_j <- equivalent_solutions[[j]][["B"]]
-                    curr_j <- as.adj.matrix(curr_j)
-                    if(all(curr_i==curr_j)) {
-                        duplicated <- c(duplicated,i)
-                    }
-                }
-            }
-        }
-        if(!is.null(duplicated)) {
-            duplicated <- unique(duplicated)
-            equivalent_solutions <- equivalent_solutions[-duplicated]
-        }
+    
+    eq_sol_df <- do.call(rbind,  lapply(equivalent_solutions, function(x) {
+        adjM <- as.adj.matrix(x$B)
+        return(as.vector(adjM))
+    }))
+    
+    idx_uniq_sol <- which(!duplicated(eq_sol_df))
+    
+    equivalent_solutions <- equivalent_solutions[idx_uniq_sol]
+
+    if(length(equivalent_solutions)==1) { # if we have only the best solution (no other equivalent solutions)
+        equivalent_solutions <- list()
+    } else {
+        
         for(i in 1:length(equivalent_solutions)) {
             rownames(equivalent_solutions[[i]][["B"]]) <- c("Root",paste0("Clone_",rownames(equivalent_solutions[[i]][["B"]])[2:nrow(equivalent_solutions[[i]][["B"]])]))
             colnames(equivalent_solutions[[i]][["B"]]) <- c("Root",colnames(D[[1]])[as.numeric(colnames(equivalent_solutions[[i]][["B"]])[2:ncol(equivalent_solutions[[i]][["B"]])])])
         }
     }
-    if(length(equivalent_solutions)==1) { # if we have only the best solution (no other equivalent solutions)
-        equivalent_solutions <- list()
-    }
-
+    
     return(list(B=B,C=C,corrected_genotypes=corrected_genotypes,clones_prevalence=clones_prevalence,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,clones_summary=clones_summary,equivalent_solutions=equivalent_solutions,error_rates=error_rates))
-
+    
 }

@@ -9,7 +9,6 @@ LACE(
   lik_w = NULL,
   alpha = NULL,
   beta = NULL,
-  initialization = NULL,
   keep_equivalent = TRUE,
   check_indistinguishable = TRUE,
   num_rs = 50,
@@ -36,8 +35,6 @@ maximum-likelihood is returned.}
 
 \item{beta}{False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
 maximum-likelihood is returned.}
-
-\item{initialization}{Starting point of the mcmc; if not provided, a random starting point is used.}
 
 \item{keep_equivalent}{Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?}
 
