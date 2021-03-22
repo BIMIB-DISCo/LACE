@@ -76,7 +76,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, keep_equivalent = 
     }
     
     # set initial tree from where to start MCMC search
-    data <- D
+    data <- Reduce(rbind,D)
     data[which(is.na(data))] <- 0
     marginal_probs <- matrix(colSums(data,na.rm=TRUE)/nrow(data),ncol=1)
     rownames(marginal_probs) <- colnames(data)
@@ -114,7 +114,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, keep_equivalent = 
     adjacency_matrix <- rbind(rep(0,nrow(adjacency_matrix)),adjacency_matrix)
     adjacency_matrix <- cbind(rep(0,nrow(adjacency_matrix)),adjacency_matrix)
     adjacency_matrix[1,2] = 1
-    initialization <- as.B(adj_matrix=adjacency_matrix,D=D)
+    initialization <- as.B.trait(adj_matrix=adjacency_matrix,D=D[[1]])
     
     # Initialize weights to compute weighted joint likelihood
     if(is.null(lik_w)) {
