@@ -514,3 +514,32 @@ draw.B <- function( B, mut_label = colnames(B)[-1], last_mut_node_label =  TRUE)
     return(Broot)
     
 }
+
+# build B from an adjacency matrix where we assume genotypes and mutations to be both ordered
+as.B.trait <- function( adj_matrix, D ) {
+    
+    # build data structure to save results
+    n_clones <- nrow(adj_matrix)
+    B <- diag(n_clones)
+    
+    # build B
+    for(k in seq_len(n_clones)) {
+        idx_child <- which(adj_matrix[k,]==1,arr.ind=TRUE)
+        if(length(idx_child)==1) {
+            B[idx_child,] <- B[k,] + B[idx_child,]
+        }
+        else if(length(idx_child)>1) {
+            B[idx_child,] <- sweep(B[idx_child,],2,B[k,],"+")
+        }
+    }
+    rownames(B) <- c("r",seq_len((nrow(B)-1)))
+    mycolnames <- "r"
+    for(i in 2:nrow(adj_matrix)) {
+        mycolnames <- c(mycolnames,as.character(which(rownames(adj_matrix)[i]==colnames(D))))
+    }
+    colnames(B) <- mycolnames
+    
+    # return B
+    return(B)
+    
+}
