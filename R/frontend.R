@@ -48,7 +48,7 @@
 #' @importFrom Rfast rowMaxs
 #' @importFrom stats runif rnorm
 #'
-LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, error_move = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
+LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, error_move = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
     
     # Set the seed
     set.seed(seed)
@@ -75,46 +75,49 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, keep_equivalent = 
         D <- check.indistinguishable(D)
     }
     
-    # set initial tree from where to start MCMC search
-    data <- Reduce(rbind,D)
-    data[which(is.na(data))] <- 0
-    marginal_probs <- matrix(colSums(data,na.rm=TRUE)/nrow(data),ncol=1)
-    rownames(marginal_probs) <- colnames(data)
-    colnames(marginal_probs) <- "Frequency"
-    joint_probs <- array(NA,c(ncol(data),ncol(data)))
-    rownames(joint_probs) <- colnames(data)
-    colnames(joint_probs) <- colnames(data)
-    for (i in seq_len(ncol(data))) {
-        for (j in seq_len(ncol(data))) {
-            val1 <- data[,i]
-            val2 <- data[,j]
-            joint_probs[i,j] <- (t(val1)%*%val2)
+    if(is.null(initialization)) {
+        
+        # set initial tree from where to start MCMC search
+        data <- Reduce(rbind,D)
+        data[which(is.na(data))] <- 0
+        marginal_probs <- matrix(colSums(data,na.rm=TRUE)/nrow(data),ncol=1)
+        rownames(marginal_probs) <- colnames(data)
+        colnames(marginal_probs) <- "Frequency"
+        joint_probs <- array(NA,c(ncol(data),ncol(data)))
+        rownames(joint_probs) <- colnames(data)
+        colnames(joint_probs) <- colnames(data)
+        for (i in seq_len(ncol(data))) {
+            for (j in seq_len(ncol(data))) {
+                val1 <- data[,i]
+                val2 <- data[,j]
+                joint_probs[i,j] <- (t(val1)%*%val2)
+            }
         }
-    }
-    joint_probs <- joint_probs/nrow(data)
-    adjacency_matrix <- array(0,c(ncol(data),ncol(data)))
-    rownames(adjacency_matrix) <- colnames(data)
-    colnames(adjacency_matrix) <- colnames(data)
-    pmi <- joint_probs
-    for(i in seq_len(nrow(pmi))) {
-        for(j in seq_len(ncol(pmi))) {
-            pmi[i,j] <- log(joint_probs[i,j]/(marginal_probs[i,"Frequency"]*marginal_probs[j,"Frequency"]))
+        joint_probs <- joint_probs/nrow(data)
+        adjacency_matrix <- array(0,c(ncol(data),ncol(data)))
+        rownames(adjacency_matrix) <- colnames(data)
+        colnames(adjacency_matrix) <- colnames(data)
+        pmi <- joint_probs
+        for(i in seq_len(nrow(pmi))) {
+            for(j in seq_len(ncol(pmi))) {
+                pmi[i,j] <- log(joint_probs[i,j]/(marginal_probs[i,"Frequency"]*marginal_probs[j,"Frequency"]))
+            }
         }
-    }
-    ordering <- names(sort(marginal_probs[,"Frequency"],decreasing=TRUE))
-    adjacency_matrix <- adjacency_matrix[ordering,ordering]
-    adjacency_matrix[1,2] = 1
-    if(nrow(adjacency_matrix)>2) {
-        for(i in 3:nrow(adjacency_matrix)) {
-            curr_c <- rownames(adjacency_matrix)[i]
-            curr_candidate_p <- rownames(adjacency_matrix)[seq_len((i-1))]
-            adjacency_matrix[names(which.max(pmi[curr_candidate_p,curr_c]))[1],curr_c] <- 1
+        ordering <- names(sort(marginal_probs[,"Frequency"],decreasing=TRUE))
+        adjacency_matrix <- adjacency_matrix[ordering,ordering]
+        adjacency_matrix[1,2] = 1
+        if(nrow(adjacency_matrix)>2) {
+            for(i in 3:nrow(adjacency_matrix)) {
+                curr_c <- rownames(adjacency_matrix)[i]
+                curr_candidate_p <- rownames(adjacency_matrix)[seq_len((i-1))]
+                adjacency_matrix[names(which.max(pmi[curr_candidate_p,curr_c]))[1],curr_c] <- 1
+            }
         }
+        adjacency_matrix <- rbind(rep(0,nrow(adjacency_matrix)),adjacency_matrix)
+        adjacency_matrix <- cbind(rep(0,nrow(adjacency_matrix)),adjacency_matrix)
+        adjacency_matrix[1,2] = 1
+        initialization <- as.B.trait(adj_matrix=adjacency_matrix,D=D[[1]])
     }
-    adjacency_matrix <- rbind(rep(0,nrow(adjacency_matrix)),adjacency_matrix)
-    adjacency_matrix <- cbind(rep(0,nrow(adjacency_matrix)),adjacency_matrix)
-    adjacency_matrix[1,2] = 1
-    initialization <- as.B.trait(adj_matrix=adjacency_matrix,D=D[[1]])
     
     # Initialize weights to compute weighted joint likelihood
     if(is.null(lik_w)) {
@@ -187,7 +190,7 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, keep_equivalent = 
                                                         verbose = verbose,
                                                         log_file = log_file)
     }
-
+    
     # Return the solution at maximum likelihood among the inferrend ones
     lik <- NULL
     for(i in 1:length(inference)) {
@@ -270,26 +273,33 @@ LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, keep_equivalent = 
     }
     
     # Finally, process equivalent solutions
-    equivalent_solutions <- inference[[best]][["equivalent_solutions"]]
-    
-    eq_sol_df <- do.call(rbind,  lapply(equivalent_solutions, function(x) {
-        adjM <- as.adj.matrix(x$B)
-        return(as.vector(adjM))
-    }))
-    
-    idx_uniq_sol <- which(!duplicated(eq_sol_df))
-    
-    equivalent_solutions <- equivalent_solutions[idx_uniq_sol]
-
-    if(length(equivalent_solutions)==1) { # if we have only the best solution (no other equivalent solutions)
-        equivalent_solutions <- list()
+    if(keep_equivalent == TRUE) {
+        equivalent_solutions <- inference[[best]][["equivalent_solutions"]]
+        
+        eq_sol_df <- do.call(rbind,  lapply(equivalent_solutions, function(x) {
+            adjM <- as.adj.matrix(x$B)
+            return(as.vector(adjM))
+        }))
+        
+        idx_uniq_sol <- which(!duplicated(eq_sol_df))
+        
+        equivalent_solutions <- equivalent_solutions[idx_uniq_sol]
+        
+        if(length(equivalent_solutions)==1) { # if we have only the best solution (no other equivalent solutions)
+            equivalent_solutions <- list()
+        } else {
+            
+            for(i in 1:length(equivalent_solutions)) {
+                rownames(equivalent_solutions[[i]][["B"]]) <- c("Root",paste0("Clone_",rownames(equivalent_solutions[[i]][["B"]])[2:nrow(equivalent_solutions[[i]][["B"]])]))
+                colnames(equivalent_solutions[[i]][["B"]]) <- c("Root",colnames(D[[1]])[as.numeric(colnames(equivalent_solutions[[i]][["B"]])[2:ncol(equivalent_solutions[[i]][["B"]])])])
+            }
+        }
+        
     } else {
         
-        for(i in 1:length(equivalent_solutions)) {
-            rownames(equivalent_solutions[[i]][["B"]]) <- c("Root",paste0("Clone_",rownames(equivalent_solutions[[i]][["B"]])[2:nrow(equivalent_solutions[[i]][["B"]])]))
-            colnames(equivalent_solutions[[i]][["B"]]) <- c("Root",colnames(D[[1]])[as.numeric(colnames(equivalent_solutions[[i]][["B"]])[2:ncol(equivalent_solutions[[i]][["B"]])])])
-        }
+        equivalent_solutions <- NULL   
     }
+    
     
     return(list(B=B,C=C,corrected_genotypes=corrected_genotypes,clones_prevalence=clones_prevalence,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,clones_summary=clones_summary,equivalent_solutions=equivalent_solutions,error_rates=error_rates))
     
