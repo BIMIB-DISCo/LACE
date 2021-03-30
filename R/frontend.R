@@ -23,6 +23,7 @@
 #' maximum-likelihood is returned.
 #' @param beta False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
 #' maximum-likelihood is returned.
+#' @param initialization Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns
 #' @param keep_equivalent Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?
 #' @param check_indistinguishable Boolean. Shall I remove any indistinguishable event from input data prior inference?
 #' @param num_rs Number of restarts during mcmc inference.
@@ -48,7 +49,23 @@
 #' @importFrom Rfast rowMaxs
 #' @importFrom stats runif rnorm
 #'
-LACE <- function( D, lik_w = NULL, alpha = NULL, beta = NULL, initialization = NULL, keep_equivalent = TRUE, check_indistinguishable = TRUE, num_rs = 50, num_iter = 10000, n_try_bs = 500, learning_rate = 1, marginalize = FALSE, error_move = FALSE, num_processes = Inf, seed = NULL, verbose = TRUE, log_file = "" ) {
+LACE <- function( D, 
+                  lik_w = NULL, 
+                  alpha = NULL, 
+                  beta = NULL, 
+                  initialization = NULL, 
+                  keep_equivalent = TRUE, 
+                  check_indistinguishable = TRUE, 
+                  num_rs = 50, 
+                  num_iter = 10000, 
+                  n_try_bs = 500, 
+                  learning_rate = 1, 
+                  marginalize = FALSE, 
+                  error_move = FALSE, 
+                  num_processes = Inf, 
+                  seed = NULL, 
+                  verbose = TRUE, 
+                  log_file = "" ) {
     
     # Set the seed
     set.seed(seed)
