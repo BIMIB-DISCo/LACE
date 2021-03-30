@@ -46,6 +46,7 @@
 #' @export LACE
 #' @import parallel
 #' @import SummarizedExperiment
+#' @import data.tree
 #' @importFrom Rfast rowMaxs
 #' @importFrom stats runif rnorm
 #'
