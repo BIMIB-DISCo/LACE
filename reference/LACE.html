@@ -58,6 +58,9 @@
 
 
 
+<!-- dependencies from examples -->
+
+
   
 
   
@@ -80,7 +83,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">LACE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.4.0</span>
       </span>
     </div>
 
@@ -179,7 +182,7 @@ maximum-likelihood is returned.</p></td>
     </tr>
     <tr>
       <th>initialization</th>
-      <td><p>Starting point of the mcmc; if not provided, a random starting point is used.</p></td>
+      <td><p>Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns</p></td>
     </tr>
     <tr>
       <th>keep_equivalent</th>
@@ -247,7 +250,7 @@ solutions (B and C) with likelihood equivalent to the best solution are returned
                  lik_w <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.2308772</span>,<span class='fl'>0.2554386</span>,<span class='fl'>0.2701754</span>,<span class='fl'>0.2435088</span><span class='op'>)</span>,
                  alpha <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.10</span>,<span class='fl'>0.05</span>,<span class='fl'>0.05</span>,<span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>,
                  beta <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.10</span>,<span class='fl'>0.05</span>,<span class='fl'>0.05</span>,<span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>,
-                 keep_equivalent <span class='op'>=</span> <span class='cn'>FALSE</span>,
+                 keep_equivalent <span class='op'>=</span> <span class='cn'>TRUE</span>,
                  num_rs <span class='op'>=</span> <span class='fl'>5</span>,
                  num_iter <span class='op'>=</span> <span class='fl'>10</span>,
                  n_try_bs <span class='op'>=</span> <span class='fl'>5</span>,
@@ -271,7 +274,7 @@ solutions (B and C) with likelihood equivalent to the best solution are returned
 </div>
 
 <div class="pkgdown">
-  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9000.</p></p>
+  <p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.6.1.9001.</p></p>
 </div>
 
       </footer>
