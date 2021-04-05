@@ -11,6 +11,7 @@ Authors@R: c(person("Daniele", "Ramazzotti", role=c("aut"),email="daniele.ramazz
 Depends:
     R (>= 4.0.0)
 Imports:
+    data.tree,
     graphics,
     grDevices,
     igraph,
