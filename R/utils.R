@@ -485,7 +485,7 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
 # Draw B
 draw.B <- function( B, mut_label = colnames(B)[-1], last_mut_node_label =  TRUE) {
     
-    Broot <- Node$new('r')
+    Broot <- data.tree::Node$new('r')
     Broot$mut <- B[1,]
     
     nClone <- nrow(B)

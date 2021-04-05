@@ -9,6 +9,7 @@ LACE(
   lik_w = NULL,
   alpha = NULL,
   beta = NULL,
+  initialization = NULL,
   keep_equivalent = TRUE,
   check_indistinguishable = TRUE,
   num_rs = 50,
@@ -35,6 +36,8 @@ maximum-likelihood is returned.}
 
 \item{beta}{False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
 maximum-likelihood is returned.}
+
+\item{initialization}{Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns}
 
 \item{keep_equivalent}{Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?}
 
@@ -78,7 +81,7 @@ inference = LACE(D = longitudinal_sc_variants,
                  lik_w = c(0.2308772,0.2554386,0.2701754,0.2435088),
                  alpha = list(c(0.10,0.05,0.05,0.05)),
                  beta = list(c(0.10,0.05,0.05,0.05)),
-                 keep_equivalent = FALSE,
+                 keep_equivalent = TRUE,
                  num_rs = 5,
                  num_iter = 10,
                  n_try_bs = 5,

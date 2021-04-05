@@ -34,6 +34,8 @@ learn.longitudinal.phylogeny <- function( D,
         storage.mode(D[[i]]) <- "integer"
     }
     
+    equivalent_solutions <- list()
+    
     if(num_processes > 1) {
         
         parallel_cl <- makeCluster(num_processes,outfile=log_file)
@@ -79,6 +81,7 @@ learn.longitudinal.phylogeny <- function( D,
                                   different.error.rates = different.error.rates,
                                   initialization = initialization,
                                   keep_equivalent = keep_equivalent,
+                                  num_rs = num_rs,
                                   num_iter = num_iter,
                                   n_try_bs = n_try_bs,
                                   learning_rate = learning_rate,
@@ -120,7 +123,8 @@ MCMC <- function(D,
                  different.error.rates = FALSE,
                  initialization = NULL, 
                  keep_equivalent = FALSE, 
-                 num_iter = 10000, 
+                 num_iter = 10000,
+                 num_rs = 50, 
                  n_try_bs = 500, 
                  learning_rate = 1, 
                  marginalize = FALSE, 
@@ -150,8 +154,9 @@ MCMC <- function(D,
     lik_best <- lik
     joint_lik_best <- joint_lik
     count_lik_best_cons <- 0
+    equivalent_solutions <- list()
     if(keep_equivalent) {
-        equivalent_solutions <- list()
+        
         equivalent_solutions[[1]] <- list(B=B_best,C=C_best,alpha=alpha_best,beta=beta_best,relative_likelihoods=lik_best,joint_likelihood=joint_lik_best)
     }
     
@@ -201,7 +206,7 @@ MCMC <- function(D,
             lik <- lik_tmp
             joint_lik <- joint_lik_tmp
             if(keep_equivalent) {
-                equivalent_solutions <- list()
+                
                 equivalent_solutions[[1]] <- list(B=B_best,C=C_best,alpha=alpha_best,beta=beta_best,relative_likelihoods=lik_best,joint_likelihood=joint_lik_best)
             }
             
