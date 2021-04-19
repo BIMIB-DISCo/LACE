@@ -52,7 +52,8 @@ learn.longitudinal.phylogeny <- function( D,
                  beta = beta,
                  different.error.rates = different.error.rates,
                  initialization = initialization,
-                 keep_equivalent = keep_equivalent,
+                 keep_equivalent = keep_equivalent, 
+                 num_rs = num_rs, 
                  num_iter = num_iter,
                  n_try_bs = n_try_bs,
                  learning_rate = learning_rate,
@@ -80,7 +81,7 @@ learn.longitudinal.phylogeny <- function( D,
                                   beta = beta,
                                   different.error.rates = different.error.rates,
                                   initialization = initialization,
-                                  keep_equivalent = keep_equivalent,
+                                  keep_equivalent = keep_equivalent, 
                                   num_rs = num_rs,
                                   num_iter = num_iter,
                                   n_try_bs = n_try_bs,
@@ -104,11 +105,11 @@ learn.longitudinal.phylogeny <- function( D,
         
         best_mcmc <- mcmc_res[[idx_bjl[1]]]
         for(i in 2:length(idx_bjl)) {
-            best_mcmc$equivalent_solutions <- c(best_mcmc$equivalent_solutions, 
-                                                mcmc_res[[idx_bjl[i]]]$equivalent_solutions)
+            best_mcmc$equivalent_solutions <- c(best_mcmc$equivalent_solutions,mcmc_res[[idx_bjl[i]]]$equivalent_solutions)
         }
         
-    } else {
+    }
+    else {
         best_mcmc <-  mcmc_res[[1]]
     }
 
@@ -116,6 +117,7 @@ learn.longitudinal.phylogeny <- function( D,
 
 }
 
+# perform MCMC
 MCMC <- function(D, 
                  lik_w = rep(1/length(D),length(D)), 
                  alpha = 10^-3, 
@@ -156,7 +158,6 @@ MCMC <- function(D,
     count_lik_best_cons <- 0
     equivalent_solutions <- list()
     if(keep_equivalent) {
-        
         equivalent_solutions[[1]] <- list(B=B_best,C=C_best,alpha=alpha_best,beta=beta_best,relative_likelihoods=lik_best,joint_likelihood=joint_lik_best)
     }
     
