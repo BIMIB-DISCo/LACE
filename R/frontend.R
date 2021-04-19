@@ -176,11 +176,11 @@ LACE <- function( D,
         else {
             num_processes <- min(num_processes,num_rs)
         }
-        
         if(verbose && num_processes>1) {
             cat("Executing",num_processes,"processes via parallel...","\n")
         }
-    } else {
+    }
+    else {
         num_processes = 1
     }
     
