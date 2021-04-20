@@ -23,7 +23,10 @@
 #' maximum-likelihood is returned.
 #' @param beta False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
 #' maximum-likelihood is returned.
-#' @param initialization Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns
+#' @param initialization Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns. 
+#' This parameter overrides "random_tree". 
+#' @param random_tree Boolean. Shall I start MCMC search from a random tree? If FALSE (default) and initialization is NULL, search 
+#' is started from a TRaIT tree (BMC Bioinformatics . 2019 Apr 25;20(1):210.  doi: 10.1186/s12859-019-2795-4). 
 #' @param keep_equivalent Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?
 #' @param check_indistinguishable Boolean. Shall I remove any indistinguishable event from input data prior inference?
 #' @param num_rs Number of restarts during mcmc inference.
@@ -55,6 +58,7 @@ LACE <- function( D,
                   alpha = NULL, 
                   beta = NULL, 
                   initialization = NULL, 
+                  random_tree = FALSE, 
                   keep_equivalent = TRUE, 
                   check_indistinguishable = TRUE, 
                   num_rs = 50, 
@@ -93,7 +97,8 @@ LACE <- function( D,
         D <- check.indistinguishable(D)
     }
     
-    if(is.null(initialization)) {
+    # if initiatilation is NULL and we do not require a random tree, we initializa with TRaIT tree
+    if(is.null(initialization) && !random_tree) {
         
         # set initial tree from where to start MCMC search
         data <- Reduce(rbind,D)
@@ -135,6 +140,7 @@ LACE <- function( D,
         adjacency_matrix <- cbind(rep(0,nrow(adjacency_matrix)),adjacency_matrix)
         adjacency_matrix[1,2] = 1
         initialization <- as.B.trait(adj_matrix=adjacency_matrix,D=D[[1]])
+
     }
     
     # Initialize weights to compute weighted joint likelihood
