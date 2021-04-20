@@ -187,7 +187,7 @@ MCMC <- function(D,
         }
         
         # Try move on B
-        move_tmp <- move.B(B,alpha,beta,error_move)
+        move_tmp <- move.B(B=B,alpha=alpha,beta=beta,error_move=error_move)
         B_tmp <- move_tmp$B
         alpha_tmp <- move_tmp$alpha
         beta_tmp <- move_tmp$beta
