@@ -143,6 +143,7 @@
   alpha <span class='op'>=</span> <span class='cn'>NULL</span>,
   beta <span class='op'>=</span> <span class='cn'>NULL</span>,
   initialization <span class='op'>=</span> <span class='cn'>NULL</span>,
+  random_tree <span class='op'>=</span> <span class='cn'>FALSE</span>,
   keep_equivalent <span class='op'>=</span> <span class='cn'>TRUE</span>,
   check_indistinguishable <span class='op'>=</span> <span class='cn'>TRUE</span>,
   num_rs <span class='op'>=</span> <span class='fl'>50</span>,
@@ -182,7 +183,13 @@ maximum-likelihood is returned.</p></td>
     </tr>
     <tr>
       <th>initialization</th>
-      <td><p>Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns</p></td>
+      <td><p>Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns. 
+This parameter overrides "random_tree".</p></td>
+    </tr>
+    <tr>
+      <th>random_tree</th>
+      <td><p>Boolean. Shall I start MCMC search from a random tree? If FALSE (default) and initialization is NULL, search 
+is started from a TRaIT tree (BMC Bioinformatics . 2019 Apr 25;20(1):210.  doi: 10.1186/s12859-019-2795-4).</p></td>
     </tr>
     <tr>
       <th>keep_equivalent</th>
