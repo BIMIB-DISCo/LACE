@@ -253,7 +253,7 @@ LACE <- function( D,
     
     # Renaming
     B <- inference[[best]][["B"]]
-    rownames(B) <- c("Root",paste0("Clone_",rownames(B)[2:nrow(B)]))
+    rownames(B) <- c("Root",paste0("Clone_",1:(nrow(B)-1)))
     colnames(B) <- c("Root",colnames(D[[1]])[as.numeric(colnames(B)[2:ncol(B)])])
     C <- inference[[best]][["C"]]
     names(C) <- paste0("Experiment_",1:length(C))
