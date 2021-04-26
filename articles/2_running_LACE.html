@@ -90,7 +90,7 @@
     
 <div id="setup-the-environement" class="section level2">
 <h2 class="hasAnchor">
-<a href="#setup-the-environement" class="anchor"></a>Setup the environement</h2>
+<a href="#setup-the-environement" class="anchor" aria-hidden="true"></a>Setup the environement</h2>
 <p>We now present an example of longitudinal analysis of cancer evolution with <em>LACE</em> using single-cell data obtained from Rambow, Florian, et al. “Toward minimal residual disease-directed therapy in melanoma.” Cell 174.4 (2018): 843-855.</p>
 <p>As a first step, we load single-cell data for a skin melanoma. The data comprises point mutations for four time points: (1) before treatment, (2) 4 days treatment, (3) 28 days treatment and finally (4) 57 days treatment.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
@@ -126,7 +126,7 @@
 </div>
 <div id="inference" class="section level2">
 <h2 class="hasAnchor">
-<a href="#inference" class="anchor"></a>Inference</h2>
+<a href="#inference" class="anchor" aria-hidden="true"></a>Inference</h2>
 <p>We can now perform the inference as follow.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">inference</span> <span class="op">=</span> <span class="fu"><a href="../reference/LACE.html">LACE</a></span><span class="op">(</span>D <span class="op">=</span> <span class="va">longitudinal_sc_variants</span>, 
@@ -151,7 +151,7 @@
 </div>
 <div id="plot" class="section level2">
 <h2 class="hasAnchor">
-<a href="#plot" class="anchor"></a>Plot</h2>
+<a href="#plot" class="anchor" aria-hidden="true"></a>Plot</h2>
 <p>We can plot the inferred model using the function longitudinal.tree.plot.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">clone_labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ARPC2"</span>,<span class="st">"PRAME"</span>,<span class="st">"HNRNPC"</span>,<span class="st">"COL1A2"</span>,<span class="st">"RPL5"</span>,<span class="st">"CCT8"</span><span class="op">)</span>
