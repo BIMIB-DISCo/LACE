@@ -1,15 +1,16 @@
 Package: LACE
-Version: 1.5.0
-Date: 2021-04-26
+Version: 1.5.1
+Date: 2021-10-02
 Title: Longitudinal Analysis of Cancer Evolution (LACE)
 Authors@R: c(person("Daniele", "Ramazzotti", role=c("aut"),email="daniele.ramazzotti@yahoo.com",
                 comment = c(ORCID = "0000-0002-6087-2666")),
     person("Fabrizio","Angaroni",role=c("aut"),email="fabrizio.angaroni@unimib.it"),
     person("Davide","Maspero",role=c("cre","aut"),email="d.maspero@campus.unimib.it"),
     person("Alex","Graudenzi",role=c("aut"),email="alex.graudenzi@unimib.it"),
-    person("Luca","De Sano",role=c("ctb"),email="luca.desano@gmail.com"))
+    person("Luca", "De Sano", role=c("aut"), email="luca.desano@gmail.com",
+                comment = c(ORCID = "0000-0002-9618-3774")))
 Depends:
-    R (>= 4.0.0)
+    R (>= 4.1.0)
 Imports:
     data.tree,
     graphics,
@@ -31,7 +32,6 @@ Name:
 Description:
     LACE is an algorithmic framework that processes single-cell somatic mutation profiles from cancer samples collected at different time points and in distinct experimental settings, to produce longitudinal models of cancer evolution. The approach solves a Boolean Matrix Factorization problem with phylogenetic constraints, by maximizing a weighed likelihood function computed on multiple time points. 
 Encoding: UTF-8
-LazyData: TRUE
 License: file LICENSE
 URL: https://github.com/BIMIB-DISCo/LACE
 BugReports: https://github.com/BIMIB-DISCo/LACE
@@ -39,5 +39,5 @@ biocViews:
 	BiomedicalInformatics,
 	SingleCell,
 	SomaticMutation
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 VignetteBuilder: knitr

@@ -38,4 +38,5 @@ vignettes/*.pdf
 docs
 doc
 Meta
+/*.csv
 /vignettes/lg_output.xml
