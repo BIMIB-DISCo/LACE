@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">LACE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.4.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.0</span>
       </span>
     </div>
 
@@ -81,24 +81,24 @@
       <h1 data-toc-skip>Running LACE</h1>
             
       
-      <small class="dont-index">Source: <a href="https://github.com/BIMIB-DISCo/LACE/blob/master/vignettes/2_running_LACE.Rmd" class="external-link"><code>vignettes/2_running_LACE.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/BIMIB-DISCo/LACE/blob/HEAD/vignettes/2_running_LACE.Rmd" class="external-link"><code>vignettes/2_running_LACE.Rmd</code></a></small>
       <div class="hidden name"><code>2_running_LACE.Rmd</code></div>
 
     </div>
 
     
     
-<div id="setup-the-environement" class="section level2">
-<h2 class="hasAnchor">
-<a href="#setup-the-environement" class="anchor" aria-hidden="true"></a>Setup the environement</h2>
+<div class="section level2">
+<h2 id="setup-the-environement">Setup the environement<a class="anchor" aria-label="anchor" href="#setup-the-environement"></a>
+</h2>
 <p>We now present an example of longitudinal analysis of cancer evolution with <em>LACE</em> using single-cell data obtained from Rambow, Florian, et al. “Toward minimal residual disease-directed therapy in melanoma.” Cell 174.4 (2018): 843-855.</p>
 <p>As a first step, we load single-cell data for a skin melanoma. The data comprises point mutations for four time points: (1) before treatment, (2) 4 days treatment, (3) 28 days treatment and finally (4) 57 days treatment.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/BIMIB-DISCo/LACE" class="external-link">"LACE"</a></span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">longitudinal_sc_variants</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">longitudinal_sc_variants</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "T1_before_treatment"  "T2_4_days_treatment"  "T3_28_days_treatment"
-## [4] "T4_57_days_treatment"</code></pre>
+<pre><code><span class="co">## [1] "T1_before_treatment"  "T2_4_days_treatment"  "T3_28_days_treatment"</span>
+<span class="co">## [4] "T4_57_days_treatment"</span></code></pre>
 <p>We setup the main parameter in oder to perform the inference. First of all, as the four data points may potentially provide sequencing for an unbalanced number of cells, we weight each time point proportionally to the sample sizes as follow. We refer to the paper for details.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">lik_weights</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2308772</span>,<span class="fl">0.2554386</span>,<span class="fl">0.2701754</span>,<span class="fl">0.2435088</span><span class="op">)</span></code></pre></div>
@@ -111,22 +111,22 @@
 <span class="va">beta</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.10</span>,<span class="fl">0.05</span>,<span class="fl">0.05</span>,<span class="fl">0.05</span><span class="op">)</span>
 <span class="va">beta</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.10</span>,<span class="fl">0.05</span>,<span class="fl">0.05</span>,<span class="fl">0.05</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">alpha</span><span class="op">)</span></code></pre></div>
-<pre><code>## [[1]]
-## [1] 0.02 0.01 0.01 0.01
-## 
-## [[2]]
-## [1] 0.10 0.05 0.05 0.05</code></pre>
+<pre><code><span class="co">## [[1]]</span>
+<span class="co">## [1] 0.02 0.01 0.01 0.01</span>
+<span class="co">## </span>
+<span class="co">## [[2]]</span>
+<span class="co">## [1] 0.10 0.05 0.05 0.05</span></code></pre>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span></code></pre></div>
-<pre><code>## [[1]]
-## [1] 0.10 0.05 0.05 0.05
-## 
-## [[2]]
-## [1] 0.10 0.05 0.05 0.05</code></pre>
+<pre><code><span class="co">## [[1]]</span>
+<span class="co">## [1] 0.10 0.05 0.05 0.05</span>
+<span class="co">## </span>
+<span class="co">## [[2]]</span>
+<span class="co">## [1] 0.10 0.05 0.05 0.05</span></code></pre>
 </div>
-<div id="inference" class="section level2">
-<h2 class="hasAnchor">
-<a href="#inference" class="anchor" aria-hidden="true"></a>Inference</h2>
+<div class="section level2">
+<h2 id="inference">Inference<a class="anchor" aria-label="anchor" href="#inference"></a>
+</h2>
 <p>We can now perform the inference as follow.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">inference</span> <span class="op">=</span> <span class="fu"><a href="../reference/LACE.html">LACE</a></span><span class="op">(</span>D <span class="op">=</span> <span class="va">longitudinal_sc_variants</span>, 
@@ -144,14 +144,14 @@
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">inference</span><span class="op">)</span>
 <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">inference</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<pre><code>## [1] "B"                    "C"                    "corrected_genotypes" 
-## [4] "clones_prevalence"    "relative_likelihoods" "joint_likelihood"    
-## [7] "clones_summary"       "equivalent_solutions" "error_rates"</code></pre>
+<pre><code><span class="co">## [1] "B"                    "C"                    "corrected_genotypes" </span>
+<span class="co">## [4] "clones_prevalence"    "relative_likelihoods" "joint_likelihood"    </span>
+<span class="co">## [7] "clones_summary"       "equivalent_solutions" "error_rates"</span></code></pre>
 <p><em>LACE</em> returns a list of nine elements as results. Namely, B and C provide respectively the maximum likelihood longitudinal tree and cells attachments; corrected_genotypes the corrected genotypes, clones_prevalence, the estimated prevalence of any observed clone; relative_likelihoods and joint_likelihood the estimated likelihoods for each time point and the weighted likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions, solutions (B and C) with likelihood equivalent to the best solution are returned; notice that in the example we disabled this feature by setting equivalent_solutions parameter to FALSE. Finally, error rates provide the best error rates (alpha and beta) as estimated by the grid search.</p>
 </div>
-<div id="plot" class="section level2">
-<h2 class="hasAnchor">
-<a href="#plot" class="anchor" aria-hidden="true"></a>Plot</h2>
+<div class="section level2">
+<h2 id="plot">Plot<a class="anchor" aria-label="anchor" href="#plot"></a>
+</h2>
 <p>We can plot the inferred model using the function longitudinal.tree.plot.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">clone_labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ARPC2"</span>,<span class="st">"PRAME"</span>,<span class="st">"HNRNPC"</span>,<span class="st">"COL1A2"</span>,<span class="st">"RPL5"</span>,<span class="st">"CCT8"</span><span class="op">)</span>
@@ -184,7 +184,7 @@ Inferred model
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link external-link">pkgdown</a> 1.9000.9000.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
 </div>
 
       </footer>
