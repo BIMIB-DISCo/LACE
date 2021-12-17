@@ -1,43 +1,40 @@
 Package: LACE
-Version: 1.6.0
-Date: 2021-10-28
+Version: 2.0.0
+Date: 2021-10-02
 Title: Longitudinal Analysis of Cancer Evolution (LACE)
-Authors@R: c(person("Daniele", "Ramazzotti", role=c("aut"),email="daniele.ramazzotti@yahoo.com",
+Authors@R: c(person("Gianluca", "Ascolani", role=c("aut"),email="gianluca.ascolani@unimib.it"),
+    person("Daniele", "Ramazzotti", role=c("aut"),email="daniele.ramazzotti@yahoo.com",
                 comment = c(ORCID = "0000-0002-6087-2666")),
     person("Fabrizio","Angaroni",role=c("aut"),email="fabrizio.angaroni@unimib.it"),
     person("Davide","Maspero",role=c("cre","aut"),email="d.maspero@campus.unimib.it"),
     person("Alex","Graudenzi",role=c("aut"),email="alex.graudenzi@unimib.it"),
     person("Luca", "De Sano", role=c("aut"), email="luca.desano@gmail.com",
                 comment = c(ORCID = "0000-0002-9618-3774")))
-Depends:
-    R (>= 4.1.0)
-Imports:
-    data.tree,
-    graphics,
-    grDevices,
-    igraph,
-    parallel,
-    RColorBrewer,
-    Rfast,
-    stats,
-    SummarizedExperiment,
-    utils
-Suggests:
-    BiocGenerics,
-    BiocStyle,
-    testthat,
-    knitr
-Name:
-    LACE: an R package for the inference of longitudinal cancer evolution models
-Description:
+Depends: R (>= 4.1.0)
+Imports: data.tree, graphics, grDevices, igraph, parallel, 
+        RColorBrewer, Rfast, stats, SummarizedExperiment, utils, purrr, stringi, stringr, Matrix, tidyr, jsonlite, htmltools, htmlwidgets
+Suggests: BiocGenerics, BiocStyle, testthat, knitr
+Name: LACE: an R package for the inference of longitudinal cancer
+        evolution models
+Description: 
     LACE is an algorithmic framework that processes single-cell somatic mutation profiles from cancer samples collected at different time points and in distinct experimental settings, to produce longitudinal models of cancer evolution. The approach solves a Boolean Matrix Factorization problem with phylogenetic constraints, by maximizing a weighed likelihood function computed on multiple time points. 
 Encoding: UTF-8
 License: file LICENSE
 URL: https://github.com/BIMIB-DISCo/LACE
 BugReports: https://github.com/BIMIB-DISCo/LACE
-biocViews: 
-	BiomedicalInformatics,
-	SingleCell,
-	SomaticMutation
+biocViews: BiomedicalInformatics, SingleCell, SomaticMutation
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
+git_url: https://git.bioconductor.org/packages/LACE
+git_branch: RELEASE_3_14
+git_last_commit: 4a9a702
+git_last_commit_date: 2021-10-26
+Date/Publication: 2021-10-26
+NeedsCompilation: no
+Packaged: 2021-10-26 21:45:24 UTC; biocbuild
+Author: Daniele Ramazzotti [aut] (<https://orcid.org/0000-0002-6087-2666>),
+  Fabrizio Angaroni [aut],
+  Davide Maspero [cre, aut],
+  Alex Graudenzi [aut],
+  Luca De Sano [aut] (<https://orcid.org/0000-0002-9618-3774>)
+Maintainer: Davide Maspero <d.maspero@campus.unimib.it>
