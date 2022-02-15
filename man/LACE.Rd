@@ -22,26 +22,27 @@ LACE(
   num_processes = Inf,
   seed = NULL,
   verbose = TRUE,
-  log_file = ""
+  log_file = "",
+  show = TRUE
 )
 }
 \arguments{
-\item{D}{Mutation data from multiple experiments for a list of driver genes. It can be either a list with a data matrix per time point or a SummarizedExperiment object. 
+\item{D}{Mutation data from multiple experiments for a list of driver genes. It can be either a list with a data matrix per time point or a SummarizedExperiment object.
 In this latter, the object must contain two fields: assays and colData. Assays stores one unique data matrix pooling all single cells observed at each time point and colData stores a vector of labels reporting the time point when each single cell was sequenced.
 Ordering of cells in assays field and colData field must be the same.}
 
 \item{lik_w}{Weight for each data point. If not provided, weights to correct for sample sizes are used.}
 
-\item{alpha}{False positive error rate provided as list of elements; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at 
+\item{alpha}{False positive error rate provided as list of elements; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at
 maximum-likelihood is returned.}
 
-\item{beta}{False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
+\item{beta}{False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at
 maximum-likelihood is returned.}
 
-\item{initialization}{Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns. 
+\item{initialization}{Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns.
 This parameter overrides "random_tree".}
 
-\item{random_tree}{Boolean. Shall I start MCMC search from a random tree? If FALSE (default) and initialization is NULL, search 
+\item{random_tree}{Boolean. Shall I start MCMC search from a random tree? If FALSE (default) and initialization is NULL, search
 is started from a TRaIT tree (BMC Bioinformatics . 2019 Apr 25;20(1):210.  doi: 10.1186/s12859-019-2795-4).}
 
 \item{keep_equivalent}{Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?}
@@ -54,15 +55,15 @@ is started from a TRaIT tree (BMC Bioinformatics . 2019 Apr 25;20(1):210.  doi: 
 
 \item{n_try_bs}{Number of steps without change in likelihood of best solution after which to stop the mcmc.}
 
-\item{learning_rate}{Parameter to tune the probability of accepting solutions at lower values during mcmc. Value of learning_rate = 1 (default), set a 
-probability proportional to the difference in likelihood; values of learning_rate greater than 1 inclease the chance of accepting solutions at lower likelihood 
+\item{learning_rate}{Parameter to tune the probability of accepting solutions at lower values during mcmc. Value of learning_rate = 1 (default), set a
+probability proportional to the difference in likelihood; values of learning_rate greater than 1 inclease the chance of accepting solutions at lower likelihood
 during mcmc while values lower than 1 decrease such probability.}
 
 \item{marginalize}{Boolean. Shall I marginalize C when computing likelihood?}
 
 \item{error_move}{Boolean. Shall I include estimation of error rates in the MCMC moves?}
 
-\item{num_processes}{Number of processes to be used during parallel execution. To execute in single process mode, 
+\item{num_processes}{Number of processes to be used during parallel execution. To execute in single process mode,
 this parameter needs to be set to either NA or NULL.}
 
 \item{seed}{Seed for reproducibility.}
@@ -70,11 +71,13 @@ this parameter needs to be set to either NA or NULL.}
 \item{verbose}{Boolean. Shall I print to screen information messages during the execution?}
 
 \item{log_file}{log file where to print outputs when using parallel. If parallel execution is disabled, this parameter is ignored.}
+
+\item{show}{Boolean. Show the interactive interface to explore the output.}
 }
 \value{
-A list of 9 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal 
-clonal tree, C the attachment of cells to clones, corrected_genotypes the corrected genotypes and clones_prevalence clones' prevalence; relative_likelihoods and joint_likelihood are respectively 
-the likelihood of the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions, 
+A list of 9 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal
+clonal tree, C the attachment of cells to clones, corrected_genotypes the corrected genotypes and clones_prevalence clones' prevalence; relative_likelihoods and joint_likelihood are respectively
+the likelihood of the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions,
 solutions (B and C) with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones.
 }
 \description{
@@ -92,6 +95,7 @@ inference = LACE(D = longitudinal_sc_variants,
                  n_try_bs = 5,
                  num_processes = NA,
                  seed = 12345,
-                 verbose = FALSE)
+                 verbose = FALSE,
+                 show = FALSE)
 
 }
