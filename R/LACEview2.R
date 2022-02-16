@@ -1,8 +1,10 @@
-#version 1118
+## version 1118
 
-####################
-#add lace_interface function
-####################
+### LACEview2.R
+###
+### Add lace_interface function
+
+
 #' @title LACE Interface
 #' @description `lace_interface` generates a longitudinal clonal tree and a
 #' graphic interface to explore the data using as input the clonal tree
@@ -830,21 +832,26 @@ LACE_html<-function (id, style, class, ...)
 
 
 
-# Shiny bindings for LACE
-#
-# Output and render functions for using LACEview within Shiny
-# applications and interactive Rmd documents.
-LACEOutput <- function(outputId, width = '100%', height = '400px'){
-  htmlwidgets::shinyWidgetOutput(outputId, 'LACE',
-                                 width,
-                                 height, package = 'LACE')
+## Shiny bindings for LACE
+##
+## Output and render functions for using LACEview within Shiny
+## applications and interactive Rmd documents.
+
+LACEOutput <- function(outputId, width = '100%', height = '400px') {
+    htmlwidgets::shinyWidgetOutput(outputId,
+                                   'LACE',
+                                   width,
+                                   height,
+                                   package = 'LACE')
 }
+
 
 # #' @rdname LACE-shiny
 # #' @export
 renderLACE <- function(expr, env = parent.frame(), quoted = FALSE) {
-  if (!quoted) { expr <- substitute(expr) } # force quoted
-  htmlwidgets::shinyRenderWidget(expr, LACEOutput, env, quoted = TRUE)
+    if (!quoted) { expr <- substitute(expr) } # force quoted
+    htmlwidgets::shinyRenderWidget(expr, LACEOutput, env, quoted = TRUE)
 }
 
 
+### end of file -- LACEview2.R
