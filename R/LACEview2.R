@@ -475,45 +475,63 @@ lace_interface <- function (B_mat,
     adj_matrix_t['Root_t1','Root_t1']=1
 
     ## setting links of clones in following times after first occurrence
-    for (t_1 in times_n[1:(length(times_n)-1)]) {
-        print(c('time=',t_1))
-        for (source in 1:nrow(adj_matrix)) {
-            for (target in 1:ncol(adj_matrix)) {
-                for (t_2 in times_n[t_1:(length(times_n)-1)]) { # r fa cacare
-                                        #source mut_time
-                    source_t1 = paste0(rownames(prevalence)[source],'_t',t_1)
-                                        #target mut_time
-                    target_t2 = paste0(rownames(prevalence)[target],'_t',t_2)
-                                        #print(c(source_t1, target_t2, adj_matrix_t[source_t1,target_t2]))
-                                        #source mut_time
-                    source_t2 = paste0(rownames(prevalence)[target],'_t',t_2)
-                                        #target mut_time+1
-                    target_t2_next=paste0(rownames(prevalence)[target],'_t',t_2+1)
+  for (t_1 in times_n[1:(length(times_n)-1)]) {
+    print(c('time=',t_1))
+    for (source in 1:nrow(adj_matrix)) {
+      for (target in 1:ncol(adj_matrix)) {
+        for (t_2 in times_n[t_1:(length(times_n)-1)]) { # r fa cacare
+          #source mut_time
+          source_t1 = paste0(rownames(prevalence)[source],'_t',t_1)
+          #target mut_time
+          target_t2 = paste0(rownames(prevalence)[target],'_t',t_2)
+          #print(c(source_t1, target_t2, adj_matrix_t[source_t1,target_t2]))
+          #source mut_time
+          source_t2 = paste0(rownames(prevalence)[target],'_t',t_2)
+          #target mut_time+1
+          target_t2_next=paste0(rownames(prevalence)[target],'_t',t_2+1)
 
-                    if (adj_matrix_t[source_t1,target_t2]>=1 && adj_matrix_t[source_t1,target_t2]<3) {
-                        value=2 #for time persistence
+          if (adj_matrix_t[source_t1,target_t2]>=1 && adj_matrix_t[source_t1,target_t2]<=3) {
 
-                        print(c(source_t1, target_t2, source_t2, target_t2_next, 2))
-                        adj_matrix_t[source_t2,target_t2_next]<-value
-                    }
-                    if (target==source && t_1+1==t_2 && prevalence[target,t_2]==0) {
-                                        #target_t1 = paste0(rownames(prevalence)[target],'_t',t_1) #t1=t2-1
-                                        # = paste0(rownames(prevalence)[source],'_t',t_2)
-                                        #target_t2 = paste0(rownames(prevalence)[target],'_t',t_2)
-                                        #target mut_time+1
-                                        #target_t2_next=paste0(rownames(prevalence)[target],'_t',t_2+1)
+            if (target==source && prevalence[target,t_2]==0){
+              value=3 #for dashed in case undetected clones
 
-                        value=3 #for dashed in case undetected clones
+              print(paste0(source_t1, "->", target_t2,"=", adj_matrix_t[source_t1,target_t2], ", prev_",target_t2, "=", prevalence[target,t_2], ": ", source_t1, "->", target_t2, "=", value))
+              adj_matrix_t[source_t1, target_t2]<-value # we set the link before t2
+              print(paste0(source_t1, "->", target_t2,"=", adj_matrix_t[source_t1,target_t2], ", prev_",target_t2, "=", prevalence[target,t_2], ": ", source_t2, "->", target_t2_next, "=", value))
+              adj_matrix_t[source_t2, target_t2_next]<-value # we set the link after t2
 
-                        print(c(source_t1, target_t2, source_t2, target_t2_next, value))
-                        print(c(source_t1, target_t2, source_t1, target_t2, value))
-                        adj_matrix_t[source_t2, target_t2_next]<-value # we set the link after t2
-                        adj_matrix_t[source_t1, target_t2]<-value # we set the link before t2
-                    }
-                }
             }
+            else {
+              value=2 #for time persistence
+
+              print(paste0("1st ",source_t1, "->", target_t2,"=", adj_matrix_t[source_t1,target_t2], ", prev_",target_t2, "=", prevalence[target,t_2], ": ", source_t2, "->", target_t2_next, "=", value))
+              adj_matrix_t[source_t2,target_t2_next]<-value
+            }
+
+            if (target==source && t_2+1==length(times_n) && prevalence[target,t_2+1]==0){
+              value=3 #for dashed in case undetected clones
+              print(paste0(source_t1, "->", target_t2,"=", adj_matrix_t[source_t1,target_t2], ", prev_",target_t2, "=", prevalence[target,t_2], ": ", source_t2, "->", target_t2_next, "=", value))
+              adj_matrix_t[source_t2, target_t2_next]<-value # we set the link after t2
+            }
+          }
+          #if (target==source && t_1+1==t_2 && prevalence[target,t_2]==0) {
+            #target_t1 = paste0(rownames(prevalence)[target],'_t',t_1) #t1=t2-1
+            # = paste0(rownames(prevalence)[source],'_t',t_2)
+            #target_t2 = paste0(rownames(prevalence)[target],'_t',t_2)
+            #target mut_time+1
+            #target_t2_next=paste0(rownames(prevalence)[target],'_t',t_2+1)
+
+            #value=3 #for dashed in case undetected clones
+
+            # print(c(source_t1, target_t2, source_t2, target_t2_next, value))
+            # print(c(source_t1, target_t2, source_t1, target_t2, value))
+            # adj_matrix_t[source_t2, target_t2_next]<-value # we set the link after t2
+            # adj_matrix_t[source_t1, target_t2]<-value # we set the link before t2
+          #}
         }
+      }
     }
+  }
 
                                         #dead breaches
                                         #in time reversal
