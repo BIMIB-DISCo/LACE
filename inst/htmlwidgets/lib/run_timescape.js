@@ -942,7 +942,7 @@ function _run_timescape(view_id, width, height, userConfig) {
 	    .attr('y', 0)
 	    .attr('dy', '.71em')
 	    .attr('text-anchor', 'middle')
-	    .attr('font-family', 'Arial')
+	    //.attr('font-family', 'Arial')
 	    .attr('font-size', '11px')
 	    .text(function(d) { return d.pert_name; })
 	    .on('mouseover', function(d) {
@@ -1057,7 +1057,7 @@ function _run_timescape(view_id, width, height, userConfig) {
 	    .attr('transform', "rotate(-90)")
 	    .attr('dy', '.21em')
 	    .attr('text-anchor', 'left')
-	    .attr('font-family', 'Arial')
+	    //.attr('font-family', 'Arial')
 	    .attr('font-size', '11px')
 	    .text(function(d) {
 	        // get original label (spaces were replaced with underscores)
@@ -1124,7 +1124,7 @@ function _run_timescape(view_id, width, height, userConfig) {
 	    .attr('y', 0)
 	    .attr('dy', '.35em')
 	    .attr('text-anchor', 'middle')
-	    .attr('font-family', 'Arial')
+	    //.attr('font-family', 'Arial')
 	    .attr('font-size', dim.titleFontSize)
 	    .attr('font-weight', 'bold')
 	    .attr('transform', "translate(" + (dim.yAxisWidth/2) + ", " + (dim.tsSVGHeight/2) + ") rotate(-90)")
@@ -1139,7 +1139,7 @@ function _run_timescape(view_id, width, height, userConfig) {
 	    .attr('x', dim.yAxisWidth + dim.smallMargin + dim.xAxisWidth/2)
 	    .attr('y', 25)
 	    .attr('text-anchor', 'middle')
-	    .attr('font-family', 'Arial')
+	    //.attr('font-family', 'Arial')
 	    .attr('font-size', dim.titleFontSize)
 	    .attr('font-weight', 'bold')
 	    .text(function() {
@@ -1160,7 +1160,7 @@ function _run_timescape(view_id, width, height, userConfig) {
 		    .attr('y', word_i*(dim.titleFontSize + treeTitleSpacing))
 		    .attr('dy', '.71em')
 		    .attr('text-anchor', 'left')
-		    .attr('font-family', 'Arial')
+		    //.attr('font-family', 'Arial')
 		    .attr('font-size', dim.titleFontSize)
 		    .attr('font-weight', 'bold')
 		    .text(word);
@@ -1731,7 +1731,7 @@ function _run_timescape(view_id, width, height, userConfig) {
         	.data(label_data)
         	.enter()
             .append('text')
-            .attr('font-family', 'Arial')
+            //.attr('font-family', 'Arial')
             .attr('font-size', dim.fontSize)
             .attr('class', function(d) {
                 if (d.type == "traditional") {

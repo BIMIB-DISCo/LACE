@@ -68,7 +68,7 @@ lace_interface <- function (B_mat,
     if (!exists('info')) {info=''}
 
     if (is_null(height)) {
-        height=800
+        height=900
         height_fishplot=300
     } else if (height<800) {
         height_fishplot=300
@@ -828,7 +828,7 @@ LACE_html<-function (id, style, class, ...) {
                                                                                                ),
                                                                                     ),
                                                                      htmltools::div(
-                                                                                    style = "flex:100%; align-items: center; height:98%;",
+                                                                                    style = "flex:100%; align-items: center; height:98%; font-size:20px; font-weight: normal;",
                                                                                     id = "streamgraph"
                                                                                 ),
                                                                      ),
