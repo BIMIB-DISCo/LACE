@@ -859,7 +859,7 @@ function _run_timescape(view_id, width, height, userConfig) {
                 //ele.style('opacity','1');
                 if(ele.isEdge()){
                   if(ele.data()["name"] !== ""){
-                    str = '<button class="btn btn-outline-success" type="button" style="float:right;margin: 5px;">'+ ele.data()["name"] +"</button> " +str;
+                    str = '<button class="btn btn-outline-success" type="button" style="float:right;margin: 5px;font-size: 14px">'+ ele.data()["name"] +"</button> " +str;
                   }
                 }
               });
@@ -869,9 +869,9 @@ function _run_timescape(view_id, width, height, userConfig) {
             tablecontainer.style.visibility = 'visible'
 
             tablecontainer =  document.getElementById("table")
-            tablecontainer.style.display = 'none'
+            tablecontainer.style.display = 'flex'
             tablecontainer =  document.getElementById("legend")
-            tablecontainer.style.display = 'none'
+            tablecontainer.style.display = 'flex'
             tablecontainer =  document.getElementById("mutations")
             tablecontainer.style.display = 'flex'
 
@@ -893,15 +893,15 @@ function _run_timescape(view_id, width, height, userConfig) {
                   tablecontainer.style["overflow-y"]=null
 
                   tablecontainer =  document.getElementById("table")
-                  tablecontainer.style.display = 'none'
+                  tablecontainer.style.display = 'flex'
                   tablecontainer =  document.getElementById("legend")
-                  tablecontainer.style.display = 'none'
+                  tablecontainer.style.display = 'flex'
                   tablecontainer =  document.getElementById("mutations")
                   tablecontainer.style.display = 'flex'
 
                   tablecontainer =  document.getElementById("mutations")
                   let mut=cy.mutdict[e.data()["name"]]
-                  tablecontainer.innerHTML = '<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">'+mut["display_name"]+'</h5><h6 class="card-subtitle mb-2 text-muted">'+mut["id"]+'</h6><p class="card-text">'+mut["description"]+'</p><a href="https://asia.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g='+mut["id"]+'" class="btn btn-outline-success" type="button">'+mut["assembly_name"]+'</a><a href="https://asia.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g='+mut["id"]+'" class="btn btn-outline-success" type="button">'+mut["source"]+'</a>  </div></div>'
+                  tablecontainer.innerHTML = '<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">'+mut["display_name"]+'</h5><h6 class="card-subtitle mb-2 text-muted">'+mut["id"]+'</h6><p class="card-text" style="font-size: 14px">'+mut["description"]+'</p><a  style="font-size: 14px"href="https://asia.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g='+mut["id"]+'" class="btn btn-outline-success" type="button">'+mut["assembly_name"]+'</a><a style="font-size: 14px" href="https://asia.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g='+mut["id"]+'" class="btn btn-outline-success" type="button">'+mut["source"]+'</a>  </div></div>'
               }
 	          } else{
 	            cy.getGene();
@@ -1299,7 +1299,7 @@ function _run_timescape(view_id, width, height, userConfig) {
               //ele.style('opacity','1');
               if(ele.isEdge()){
                 if(ele.data()["name"] !== ""){
-                  str = '<button class="btn btn-outline-success" type="button" style="float:right;margin: 5px;">'+ ele.data()["name"] +"</button> " +str;
+                  str = '<button class="btn btn-outline-success" type="button" style="float:right;margin: 5px;font-size: 14px">'+ ele.data()["name"] +"</button> " +str;
                 }
               }
             });
@@ -1309,9 +1309,9 @@ function _run_timescape(view_id, width, height, userConfig) {
           tablecontainer.style.visibility = 'visible'
 
           tablecontainer =  document.getElementById("table")
-          tablecontainer.style.display = 'none'
+          tablecontainer.style.display = 'flex'
           tablecontainer =  document.getElementById("legend")
-          tablecontainer.style.display = 'none'
+          tablecontainer.style.display = 'flex'
           tablecontainer =  document.getElementById("mutations")
           tablecontainer.style.display = 'flex'
 
@@ -1349,15 +1349,15 @@ function _run_timescape(view_id, width, height, userConfig) {
                   tablecontainer.style["overflow-y"]=null
 
                   tablecontainer =  document.getElementById("table")
-                  tablecontainer.style.display = 'none'
+                  tablecontainer.style.display = 'flex'
                   tablecontainer =  document.getElementById("legend")
-                  tablecontainer.style.display = 'none'
+                  tablecontainer.style.display = 'flex'
                   tablecontainer =  document.getElementById("mutations")
                   tablecontainer.style.display = 'flex'
 
                   tablecontainer =  document.getElementById("mutations")
                   let mut=cy.mutdict[e.data()["name"]]
-                  tablecontainer.innerHTML = '<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">'+mut["display_name"]+'</h5><h6 class="card-subtitle mb-2 text-muted">'+mut["id"]+'</h6><p class="card-text">'+mut["description"]+'</p><a href="https://asia.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g='+mut["id"]+'" class="btn btn-outline-success" type="button">'+mut["assembly_name"]+'</a><a href="https://asia.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g='+mut["id"]+'" class="btn btn-outline-success" type="button">'+mut["source"]+'</a>  </div></div>'
+                  tablecontainer.innerHTML = '<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">'+mut["display_name"]+'</h5><h6 class="card-subtitle mb-2 text-muted">'+mut["id"]+'</h6><p class="card-text" style=" font-size: 14px">'+mut["description"]+'</p><a style=" font-size: 14px" href="https://asia.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g='+mut["id"]+'" class="btn btn-outline-success" type="button">'+mut["assembly_name"]+'</a><a style=" font-size: 14px href="https://asia.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g='+mut["id"]+'" class="btn btn-outline-success" type="button">'+mut["source"]+'</a>  </div></div>'
               }
 	          } else{
 	            cy.getGene();

@@ -726,11 +726,16 @@ lace_interface <- function (B_mat,
                       n=unlist(lapply(C_mat,length)))
     rownames(tabula)=c(paste0('T',times_n))
     tabula
-    headings=c("<p>T</p>",
-               "<p>alpha</p><p style='font-weight:normal; margin-top: -20px; margin-bottom: -20px;'>est.</p>",
-               "<p>beta</p><p style='font-weight:normal; margin-top: -20px; margin-bottom: -20px;'>est.</p>",
-               "<p>m_tilde</p><p style='font-weight:normal; margin-top: -20px; margin-bottom: -20px;'>n candidate drivers</p>",
-               "<p>n</p><p style='font-weight:normal; margin-top: -20px; margin-bottom: -20px;'>single cells</p>"
+    headings=c("<p style=' font-size: 14px'>T</p>",
+               "<p style=' font-size: 14px'>alpha</p>
+               <p style='font-weight:normal; margin-top: -20px; margin-bottom: -20px; font-size: 12px'>est.</p>",
+               "<p style=' font-size: 14px'>beta</p>
+               <p style='font-weight:normal; margin-top: -20px; margin-bottom: -20px; font-size: 12px'>est.</p>",
+               paste("<p style=' font-size: 14px'>m_tilde</p>",
+               #<p style='font-weight:normal; margin-top: -20px; margin-bottom: -20px; font-size: 12px'>n candidate drivers</p>",
+               "<p style='font-weight:normal; margin-top: -20px; margin-bottom: -20px; font-size: 12px'>n drivers</p>"),
+               "<p style=' font-size: 14px'>n</p>
+               <p style='font-weight:normal; margin-top: -20px; margin-bottom: -20px; font-size: 12px'>single cells</p>"
                )
     tab={}
     tab$headings=headings
@@ -828,20 +833,24 @@ LACE_html<-function (id, style, class, ...) {
                                                                                 ),
                                                                      ),
                                                       htmltools::div(
-                                                                     style = "flex:100%; height:30%; display:flex; align-items: center; justify-content:center;",
+                                                        style = "flex:100%; height:8%; display:flex; align-items: flex-start; justify-content:flex-start; margin-left: 40px;",
+                                                        id = "mutations"
+                                                      ),
+                                                      htmltools::div(
+                                                                     style = "flex:100%; height:35%; display:flex; align-items: center; justify-content:center;",
                                                                      id = "lacetable",
                                                                      htmltools::div(
-                                                                                    style = "flex:50%; height:100%; display:flex; align-items: center; justify-content:center;",
+                                                                                    style = "flex:50%; height:100%; display:flex; align-items: flex-end; justify-content:flex-start; font-size:14px;",
                                                                                     id = "legend"
                                                                                 ),
                                                                      htmltools::div(
-                                                                                    style = "flex:50%; height:100%; display:flex; align-items: center; justify-content:center;",
+                                                                                    style = "flex:50%; height:100%; display:flex; align-items: center; justify-content:center; font-size:14px;",
                                                                                     id = "table",
                                                                                     class='table'
                                                                                 ),
                                                                      htmltools::div(
-                                                                                    style = "flex:100%; height:100%; display:none; align-items: center; justify-content:center;",
-                                                                                    id = "mutations"
+                                                                                    style = "flex:100%; height:100%; display:none; align-items: flex-end; justify-content:center;",
+                                                                                    id = "other"
                                                                                 )
                                                                  )
                                                       )

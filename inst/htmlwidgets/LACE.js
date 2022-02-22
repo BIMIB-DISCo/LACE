@@ -244,15 +244,15 @@ HTMLWidgets.widget({
               tablecontainer = document.getElementById("legend")
               tablecontainer.style.display = 'flex'
               tablecontainer = document.getElementById("mutations")
-              tablecontainer.style.display = 'none'
+              tablecontainer.style.display = 'flex'
 
 
               var ddy = 25
-              var width = 400
+              var width = 340
               var legend = d3.select("#legend")
                 .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", 100 + margin.top + margin.bottom)
+                .attr("width", width ) //+ margin.left + margin.right)
+                .attr("height", 100+ margin.top) // + margin.bottom)
                 .append("g")
                 .attr("class", "legend")
 
@@ -315,7 +315,7 @@ HTMLWidgets.widget({
               tablecontainer = document.getElementById("legend")
               tablecontainer.style.display = 'flex'
               tablecontainer = document.getElementById("mutations")
-              tablecontainer.style.display = 'none'
+              tablecontainer.style.display = 'flex'
 
               tablecontainer = document.getElementById("table")
               tablecontainer.innerHTML = '<table class="in_table"></table>'
@@ -514,7 +514,7 @@ HTMLWidgets.widget({
                 if (ele.isEdge()) {
                   if (ele.data()["name"] !== "") {
                     str = '<button class="btn btn-outline-success" \
-                    type="button" style="float:right;margin: 5px;">' + 
+                    type="button" style="float:right;margin: 5px;font-size: 14px">' + 
                       ele.data()["name"] + "</button> " + str;
                   }
                 }
@@ -528,9 +528,9 @@ HTMLWidgets.widget({
 
 
               tablecontainer = document.getElementById("table")
-              tablecontainer.style.display = 'none'
+              tablecontainer.style.display = 'flex'
               tablecontainer = document.getElementById("legend")
-              tablecontainer.style.display = 'none'
+              tablecontainer.style.display = 'flex'
               tablecontainer = document.getElementById("mutations")
               tablecontainer.style.display = 'flex'
 
@@ -560,7 +560,7 @@ HTMLWidgets.widget({
               tablecontainer = document.getElementById("legend")
               tablecontainer.style.display = 'flex'
               tablecontainer = document.getElementById("mutations")
-              tablecontainer.style.display = 'none'
+              tablecontainer.style.display = 'flex'
             });
 
 
@@ -583,14 +583,14 @@ HTMLWidgets.widget({
                   tablecontainer.style["overflow-y"] = null
 
                   tablecontainer = document.getElementById("table")
-                  tablecontainer.style.display = 'none'
+                  tablecontainer.style.display = 'flex'
                   tablecontainer = document.getElementById("legend")
-                  tablecontainer.style.display = 'none'
+                  tablecontainer.style.display = 'flex'
                   tablecontainer = document.getElementById("mutations")
                   tablecontainer.style.display = 'flex'
 
                   tablecontainer = document.getElementById("mutations")
-                  tablecontainer.innerHTML = '<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["display_name"] + '</h5><h6 class="card-subtitle mb-2 text-muted">' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["id"] + '</h6><p class="card-text">' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["description"] + '</p><a href="https://asia.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["id"] + '" class="btn btn-outline-success" type="button">' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["assembly_name"] + '</a><a href="https://asia.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["id"] + '" class="btn btn-outline-success" type="button">' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["source"] + '</a>  </div></div>'
+                  tablecontainer.innerHTML = '<div class="card" style="width: 18rem;"><div class="card-body"><h5 class="card-title">' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["display_name"] + '</h5><h6 class="card-subtitle mb-2 text-muted">' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["id"] + '</h6><p class="card-text" style="font-size: 14px">' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["description"] + '</p><a  style="font-size: 14px" href="https://asia.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["id"] + '" class="btn btn-outline-success" type="button">' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["assembly_name"] + '</a><a  style="font-size: 14px" href="https://asia.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["id"] + '" class="btn btn-outline-success" type="button">' + mutdict[cy.$('#' + e.target.id()).data()["name"]]["source"] + '</a>  </div></div>'
 
                 }
               }
