@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">LACE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.6.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
       </span>
     </div>
 
@@ -62,7 +62,8 @@
     <p>Perform inference of the maximum likelihood clonal tree from longitudinal data.</p>
     </div>
 
-    <div class="ref-usage sourceCode"><pre class="sourceCode r"><code><span class="fu">LACE</span><span class="op">(</span>
+    <div id="ref-usage">
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">LACE</span><span class="op">(</span>
   <span class="va">D</span>,
   lik_w <span class="op">=</span> <span class="cn">NULL</span>,
   alpha <span class="op">=</span> <span class="cn">NULL</span>,
@@ -80,29 +81,30 @@
   num_processes <span class="op">=</span> <span class="cn">Inf</span>,
   seed <span class="op">=</span> <span class="cn">NULL</span>,
   verbose <span class="op">=</span> <span class="cn">TRUE</span>,
-  log_file <span class="op">=</span> <span class="st">""</span>
+  log_file <span class="op">=</span> <span class="st">""</span>,
+  show <span class="op">=</span> <span class="cn">TRUE</span>
 <span class="op">)</span></code></pre></div>
+    </div>
 
-    <div id="ref-sections">
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>D</dt>
-<dd><p>Mutation data from multiple experiments for a list of driver genes. It can be either a list with a data matrix per time point or a SummarizedExperiment object. 
+<dd><p>Mutation data from multiple experiments for a list of driver genes. It can be either a list with a data matrix per time point or a SummarizedExperiment object.
 In this latter, the object must contain two fields: assays and colData. Assays stores one unique data matrix pooling all single cells observed at each time point and colData stores a vector of labels reporting the time point when each single cell was sequenced.
 Ordering of cells in assays field and colData field must be the same.</p></dd>
 <dt>lik_w</dt>
 <dd><p>Weight for each data point. If not provided, weights to correct for sample sizes are used.</p></dd>
 <dt>alpha</dt>
-<dd><p>False positive error rate provided as list of elements; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at 
+<dd><p>False positive error rate provided as list of elements; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at
 maximum-likelihood is returned.</p></dd>
 <dt>beta</dt>
-<dd><p>False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at 
+<dd><p>False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at
 maximum-likelihood is returned.</p></dd>
 <dt>initialization</dt>
-<dd><p>Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns. 
+<dd><p>Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns.
 This parameter overrides "random_tree".</p></dd>
 <dt>random_tree</dt>
-<dd><p>Boolean. Shall I start MCMC search from a random tree? If FALSE (default) and initialization is NULL, search 
+<dd><p>Boolean. Shall I start MCMC search from a random tree? If FALSE (default) and initialization is NULL, search
 is started from a TRaIT tree (BMC Bioinformatics . 2019 Apr 25;20(1):210.  doi: 10.1186/s12859-019-2795-4).</p></dd>
 <dt>keep_equivalent</dt>
 <dd><p>Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?</p></dd>
@@ -115,15 +117,15 @@ is started from a TRaIT tree (BMC Bioinformatics . 2019 Apr 25;20(1):210.  doi: 
 <dt>n_try_bs</dt>
 <dd><p>Number of steps without change in likelihood of best solution after which to stop the mcmc.</p></dd>
 <dt>learning_rate</dt>
-<dd><p>Parameter to tune the probability of accepting solutions at lower values during mcmc. Value of learning_rate = 1 (default), set a 
-probability proportional to the difference in likelihood; values of learning_rate greater than 1 inclease the chance of accepting solutions at lower likelihood 
+<dd><p>Parameter to tune the probability of accepting solutions at lower values during mcmc. Value of learning_rate = 1 (default), set a
+probability proportional to the difference in likelihood; values of learning_rate greater than 1 inclease the chance of accepting solutions at lower likelihood
 during mcmc while values lower than 1 decrease such probability.</p></dd>
 <dt>marginalize</dt>
 <dd><p>Boolean. Shall I marginalize C when computing likelihood?</p></dd>
 <dt>error_move</dt>
 <dd><p>Boolean. Shall I include estimation of error rates in the MCMC moves?</p></dd>
 <dt>num_processes</dt>
-<dd><p>Number of processes to be used during parallel execution. To execute in single process mode, 
+<dd><p>Number of processes to be used during parallel execution. To execute in single process mode,
 this parameter needs to be set to either NA or NULL.</p></dd>
 <dt>seed</dt>
 <dd><p>Seed for reproducibility.</p></dd>
@@ -131,19 +133,20 @@ this parameter needs to be set to either NA or NULL.</p></dd>
 <dd><p>Boolean. Shall I print to screen information messages during the execution?</p></dd>
 <dt>log_file</dt>
 <dd><p>log file where to print outputs when using parallel. If parallel execution is disabled, this parameter is ignored.</p></dd>
+<dt>show</dt>
+<dd><p>Boolean. Show the interactive interface to explore the output.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A list of 9 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal 
-clonal tree, C the attachment of cells to clones, corrected_genotypes the corrected genotypes and clones_prevalence clones' prevalence; relative_likelihoods and joint_likelihood are respectively 
-the likelihood of the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions, 
+    <p>A list of 9 elements: B, C, clones_prevalence, relative_likelihoods, joint_likelihood, clones_summary and error_rates. Here, B returns the maximum likelihood longitudinal
+clonal tree, C the attachment of cells to clones, corrected_genotypes the corrected genotypes and clones_prevalence clones' prevalence; relative_likelihoods and joint_likelihood are respectively
+the likelihood of the solutions at each individual time points and the joint likelihood; clones_summary provide a summary of association of mutations to clones. In equivalent_solutions,
 solutions (B and C) with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones.</p>
     </div>
-    </div>
 
-    <div id="examples">
+    <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="ref-examples sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">longitudinal_sc_variants</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">longitudinal_sc_variants</span><span class="op">)</span></span>
 <span class="r-in"><span class="va">inference</span> <span class="op">=</span> <span class="fu">LACE</span><span class="op">(</span>D <span class="op">=</span> <span class="va">longitudinal_sc_variants</span>,</span>
 <span class="r-in">                 lik_w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2308772</span>,<span class="fl">0.2554386</span>,<span class="fl">0.2701754</span>,<span class="fl">0.2435088</span><span class="op">)</span>,</span>
 <span class="r-in">                 alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.10</span>,<span class="fl">0.05</span>,<span class="fl">0.05</span>,<span class="fl">0.05</span><span class="op">)</span><span class="op">)</span>,</span>
@@ -154,7 +157,8 @@ solutions (B and C) with likelihood equivalent to the best solution are returned
 <span class="r-in">                 n_try_bs <span class="op">=</span> <span class="fl">5</span>,</span>
 <span class="r-in">                 num_processes <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span class="r-in">                 seed <span class="op">=</span> <span class="fl">12345</span>,</span>
-<span class="r-in">                 verbose <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span class="r-in">                 verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span class="r-in">                 show <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span class="r-in"></span>
 </code></pre></div>
     </div>
@@ -166,11 +170,11 @@ solutions (B and C) with likelihood equivalent to the best solution are returned
 
 
       <footer><div class="copyright">
-  <p></p><p>Developed by Daniele Ramazzotti, Fabrizio Angaroni, Davide Maspero, Alex Graudenzi, Luca De Sano.</p>
+  <p></p><p>Developed by Daniele Ramazzotti, Fabrizio Angaroni, Davide Maspero, Alex Graudenzi, Luca De Sano, Gianluca Ascolani.</p>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 1.9000.9000.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.2.9000.</p>
 </div>
 
       </footer></div>
