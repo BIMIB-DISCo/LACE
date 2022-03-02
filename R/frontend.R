@@ -101,7 +101,7 @@ LACE <- function( D,
         D <- check.indistinguishable(D)
     }
 
-    # if initiatilation is NULL and we do not require a random tree, we initializa with TRaIT tree
+    # If initiatilation is NULL and we do not require a random tree, we initializa with TRaIT tree
     if(is.null(initialization) && !random_tree) {
 
         # set initial tree from where to start MCMC search
@@ -330,7 +330,7 @@ LACE <- function( D,
 
     longitudinal_tree <- NULL
 
-    if(show==T) {
+    if(show==TRUE) {
         lace_interface(B, clones_prevalence, C, error_rates)
     }
     return(list(B=B,C=C,corrected_genotypes=corrected_genotypes,clones_prevalence=clones_prevalence,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,clones_summary=clones_summary,equivalent_solutions=equivalent_solutions,error_rates=error_rates, longitudinal_tree=longitudinal_tree))
