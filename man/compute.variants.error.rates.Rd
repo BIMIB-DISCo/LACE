@@ -4,7 +4,7 @@
 \alias{compute.variants.error.rates}
 \title{compute.variants.error.rates}
 \usage{
-compute.variants.error.rates(D, inference)
+\method{compute}{variants.error.rates}(D, inference)
 }
 \arguments{
 \item{D}{Mutation data from multiple experiments for a list of driver genes provided as a data matrix per time point.}

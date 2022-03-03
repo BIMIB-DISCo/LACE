@@ -51,7 +51,8 @@
 #' solutions (B and C) with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones.
 #' @export LACE
 #' @import parallel
-#' @import SummarizedExperiment
+#' @rawNamespace import(SummarizedExperiment, except = c("trim","shift", "show"))
+# #' @import SummarizedExperiment
 #' @import data.tree
 #' @importFrom Rfast rowMaxs
 #' @importFrom stats runif rnorm

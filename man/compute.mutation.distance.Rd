@@ -4,7 +4,7 @@
 \alias{compute.mutation.distance}
 \title{compute.mutation.distance}
 \usage{
-compute.mutation.distance(inference)
+\method{compute}{mutation.distance}(inference)
 }
 \arguments{
 \item{inference}{Results of the inference by LACE.}

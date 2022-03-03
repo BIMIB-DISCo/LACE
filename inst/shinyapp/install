@@ -1,0 +1,1 @@
+#devtools::install_local("path/package.gz", repos= BiocManager::repositories(), dependencies = T)

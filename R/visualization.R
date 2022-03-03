@@ -33,9 +33,11 @@
 #' @param legend_cex Specify size of the legend text.
 #' @return An igraph object g with the longitudinal tree inferred by LACE. 
 #' @export longitudinal.tree.plot
-#' @import graphics
+#' @rawNamespace import(graphics, except = c("box"))
+# #' @import graphics
 #' @import grDevices
-#' @import igraph
+# '@rawNamespace import(igraph, except = c("crossing","union", "as_data_frame", "groups",  "path"))
+# #' @import igraph
 #' @import RColorBrewer
 #' @import utils
 #'

@@ -865,7 +865,7 @@ LACE_html<-function (id, style, class, ...) {
 ##
 ## Output and render functions for using LACEview within Shiny
 ## applications and interactive Rmd documents.
-
+# #' @export
 LACEOutput <- function(outputId, width = '100%', height = '400px') {
     htmlwidgets::shinyWidgetOutput(outputId,
                                    'LACE',

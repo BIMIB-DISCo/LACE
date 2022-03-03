@@ -1,0 +1,14 @@
+ANNOVAR Version:
+	$Date: 2019-10-24 00:05:27 -0400 (Thu, 24 Oct 2019) $
+ANNOVAR Information:
+	For questions, comments, documentation, bug reports and program update, please visit http://www.openbioinformatics.org/annovar/
+ANNOVAR Command:
+	../test2/annovar/annotate_variation.pl -out ../test2/vcf_out/SRR7424340.filtered.anninput -exonicsplicing -build hg38 ../test2/vcf_out/SRR7424340.filtered.anninput ../test2/annovar/RefGene_hg38
+ANNOVAR Started:
+	Fri Feb 18 11:46:15 2022
+NOTICE: The --geneanno operation is set to ON by default
+NOTICE: Output files are written to ../test2/vcf_out/SRR7424340.filtered.anninput.variant_function, ../test2/vcf_out/SRR7424340.filtered.anninput.exonic_variant_function
+NOTICE: Reading gene annotation from ../test2/annovar/RefGene_hg38/hg38_refGene.txt ... Done with 82500 transcripts (including 20366 without coding sequence annotation) for 28265 unique genes
+NOTICE: Processing next batch with 9857 unique variants in 9857 input lines
+NOTICE: Reading FASTA sequences from ../test2/annovar/RefGene_hg38/hg38_refGeneMrna.fa ... Done with 2265 sequences
+WARNING: A total of 591 sequences will be ignored due to lack of correct ORF annotation
