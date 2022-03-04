@@ -26,6 +26,71 @@ inputs[['inf_out_dir']] <- reactiveVal()
 
 ### End project reactiveVals ####
 
+### Project functions ####
+
+toggle_inputs <- function(enable_inputs=T) {
+  input_list <- reactiveValuesToList(input)
+  
+  dp_input <- catch_ui_names(input_list, dp_grep_str)
+  av_input <- catch_ui_names(input_list, av_grep_str)
+  thr_input <- catch_ui_names(input_list, thr_grep_str)
+  m_input <- catch_ui_names(input_list, m_grep_str)
+  input_list <- c(m_input, av_input, thr_input, dp_input)
+  #browser()
+  print("enable_inputs")
+  print(enable_inputs)
+  # Toggle elements
+  for(x in names(input_list))
+    if(enable_inputs){
+      shinyjs::enable(x)
+    } else {
+      shinyjs::disable(x) 
+    }
+}
+
+disable_demo_tabs <- function() {
+  
+  enable_inputs <- F
+  
+  browser()
+  
+  input_list <- reactiveValuesToList(input)
+  
+  #if(only_buttons){
+  #  buttons <- which(sapply(input_list,function(x) {any(grepl('Button',attr(x,"class")))}))
+  #  input_list = input_list[buttons]
+  #}
+  
+  dp_input <- catch_ui_names(input_list, dp_grep_str)
+  av_input <- catch_ui_names(input_list, av_grep_str)
+  thr_input <- catch_ui_names(input_list, thr_grep_str)
+  m_input <- catch_ui_names(input_list, m_grep_str)
+  
+  #thr_grep_str= "^thr_|^`thr_|_thr_"
+  #dp_grep_str= "^dp_|^`dp_|_dp_"
+  #va_grep_str= "^va_|^`va_|_va_"
+  #inf_grep_str= "^inf_|^`inf_|_inf_"
+  #m_grep_str= "^m_|^`m_|_m_|sc"
+  
+  
+  
+  
+  input_list <- c(m_input, av_input, thr_input, dp_input)
+  
+  #which(sapply(input_list,function(x) {any(grepl('Button',attr(x,"class")))}))
+  
+  # Toggle elements
+  for(x in names(input_list))
+    if(enable_inputs){
+      shinyjs::enable(x)} else {
+        shinyjs::disable(x) }
+  
+  
+}
+
+enable_demo_tabs <- function() {}
+  
+### End project functions ####
 
 ### Project observes ####
 
@@ -178,7 +243,11 @@ observeEvent(inputs[["pr_path"]](), {
 observeEvent(inputs[["project_loaded"]](), {
   if (!is.null(inputs[["project_loaded"]]()))
     if (inputs[["project_loaded"]]()) {
-      hide(id = "pr_next")
+      shinyjs::hide(id = "pr_next")
+      
+      print('hide next--------------------------------------------------------------------------')
+      print(inputs[["demo"]]())
+      toggle_inputs(is.null(inputs[["demo"]]()))
       #browser()
 
       a_sam <- Sys.which("samtools")
@@ -205,7 +274,11 @@ observeEvent(inputs[["project_loaded"]](), {
   {
     #browser()
     shinyjs::show(id = "pr_next")
-    inputs[["demo"]](NULL)
+    
+    #inputs[["demo"]](NULL)
+    #print('show next--------------------------------------------------------------------------')
+    #toggle_inputs(is.null(inputs[["demo"]]()))
+    
     if (!is.null(inputs[["demo_remainder"]]())) {
       if (dir.exists(inputs[["demo_remainder"]]())) {
         #dir_delete(inputs[["demo_remainder"]]())
@@ -312,6 +385,16 @@ observeEvent(input[["pr_next"]], {
       inputs[['va_out_dir']](dir)
     }
   }
+  
+  if (inputs[["demo"]]() == -1)
+  {
+    inputs[["demo"]](NULL)
+    #print('load proj--------------------------------------------------------------------------')
+    #toggle_inputs(is.null(inputs[["demo"]]()))
+  }
+  else if (inputs[["demo"]]() == 0)
+    inputs[["demo"]](-1)
+  
 })
 
 ### End project observes ####

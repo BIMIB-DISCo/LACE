@@ -1073,6 +1073,9 @@ server <- function(input, output, session) {
       # fill tmp folder
       if (dir.exists(tmp_path) && dir.exists(demo_dir))
       {
+        #browser()
+        #print('hide tabs--------------------------------------------------------------------------')
+        #toggle_inputs(is.null(inputs[["demo"]]()))
         #delay(100, {
           hide_tab()
         #})
@@ -1084,8 +1087,11 @@ server <- function(input, output, session) {
 
       }
       else
+      {
+        #browser()
         inputs[["demo"]](NULL)
-
+        toggle_inputs(is.null(inputs[["demo"]]()))
+      }
       # disable tab
       #shinyjs::addClass()
       #shinyjs::disable(selector = '.nav-tabs a[data-value="SC metadata"')
@@ -1155,6 +1161,7 @@ server <- function(input, output, session) {
     if (input[["sidemenu"]] != "Small dataset" && input[["sidemenu"]] != "Melanoma dataset") {
       proj_dir <- str_replace_all(input[["sidemenu"]], pattern = ",", replacement = .Platform$file.sep)
 
+      #inputs[["demo"]](NULL)
       inputs[["reload_project"]](proj_dir)
     }
 
@@ -2069,16 +2076,17 @@ server <- function(input, output, session) {
             text = "Considered exonic variants",
             labels = inputs[['thr_accepted_var']](),
             input_id = "thr_accepted_var",
-            options = sortable_options(multiDrag = TRUE)
+            options = sortable_options(multiDrag = TRUE, disabled = !is.null(inputs[["demo"]]()))
           ),
           add_rank_list(
             text = "Neglected exonic variants",
             labels = inputs[['thr_negleted_var']](),
             input_id = "thr_negleted_var",
-            options = sortable_options(multiDrag = TRUE)
+            options = sortable_options(multiDrag = TRUE, disabled = !is.null(inputs[["demo"]]()))
           ),
           group_name = "thr_bucket_var_list",
-          orientation = "horizontal"
+          orientation = "horizontal", 
+          options = sortable_options(disabled = !is.null(inputs[["demo"]]()))
         )
 
       x <-
@@ -2740,7 +2748,8 @@ server <- function(input, output, session) {
       rank_list_basic <-
         rank_list(text = "Drag the time points in chronological order (before the smaller times)",
                   labels = inputs[['m_time_points']](),
-                  input_id = "m_time_points"
+                  input_id = "m_time_points", 
+                  options = sortable_options(disabled = !is.null(inputs[["demo"]]()))
         )
       x <- rank_list_basic %>%
         make_title_help_popover (tags$b("Sampling points"),
