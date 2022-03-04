@@ -245,7 +245,7 @@ observeEvent(inputs[["project_loaded"]](), {
     if (inputs[["project_loaded"]]()) {
       shinyjs::hide(id = "pr_next")
       
-      print('hide next--------------------------------------------------------------------------')
+      print('disable tabs--------------------------------------------------------------------------')
       print(inputs[["demo"]]())
       toggle_inputs(is.null(inputs[["demo"]]()))
       #browser()
@@ -274,10 +274,6 @@ observeEvent(inputs[["project_loaded"]](), {
   {
     #browser()
     shinyjs::show(id = "pr_next")
-    
-    #inputs[["demo"]](NULL)
-    #print('show next--------------------------------------------------------------------------')
-    #toggle_inputs(is.null(inputs[["demo"]]()))
     
     if (!is.null(inputs[["demo_remainder"]]())) {
       if (dir.exists(inputs[["demo_remainder"]]())) {
@@ -389,8 +385,6 @@ observeEvent(input[["pr_next"]], {
   if (inputs[["demo"]]() == -1)
   {
     inputs[["demo"]](NULL)
-    #print('load proj--------------------------------------------------------------------------')
-    #toggle_inputs(is.null(inputs[["demo"]]()))
   }
   else if (inputs[["demo"]]() == 0)
     inputs[["demo"]](-1)

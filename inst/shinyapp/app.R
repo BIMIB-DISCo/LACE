@@ -1073,9 +1073,6 @@ server <- function(input, output, session) {
       # fill tmp folder
       if (dir.exists(tmp_path) && dir.exists(demo_dir))
       {
-        #browser()
-        #print('hide tabs--------------------------------------------------------------------------')
-        #toggle_inputs(is.null(inputs[["demo"]]()))
         #delay(100, {
           hide_tab()
         #})
@@ -1161,7 +1158,6 @@ server <- function(input, output, session) {
     if (input[["sidemenu"]] != "Small dataset" && input[["sidemenu"]] != "Melanoma dataset") {
       proj_dir <- str_replace_all(input[["sidemenu"]], pattern = ",", replacement = .Platform$file.sep)
 
-      #inputs[["demo"]](NULL)
       inputs[["reload_project"]](proj_dir)
     }
 
