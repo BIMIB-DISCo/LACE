@@ -4,7 +4,6 @@
 ###
 ### Add lace_interface function
 
-
 #' @title LACE Interface
 #' @description `lace_interface` generates a longitudinal clonal tree and a
 #' graphic interface to explore the data using as input the clonal tree

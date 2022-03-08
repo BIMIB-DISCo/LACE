@@ -143,17 +143,8 @@ timescape <- function(clonal_prev,
                       height)
 
   return(x)
-  ## create widget
-  #htmlwidgets::createWidget(
-  #  name = "timescape",
-  #  x,
-  #  width = width,
-  #  height = height,
-  #  package = "timescape"
-  #)
+
 }
-
-
 
 # #' Function to process the user data
 # #' @param clonal_prev -- data frame of Clonal prevalence. Note: timepoints will be alphanumerically sorted in the view.
@@ -313,8 +304,6 @@ checkMinDims <- function(mutations, height, width) {
   }
 }
 
-
-
 # #' Function to check required inputs are present
 # #'
 # #' @param clonal_prev -- clonal_prev provided by user
@@ -413,7 +402,6 @@ checkTreeEdges <- function(tree_edges) {
 
   return(tree_edges)
 }
-
 
 # #' check genotype_position parameter
 # #'
