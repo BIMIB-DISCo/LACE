@@ -66,18 +66,23 @@ lace_interface <- function (B_mat,
     if (!exists('height')) {height=NULL}
     if (!exists('elementId')) {elementId=NULL}
     if (!exists('info')) {info=''}
-
+    
     if (is_null(height)) {
         height=900
         height_fishplot=300
     } else if (height<800) {
         height_fishplot=300
+    } else {
+      height_fishplot=300
     }
+  
     if (is_null(width)) {
         width=900
         width_fishplot=width/2
     } else if (width<900) {
         width_fishplot=width/2
+    } else {
+      width_fishplot=width/2
     }
     if (is_null(info)) {
         info = 'No dataset or experimental info available'
@@ -801,39 +806,39 @@ LACE_html<-function (id, style, class, ...) {
                                        style = "height:100%; width:100%;",
                                        htmltools::div(id = "navbar"),
                                        htmltools::div(id = "container",
-                                                      style = "flex-flow: row wrap; display: flex;height:800px; width:100%;",
+                                                      style = "flex-flow: row wrap; display: flex; height:800px; width:100%;",
                                                       htmltools::div(
-                                                                     style = "flex:50%; align-items: center; height:70%;",
+                                                                     style = "flex:0 0 48%; align-items: center; height:64%; margin: 5px; padding:5px; border: 1px solid black;",
                                                                      id = "cy_",
                                                                      htmltools::div(
-                                                                                    style = "flex:100%; align-items: center; height:2%;",
+                                                                                    style = "flex:100%; align-items: center; height:5%;",
                                                                                     id = "cy_title",
                                                                                     htmltools::p(
                                                                                                    style = "font-size:20px; text-align: center; font-weight: bold;", "Longitudinal clonal tree"
                                                                                                ),
                                                                                     ),
                                                                      htmltools::div(
-                                                                                    style = "flex:100%; align-items: center; height:98%;",
+                                                                                    style = "flex:100%; align-items: center; height:95%;",
                                                                                     id = "cy"
                                                                                 ),
                                                                      ),
                                                       htmltools::div(
-                                                                     style = "flex: 50%;align-items: center; height:70%;",
+                                                                     style = "flex: 0 0 48%; align-items: center; height:64%; margin: 5px; padding:5px; border: 1px solid black;",
                                                                      id = "streamgraph_",
                                                                      htmltools::div(
-                                                                                    style = "flex:100%; align-items: center; height:2%;",
+                                                                                    style = "flex:100%; align-items: center; height:5%;",
                                                                                     id = "streamgraph_title",
                                                                                     htmltools::p(
                                                                                                    style = "font-size:20px; text-align: center; font-weight: bold;", "Fishplot"
                                                                                                ),
                                                                                     ),
                                                                      htmltools::div(
-                                                                                    style = "flex:100%; align-items: center; height:98%; font-size:20px; font-weight: normal;",
+                                                                                    style = "flex:100%; align-items: center; height:95%; font-size:20px; font-weight: normal;",
                                                                                     id = "streamgraph"
                                                                                 ),
                                                                      ),
                                                       htmltools::div(
-                                                        style = "flex:100%; height:8%; display:flex; align-items: flex-start; justify-content:flex-start; margin-left: 40px;",
+                                                        style = "flex:100%; height:8%; display:flex; align-items: center; justify-content:flex-start; margin-left: 40px;",
                                                         id = "mutations"
                                                       ),
                                                       htmltools::div(
