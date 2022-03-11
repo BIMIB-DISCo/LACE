@@ -40,3 +40,5 @@ doc
 Meta
 /*.csv
 /vignettes/lg_output.xml
+/doc/
+/Meta/
