@@ -1,10 +1,6 @@
 ---
 title: LACE 2.0
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{LACE-interface}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: html_document
 ---
 
 ```{r, include = FALSE}
@@ -15,7 +11,6 @@ knitr::opts_chunk$set(
   eval = FALSE
 )
 ```
-
 
 LACE 2.0 is a new release of the LACE R package. LACE 2.0 is capable of performing clonal evolution analyses for single cell sequencing libraries of longitudinal experiments using variant calling data. LACE 2.0 allows to annotate variants and retrieve the relevant mutations interactively based on user-defined filtering criteria; it infers the maximum likelihood clonal tree, cell matrix attachment and false positive/negative rates using boolean matrix factorization. Furthermore, it generates the longitudinal clonal tree. Finally, LACE 2.0 allows to investigate cancer clonal evolution under different experimental conditions and the occurrence of single mutations which can be queried via *ensembl* database. 
 
@@ -231,5 +226,3 @@ By clicking on a mutation label of the longitudinal clonal tree as well as on a 
 The bottom part of the tab is used to display the tree legend and the best estimated set false positive/negative rates.
 
 ![](./resources/Display_tab.png){width=95%}
-
-

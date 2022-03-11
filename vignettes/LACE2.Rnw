@@ -48,25 +48,25 @@ knitr::pandoc(config = "./resources/pd.cfg", input = "3_LACE_interface.Rmd", for
 \title{LACE 2.0: an interactive R tool for the inference and visualization of longitudinal cancer evolution}
 
 
-	\author[1]{Gianluca Ascolani} 
-	\author[1]{Fabrizio Angaroni} 
-	\author[1]{Davide Maspero} 
-	\author[2]{Narra Lakshmi Sai Bhavesh} 
-	\author[3,4]{Rocco Piazza} 
-	\author[5,6]{Chiara Damiani} 
-	\author[3]{Daniele Ramazzotti}
-	\author[1,4]{Marco Antoniotti} 
-	\author[1,4,7]{Graudenzi Alex}
-	
+    \author[1]{Gianluca Ascolani} 
+    \author[1]{Fabrizio Angaroni} 
+    \author[1]{Davide Maspero} 
+    \author[2]{Narra Lakshmi Sai Bhavesh} 
+    \author[3,4]{Rocco Piazza} 
+    \author[5,6]{Chiara Damiani} 
+    \author[3]{Daniele Ramazzotti}
+    \author[1,4]{Marco Antoniotti} 
+    \author[1,4,7]{Graudenzi Alex}
+    
 
-	\affil[1]{Dept. of Informatics, Systems and Communication, Universit\'{a} degli Studi di Milano-Bicocca, Milan, Italy.}
-	\affil[2]{Department of Biological Sciences, Birla Institute of Technology and Science (BITS), Pilani, Rajasthan, India.}
-	\affil[3]{Dept.of Medicine and Surgery, Universit\'{a} degli Studi di Milano-Bicocca, Milan, Italy.}
-	\affil[4]{Bicocca Bioinformatics Biostatistics and Bioimaging Centre -- B4, Milan, Italy.}
-	\affil[5]{Dept. of Biotechnology and Biosciences, Universit\'{a} degli Studi di Milano-Bicocca, Milan, Italy.}
+    \affil[1]{Dept. of Informatics, Systems and Communication, Universit\'{a} degli Studi di Milano-Bicocca, Milan, Italy.}
+    \affil[2]{Department of Biological Sciences, Birla Institute of Technology and Science (BITS), Pilani, Rajasthan, India.}
+    \affil[3]{Dept.of Medicine and Surgery, Universit\'{a} degli Studi di Milano-Bicocca, Milan, Italy.}
+    \affil[4]{Bicocca Bioinformatics Biostatistics and Bioimaging Centre -- B4, Milan, Italy.}
+    \affil[5]{Dept. of Biotechnology and Biosciences, Universit\'{a} degli Studi di Milano-Bicocca, Milan, Italy.}
   \affil[6]{ISBE/SYSBIO Centre of Systems Biology, Milan, Italy.}
   \affil[7]{Inst. of Molecular Bioimaging and Physiology, National Research Council (IBFM-CNR), Segrate, Italy.}
-	
+    
 
 
 
