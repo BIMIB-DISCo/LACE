@@ -36,8 +36,8 @@ BiocStyle::latex()
 
 \begin{document}
 
-%<<calltopandoc, echo=F,include=F, engine='sh'>>=
-%pandoc 3_LACE_interface.Rmd --top-level-division=chapter -f markdown -t latex --listings -o 3.tex
+%<<calltopandoc, echo=TRUE,include=FALSE>>=
+%knitr::pandoc(config = normalizePath(file.path(".","resources","pd.cfg")), input = normalizePath(file.path(".","3_LACE_interface.Rmd")), format = "latex", ext = "tex" )
 %@
 
 <<echo=F,include=F>>=
@@ -48,14 +48,14 @@ knitr::pandoc(config = "./resources/pd.cfg", input = "3_LACE_interface.Rmd", for
 \title{LACE 2.0: an interactive R tool for the inference and visualization of longitudinal cancer evolution}
 
 
-    \author[1]{Gianluca Ascolani} 
-    \author[1]{Fabrizio Angaroni} 
-    \author[1]{Davide Maspero} 
-    \author[2]{Narra Lakshmi Sai Bhavesh} 
-    \author[3,4]{Rocco Piazza} 
-    \author[5,6]{Chiara Damiani} 
+    \author[1]{Gianluca Ascolani}
+    \author[1]{Fabrizio Angaroni}
+    \author[1]{Davide Maspero}
+    \author[2]{Narra Lakshmi Sai Bhavesh}
+    \author[3,4]{Rocco Piazza}
+    \author[5,6]{Chiara Damiani}
     \author[3]{Daniele Ramazzotti}
-    \author[1,4]{Marco Antoniotti} 
+    \author[1,4]{Marco Antoniotti}
     \author[1,4,7]{Graudenzi Alex}
     
 
