@@ -3,7 +3,7 @@ Version: 2.0.0
 Date: 2022-03-11
 Title: Longitudinal Analysis of Cancer Evolution (LACE)
 Authors@R: c(person("Daniele", "Ramazzotti", role=c("aut"),email="daniele.ramazzotti@unimib.it", comment = c(ORCID = "0000-0002-6087-2666")),
-    person("Gianluca", "Ascolani", role = c("cre","aut"), email = "gianluca.ascolani@unimib.it", comment = c(ORCID = "YOUR-ORCID-ID")),
+    person("Gianluca", "Ascolani", role = c("aut"), email = "gianluca.ascolani@unimib.it", comment = c(ORCID = "YOUR-ORCID-ID")),
     person("Marco","Antoniotti", role = c("aut"), email = "marco.antoniotti@unimib.it", comment = c(ORCID = "YOUR-ORCID-ID")),
     person("Fabrizio","Angaroni",role=c("aut"),email="fabrizio.angaroni@unimib.it"),
     person("Davide","Maspero",role=c("cre","aut"),email="d.maspero@campus.unimib.it"),
