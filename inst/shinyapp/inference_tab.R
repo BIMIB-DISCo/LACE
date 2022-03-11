@@ -323,7 +323,7 @@ show_result <- function (rs, show = T) {
     if (!is.null(B) && !is.null(C) && !is.null(clones_prevalence) && !is.null(error_rates))
       if (show) {
         #browser()
-        x <- LACE::lace_interface(
+        x <- LACE:::lace_interface(
           B_mat = B,
           clones_prevalence = clones_prevalence,
           C_mat = C,

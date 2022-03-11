@@ -40,32 +40,24 @@ utils::globalVariables(".my_actual_wd",
 
 #' @md
 #' @title LACE Preprocessing and Analysis Interface
-#' @description `LACEView` displays a RStudio Shiny user interface to
-#'     handle the VCF and BAM files preprocessing that is needed to
+#' @description `LACE2` displays a RStudio Shiny user interface to
+#'     handle the VCF and BAM files processing that is needed to
 #'     construct the input for the LACE inference algorithms.
+#'     The function generates also the most likelihood longitudinal 
+#'     clonal tree, and shows the output for further explorations of
+#'     the results.
 #'
-#' @usage LACEView()
+#' @usage LACE2()
 #' @section Installation: To install the package with all the
 #'     dependecies, devtools and Bioconductor need to be present.
 #'
-#' The R version required is greater than 3.6.0.
+#' The R version required is greater than 4.1.0.
 #'
 #' To install directly from github run:
 #'
 #' ```
-#' remotes::install_github("https://github.com/BIMIB-DISCo/LACE",  dependencies = T)
+#' remotes::install_github("https://github.com/BIMIB-DISCo/LACE2",  dependencies = T)
 #' ```
-#'
-#' If necessary you can add
-#'
-#' ```
-#' auth_token="BLAHBLAHGiuntaAlConfinDelCieloDietroApennino"
-#' ```
-#'
-#' to the previous call; a github `auth_token` can be generated from:
-#'
-#' https://github.com/settings/tokens
-#'
 #'
 #' @section Dependencies:
 #' The genetic variant annotation software ANNOVAR
@@ -73,9 +65,11 @@ utils::globalVariables(".my_actual_wd",
 #' of programs for interacting with high-throughput sequencing data
 #' Samtools (http://www.htslib.org/) need to be installed.
 #'
-#'
+#' @note 
+#' The function `LACE` is still available for retrocompatibility.
+#' 
 #' @export
-LACEView <- function() {
+LACE2 <- function() {
     appDir <- system.file("shinyapp", package = "LACE")
     if (appDir == "") {
         stop("LACE: Could not find package directory.",

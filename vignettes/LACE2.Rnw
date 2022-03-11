@@ -1,0 +1,123 @@
+%\VignetteEngine{knitr::knitr}
+
+\documentclass[a4paper,9pt]{article}
+
+<<style-knitr, eval=TRUE, echo=FALSE, results="asis">>=
+BiocStyle::latex()
+@
+
+%\VignetteIndexEntry{LACE2}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{placeins}
+\usepackage{url}
+\usepackage{tcolorbox}
+\usepackage{authblk}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{amsmath}
+
+\providecommand{\tightlist}{}
+\usepackage{listings}
+\newcommand{\passthrough}[1]{#1}
+\renewcommand{\passthrough}[1]{}
+%\renewcommand{\lstinline}{}
+
+\lstdefinestyle{Rcode}{
+  columns=fullflexible, basicstyle=\ttfamily, 
+  breaklines=true, backgroundcolor=\color[gray]{0.95},
+  xleftmargin=10pt, xrightmargin=10pt,
+  frame=lr, framesep=8pt,framerule=0pt
+  %resetmargins=true
+}
+\lstset{style=Rcode}
+
+\begin{document}
+
+%<<calltopandoc, echo=F,include=F, engine='sh'>>=
+%pandoc 3_LACE_interface.Rmd --top-level-division=chapter -f markdown -t latex --listings -o 3.tex
+%@
+
+<<echo=F,include=F>>=
+knitr::pandoc(config = "./resources/pd.cfg", input = "3_LACE_interface.Rmd", format = "latex", ext = "tex" )
+@
+
+
+\title{LACE 2.0: an interactive R tool for the inference and visualization of longitudinal cancer evolution}
+
+
+	\author[1]{Gianluca Ascolani} 
+	\author[1]{Fabrizio Angaroni} 
+	\author[1]{Davide Maspero} 
+	\author[2]{Narra Lakshmi Sai Bhavesh} 
+	\author[3,4]{Rocco Piazza} 
+	\author[5,6]{Chiara Damiani} 
+	\author[3]{Daniele Ramazzotti}
+	\author[1,4]{Marco Antoniotti} 
+	\author[1,4,7]{Graudenzi Alex}
+	
+
+	\affil[1]{Dept. of Informatics, Systems and Communication, Universit\'{a} degli Studi di Milano-Bicocca, Milan, Italy.}
+	\affil[2]{Department of Biological Sciences, Birla Institute of Technology and Science (BITS), Pilani, Rajasthan, India.}
+	\affil[3]{Dept.of Medicine and Surgery, Universit\'{a} degli Studi di Milano-Bicocca, Milan, Italy.}
+	\affil[4]{Bicocca Bioinformatics Biostatistics and Bioimaging Centre -- B4, Milan, Italy.}
+	\affil[5]{Dept. of Biotechnology and Biosciences, Universit\'{a} degli Studi di Milano-Bicocca, Milan, Italy.}
+  \affil[6]{ISBE/SYSBIO Centre of Systems Biology, Milan, Italy.}
+  \affil[7]{Inst. of Molecular Bioimaging and Physiology, National Research Council (IBFM-CNR), Segrate, Italy.}
+	
+
+
+
+
+%\affil[1]{School of Medicine and Surgery, Univ. of Milan-Bicocca, Monza, Italy.}
+%\affil[2]{Dept. of Informatics, Systems and Communication, Univ. of Milan-Bicocca, Milan, Italy.}
+%\affil[3]{Fondazione IRCCS Istituto Nazionale dei Tumori, Milan, Italy.}
+%\affil[4]{Department of Physics "Giuseppe Occhialini", Univ. of Milan-Bicocca, Milan, Italy.}
+%\affil[5]{Inst. of Molecular Bioimaging and Physiology, Consiglio Nazionale delle Ricerche (IBFM-CNR), Segrate, Milan, Italy.}
+%\affil[6]{Incontry su zoome}
+
+
+\date{\today}
+\maketitle
+
+\begin{tcolorbox}{\bf Overview.} LACE 2.0 (Longitudinal Analysis of Cancer Evolution + UI) 
+
+LACE 2.0 includes: (a) a easy-to-use  module for data processing and organization, which allows one to test and adjust several quality and relevance filters, and to annotate gene variants; (b) a module for the interactive visualization of the inferred cancer evolution models, which returns both the 
+%a coherent
+\emph{longitudinal clonal tree} and the \emph{fishplot},  
+and allows one to inspect the different portions of the model (i.e., clones and temporal relations), also by querying external databases such as Ensembl.org.  Importantly, LACE 2.0 requires a minimum set of parameters, which are sufficient to mitigate the aforementioned noise sources and infer reliable models of cancer evolution. 
+
+
+\vspace{1.0cm}
+
+{\em In this vignette, we give an overview of the Shiny app by presenting its main functions.}
+
+\vspace{1.0cm}
+
+\renewcommand{\arraystretch}{1.5}
+
+\end{tcolorbox}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance = TRUE,
+background = "#f3f3ff"
+)
+@
+
+\newpage
+
+\tableofcontents
+\include{3_LACE_interface}
+%\include{3}
+
+\section{\Rcode{sessionInfo()}}
+
+<<sessioninfo,results='asis',echo=FALSE>>=
+toLatex(sessionInfo())
+@
+
+\end{document}

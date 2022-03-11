@@ -45,7 +45,7 @@
 #'
 #'
 #'
-#' @export
+# #' @export
 
 lace_interface <- function (B_mat,
                             clones_prevalence,

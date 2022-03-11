@@ -1,17 +1,37 @@
 Package: LACE
+Type: Package
 Version: 2.0.0
 Date: 2022-03-08
-Title: Longitudinal Analysis of Cancer Evolution (LACE)
+Title: Longitudinal Analysis of Cancer Evolution 2.0
 Authors@R: c(person("Daniele", "Ramazzotti", role=c("aut"),email="daniele.ramazzotti@unimib.it",
                 comment = c(ORCID = "0000-0002-6087-2666")),
+    person("Gianluca", "Ascolani", role = c("aut", "cre"), email = "gianluca.ascolani@unimib.it", comment = c(ORCID = "YOUR-ORCID-ID")),
+    person(given = "Marco", family = "Antoniotti", role = c("aut"), email = "marco.antoniotti@unimib.it", comment = c(ORCID = "YOUR-ORCID-ID")),
     person("Fabrizio","Angaroni",role=c("aut"),email="fabrizio.angaroni@unimib.it"),
-    person("Davide","Maspero",role=c("cre","aut"),email="d.maspero@campus.unimib.it"),
+    person("Davide","Maspero",role=c("aut"),email="d.maspero@campus.unimib.it"),
     person("Alex","Graudenzi",role=c("aut"),email="alex.graudenzi@unimib.it"),
     person("Luca", "De Sano", role=c("aut"), email="luca.desano@gmail.com",
-                comment = c(ORCID = "0000-0002-9618-3774")),
-    person("Gianluca","Ascolani",role=c("aut"),email="gianluca.ascolani@unimib.it"))
-Depends: R (>= 4.1.0)
+                comment = c(ORCID = "0000-0002-9618-3774")))
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = FALSE)
+RoxygenNote: 7.1.2
+Suggests:
+    BiocGenerics, 
+    BiocStyle, 
+    testthat, 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+biocViews:
+    BiomedicalInformatics, 
+    SingleCell, 
+    SomaticMutation	
+Depends: 
+    R (>= 4.1.0),
 Imports:
+    biomaRt,
     foreach,
     doParallel,
     sortable,
@@ -48,25 +68,10 @@ Imports:
     shinyjs,
     shinyBS,
     shinydashboard,
-    biomaRt,
     callr
-Suggests:
-    BiocGenerics,
-    BiocStyle,
-    testthat,
-    knitr,
-    rmarkdown
 Name:
-    LACE: an R package for the inference of longitudinal cancer evolution models
+    LACE 2.0: an R package for the inference of longitudinal cancer evolution models
 Description:
-    LACE is an algorithmic framework that processes single-cell somatic mutation profiles from cancer samples collected at different time points and in distinct experimental settings, to produce longitudinal models of cancer evolution. The approach solves a Boolean Matrix Factorization problem with phylogenetic constraints, by maximizing a weighed likelihood function computed on multiple time points.
-Encoding: UTF-8
-License: file LICENSE
+    LACE 2.0 is an algorithmic framework that processes single-cell somatic mutation profiles from cancer samples collected at different time points and in distinct experimental settings, to produce longitudinal models of cancer evolution. The approach solves a Boolean Matrix Factorization problem with phylogenetic constraints, by maximizing a weighed likelihood function computed on multiple time points. LACE 2.0 compute the longitudinal clonal tree and provides a graphical user interface to annotate, select relevant variants and explore the inferred results interactively.
 URL: https://github.com/BIMIB-DISCo/LACE
 BugReports: https://github.com/BIMIB-DISCo/LACE
-biocViews:
-    BiomedicalInformatics, 
-    SingleCell, 
-    SomaticMutation
-RoxygenNote: 7.1.2
-VignetteBuilder: knitr

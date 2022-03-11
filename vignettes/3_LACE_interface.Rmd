@@ -1,19 +1,43 @@
 ---
-title: "LACE 2.0"
-output: html_document
+title: LACE 2.0
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{LACE-interface}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 ---
 
-## LACE 2.0
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  echo = TRUE, 
+  eval = FALSE
+)
+```
+
 
 LACE 2.0 is a new release of the LACE R package. LACE 2.0 is capable of performing clonal evolution analyses for single cell sequencing libraries of longitudinal experiments using variant calling data. LACE 2.0 allows to annotate variants and retrieve the relevant mutations interactively based on user-defined filtering criteria; it infers the maximum likelihood clonal tree, cell matrix attachment and false positive/negative rates using boolean matrix factorization. Furthermore, it generates the longitudinal clonal tree. Finally, LACE 2.0 allows to investigate cancer clonal evolution under different experimental conditions and the occurrence of single mutations which can be queried via *ensembl* database. 
 
 ## Installation of LACE 2.0 R package
 
-The package is available on GitHub and Bioconductor. 
+The package is available on GitHub and Bioconductor.
+LACE 2.0 requires R > 4.1.0 and Bioconductor.
+To install Bioconductor run:
 
-LACE 2.0 uses *Annovar* and *Samtools suite* as back-ends for variant calling annotation and depth computation, respectively. Please refer to the next section to intsall them. 
+```{r}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+```
 
-## Installation of other softwares required by LACE 2.0
+To install LACE 2.0 run:
+```{r}
+remotes::install_github("https://github.com/BIMIB-DISCo/LACE2", dependencies = TRUE)
+```
+
+LACE 2.0 uses *Annovar* and *Samtools suite* as back-ends for variant calling annotation and depth computation, respectively. Please refer to the next section to install them. 
+
+## Installation of other required softwares 
 
 *Annovar* is a widely used variant calling software freely available upon registration to their website at https://annovar.openbioinformatics.org/en/latest/.
 The package contains *Perl* scripts and variant calling annotation reference databases for the human species. For other databases, please refer to their website.
@@ -26,8 +50,9 @@ If the scripts are installed in binary search path, then LACE 2.0 will detect th
 ## Run LACE 2.0
 
 To start LACE 2.0 user interface run: 
-```{r, echo = T, eval = FALSE}
-LACEinterface::LACEview()
+```{r}
+library(LACE)
+LACE2()
 ```
 
 ## Using LACE 2.0
@@ -43,8 +68,7 @@ At this point, the inferential step is executed so that the most likelihood long
 The results are displayed via an interactive interface. 
 
 ## Interface
-
-The interface is divided in two parts interleaved by variant selection and inferential computation parts: the processing interface and the results interface. 
+The interface is divided in two parts interleaved by variant selection and inferential computation parts: the processing interface and the results interface.
 
 ### Project creation
 To begin the clonal analyses the user needs to create a project by choosing a folder and a meaningful name for the project. 
@@ -63,28 +87,26 @@ Projects contain a set of recently opened projects which can be reloaded by sele
 
 ![](./resources/Projects_menu.png){width=30%}
 
-Under Projects, there is the sub-menu Demos. 
-LACE 2.0 provides the user with two demos: 
+Under Projects, there is the sub-menu Demos.
+LACE 2.0 provides the user with two demos:
 
  * Melanoma dataset [cite Rambow et Al.]
  containing single cell variant annotations and depths for a total of 674 cells sampled at 4 different time points:
- 
-  > 1. sample before treatment
-  >     * BRAF inhibitor treatment
-  > 2. sample after 4 days
-  > 3. sample after 28 days
-  > 3. sample after 57 days
+    1. sample before treatment
+       * BRAF inhibitor treatment
+    2. sample after 4 days
+    3. sample after 28 days
+    3. sample after 57 days
 
 * Small dataset containing only 3 cells per 4 sampling time points.
 
-Current Project allows the user to save and load the parameters of the whole project or of the active tab. 
+Current Project allows the user to save and load the parameters of the whole project or of the active tab.
 
 ### Processing interface
 
 #### Single Cell Metadata
-
-In order to perform clonal analyses it is required to provide some information about the experiment such as the cell IDs which are used to retrieve the VCF/BAM files and the sample name each cell belongs to. These metadata are generally included with the experimental sequencing data as part of the library preparation. LACE 2.0 accepts tsv/csv tabular formats with headers and rds standard data R format. 
-Metadata file can include more information relative to the experimental setup and the platform used. 
+In order to perform clonal analyses it is required to provide some information about the experiment such as the cell IDs which are used to retrieve the VCF/BAM files and the sample name each cell belongs to. These metadata are generally included with the experimental sequencing data as part of the library preparation. LACE 2.0 accepts tsv/csv tabular formats with headers and rds standard data R format.
+Metadata file can include more information relative to the experimental setup and the platform used.
 
 ![](./resources/SCmeta_tab.png){width=95%}
 
@@ -108,7 +130,7 @@ The user should also provide the database to use for the annotation and the fold
 
 All types of single cell sequencing data is characterized by various sources of noise which depends on the technology used. Detected mutation might be characterized by low quality score or low statistical power. Some mutations can be neglected, while others might cause relevant effects, especially  on exonic regions where variations can result in changes of  the translational process  and modify their functional form. 
 
-In order to avoid small and possibly spurious fluctuations on sequencing data, variants can be filtered if they have low supporting evidences.  
+In order to avoid small and possibly spurious fluctuations on sequencing data, variants can be filtered if they have low supporting evidences.
 The user can set the minimum values for: 
 
  1. the number of reads supporting the alternative alleles in a cell,
@@ -120,19 +142,19 @@ The user can set the minimum values for:
  Furthermore, the user can choose which functional exonic variation should be considered or neglected. For example, there are cases in which unknown  and synonymous mutations in exonic regions are disregarded because their effect cannot be explicitly related to the experimental condition. 
  All possible variant functions and their explanations are resumed in the following table: 
  
-| Annotation (+)                   | Explanation                                                                                                                                                                                                                                                                                         |
-|----------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| frameshift insertion             | an insertion of one or more nucleotides that cause frameshift changes in protein coding sequence                                                                                                                                                                                                    |
-| frameshift deletion              | a deletion of one or more nucleotides that cause frameshift changes in protein coding sequence                                                                                                                                                                                                      |
-| frameshift block substitution    | a block substitution of one or more nucleotides that cause frameshift changes in protein coding sequence                                                                                                                                                                                            |
-| stopgain                         | a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift insertion/deletion or block substitution that lead to the immediate creation of stop codon at the variant site. For frameshift mutations, the creation of stop codon downstream of the variant will not be counted as "stopgain"! |
-| stoploss                         | a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift insertion/deletion or block substitution that lead to the immediate elimination of stop codon at the variant site                                                                                                                 |
-| nonframeshift insertion          | an insertion of 3 or multiples of 3 nucleotides that do not cause frameshift changes in protein coding sequence                                                                                                                                                                                     |
-| nonframeshift deletion           | a deletion of 3 or mutliples of 3 nucleotides that do not cause frameshift changes in protein coding sequence                                                                                                                                                                                       |
+| Annotation (+)                                            | Explanation                                                                                                                                                                                                                                                                                         |
+|-----------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| frameshift insertion                  | an insertion of one or more nucleotides that cause frameshift changes in protein coding sequence                                                                                                                                                                                                    |
+| frameshift deletion                   | a deletion of one or more nucleotides that cause frameshift changes in protein coding sequence                                                                                                                                                                                                      |
+| frameshift block substitution         | a block substitution of one or more nucleotides that cause frameshift changes in protein coding sequence                                                                                                                                                                                            |
+| stopgain                              | a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift insertion/deletion or block substitution that lead to the immediate creation of stop codon at the variant site. For frameshift mutations, the creation of stop codon downstream of the variant will not be counted as "stopgain"! |
+| stoploss                              | a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift insertion/deletion or block substitution that lead to the immediate elimination of stop codon at the variant site                                                                                                                 |
+| nonframeshift insertion               | an insertion of 3 or multiples of 3 nucleotides that do not cause frameshift changes in protein coding sequence                                                                                                                                                                                     |
+| nonframeshift deletion                | a deletion of 3 or mutliples of 3 nucleotides that do not cause frameshift changes in protein coding sequence                                                                                                                                                                                       |
 | nonframeshift block substitution | a block substitution of one or more nucleotides that do not cause frameshift changes in protein coding sequence                                                                                                                                                                                     |
-| nonsynonymous SNV                | a single nucleotide change that cause an amino acid change                                                                                                                                                                                                                                          |
-| synonymous SNV                   | a single nucleotide change that does not cause an amino acid change                                                                                                                                                                                                                                 |
-| unknown                          | unknown function (due to various errors in the gene structure definition in the database file)                                                                                                                                                                                                      |
+| nonsynonymous SNV                     | a single nucleotide change that cause an amino acid change                                                                                                                                                                                                                                          |
+| synonymous SNV                        | a single nucleotide change that does not cause an amino acid change                                                                                                                                                                                                                                 |
+| unknown                               | unknown function (due to various errors in the gene structure definition in the database file)                                                                                                                                                                                                      |
 
 (+) see *Annovar*
 
@@ -157,9 +179,10 @@ The user can select a set of filters based on gold standards and other analyses 
 ![](./resources/Variant_tab.png){width=95%}
 
 Finding  the parameters to select variants is not an easy task, and  the user might not know in advance how to choose the best set of filters. 
-Hence, the user can press "Select variants" (![](select_variant.png){width=10%}) to perform the aforementioned computations on VCF and BAM files to derive all the necessary aggregated information on the sampled cells. Afterward, the user is presented with a interactive live preview of variants passing the filters (including relevant parameters which can help in the selection) while values are changed. 
+Hence, the user can press "Select variants" (![](./resources/select_variant.png){width=10%}) to perform the aforementioned computations on VCF and BAM files to derive all the necessary aggregated information on the sampled cells. Afterward, the user is presented with a interactive live preview of variants passing the filters (including relevant parameters which can help in the selection) while values are changed. 
 
 ![](./resources/Interactive_Variant_tab.png){width=95%}
+
 
 ### Inference
 
@@ -208,3 +231,5 @@ By clicking on a mutation label of the longitudinal clonal tree as well as on a 
 The bottom part of the tab is used to display the tree legend and the best estimated set false positive/negative rates.
 
 ![](./resources/Display_tab.png){width=95%}
+
+
