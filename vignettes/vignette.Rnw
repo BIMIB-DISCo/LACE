@@ -16,7 +16,6 @@ BiocStyle::latex()
 \usepackage{authblk}
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
 
 \title{Longitudinal Analysis of Cancer Evolution with LACE}
 
