@@ -90,7 +90,7 @@ Projects contain a set of recently opened projects which can be reloaded by sele
 Under Projects, there is the sub-menu Demos.
 LACE 2.0 provides the user with two demos:
 
- * Melanoma dataset [cite Rambow et Al.]
+ * Melanoma dataset [Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.]
  containing single cell variant annotations and depths for a total of 674 cells sampled at 4 different time points:
     1. sample before treatment
        * BRAF inhibitor treatment

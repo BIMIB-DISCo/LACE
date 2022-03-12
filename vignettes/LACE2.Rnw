@@ -36,16 +36,15 @@ BiocStyle::latex()
 
 \begin{document}
 
-%<<calltopandoc, echo=F,include=F, engine='sh'>>=
-%pandoc 3_LACE_interface.Rmd --top-level-division=chapter -f markdown -t latex --listings -o 3.tex
+
+%<<calltopandoc, eval=TRUE,echo=TRUE,include=FALSE>>=
+%cfg_file=list.files(pattern = "pd.cfg$", recursive = TRUE)
+%rmd_file=list.files(pattern = "3_LACE_interface.Rmd$", recursive = TRUE)
+%knitr::pandoc(config = normalizePath(cfg_file, mustWork=TRUE), input = normalizePath(rmd_file, mustWork=TRUE), format = "latex", ext = "tex" )
 %@
 
-
-<<calltopandoc, echo=TRUE,include=FALSE>>=
-knitr::pandoc(config = normalizePath(file.path(".","resources","pd.cfg")), input = normalizePath(file.path(".","3_LACE_interface.Rmd")), format = "latex", ext = "tex" )
-@
-
-
+%knitr::pandoc(config = normalizePath(file.path(".","resources","pd.cfg"), mustWork=TRUE), input = normalizePath(file.path(".","3_LACE_interface.Rmd"), mustWork=TRUE), format = "latex", ext = "tex" )
+%
 \title{LACE 2.0: an interactive R tool for the inference and visualization of longitudinal cancer evolution}
 
 
@@ -112,7 +111,468 @@ background = "#f3f3ff"
 \newpage
 
 \tableofcontents
-\include{3_LACE_interface}
+\passthrough{\lstinline!\{r, include = FALSE\} knitr::opts\_chunk$set(   collapse = TRUE,   comment = "\#>",   echo = TRUE,    eval = FALSE )!}
+
+LACE 2.0 is a new release of the LACE R package. LACE 2.0 is capable of
+performing clonal evolution analyses for single cell sequencing
+libraries of longitudinal experiments using variant calling data. LACE
+2.0 allows to annotate variants and retrieve the relevant mutations
+interactively based on user-defined filtering criteria; it infers the
+maximum likelihood clonal tree, cell matrix attachment and false
+positive/negative rates using boolean matrix factorization. Furthermore,
+it generates the longitudinal clonal tree. Finally, LACE 2.0 allows to
+investigate cancer clonal evolution under different experimental
+conditions and the occurrence of single mutations which can be queried
+via \emph{ensembl} database.
+
+\hypertarget{installation-of-lace-2.0-r-package}{%
+\section{Installation of LACE 2.0 R
+package}\label{installation-of-lace-2.0-r-package}}
+
+The package is available on GitHub and Bioconductor. LACE 2.0 requires R
+\textgreater{} 4.1.0 and Bioconductor. To install Bioconductor run:
+
+\begin{lstlisting}
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+\end{lstlisting}
+
+To install LACE 2.0 run:
+
+\begin{lstlisting}
+remotes::install_github("https://github.com/BIMIB-DISCo/LACE2", dependencies = TRUE)
+\end{lstlisting}
+
+LACE 2.0 uses \emph{Annovar} and \emph{Samtools suite} as back-ends for
+variant calling annotation and depth computation, respectively. Please
+refer to the next section to install them.
+
+\hypertarget{installation-of-other-required-softwares}{%
+\section{Installation of other required
+softwares}\label{installation-of-other-required-softwares}}
+
+\emph{Annovar} is a widely used variant calling software freely
+available upon registration to their website at
+https://annovar.openbioinformatics.org/en/latest/. The package contains
+\emph{Perl} scripts and variant calling annotation reference databases
+for the human species. For other databases, please refer to their
+website. If the scripts are installed in binary search path, then LACE
+2.0 will detect them automatically.
+
+\emph{Perl} (https://www.perl.org/) is required to run \emph{Annovar}.
+
+\emph{Samtools suite} is a standard set of tools and libraries to handle
+SAM/BAM/BED file format and perform a variety of common operations on
+sequencing data. It is freely available at http://www.htslib.org/ and
+https://github.com/samtools/htslib. To install \emph{Samtools} follow
+the instructions in their website.
+
+\hypertarget{run-lace-2.0}{%
+\section{Run LACE 2.0}\label{run-lace-2.0}}
+
+To start LACE 2.0 user interface run:
+
+\begin{lstlisting}
+library(LACE)
+LACE2()
+\end{lstlisting}
+
+\hypertarget{using-lace-2.0}{%
+\section{Using LACE 2.0}\label{using-lace-2.0}}
+
+LACE 2.0 has been thought to be used on single cell sequencing data for
+which it is available variant calling data in standard VCF format and
+binary aligned data in standard BAM format.
+
+The user is provided with an interface to initiate a project and to set
+filter thresholds after which annotation of variants, filtering of data
+and depth at variant sites are retrieved. Both annotation and depth
+derivation are computationally expensive steps. LACE 2.0 reduces
+possible re-computation by detecting parameter variations of the user
+interface and by comparison of the timestamps of interface state, inputs
+and outputs. Intermediary and final data are stored in the designated
+folders.
+
+The operation is followed by the possibility for the user to select
+variants which are drivers of the understudied biological problem.
+
+At this point, the inferential step is executed so that the most
+likelihood longitudinal clonal tree and clonal prevalences are retrieved
+together with the best set of false positive/negative rates among those
+provided by the user.
+
+The results are displayed via an interactive interface.
+
+\hypertarget{interface}{%
+\section{Interface}\label{interface}}
+
+The interface is divided in two parts interleaved by variant selection
+and inferential computation parts: the processing interface and the
+results interface.
+
+\hypertarget{project-creation}{%
+\subsection{Project creation}\label{project-creation}}
+
+To begin the clonal analyses the user needs to create a project by
+choosing a folder and a meaningful name for the project.
+
+\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Project_tab.png}
+
+If the project path does not contain former LACE projects, it asks the
+user to create a new one (``Create project'') and all intermediate and
+final results will be stored in structured sub-folders of the chosen
+project path.
+
+LACE 2.0 automatically recognizes if the selected path is a LACE project
+and proposes the user to load it
+(\includegraphics[width=0.1\textwidth,height=\textheight]{./resources/load_project.png})
+
+\hypertarget{sidebar-and-demos}{%
+\subsection{Sidebar and Demos}\label{sidebar-and-demos}}
+
+The sidebar is divided in Projects and Current Project. Projects contain
+a set of recently opened projects which can be reloaded by selecting the
+respective project name.
+
+\includegraphics[width=0.3\textwidth,height=\textheight]{./resources/Projects_menu.png}
+
+Under Projects, there is the sub-menu Demos. LACE 2.0 provides the user
+with two demos:
+
+\begin{itemize}
+\tightlist
+\item
+  Melanoma dataset {[}Rambow, Florian, et al.~``Toward minimal residual
+  disease-directed therapy in melanoma.'' Cell 174.4 (2018): 843-855.{]}
+  containing single cell variant annotations and depths for a total of
+  674 cells sampled at 4 different time points:
+
+  \begin{enumerate}
+  \def\labelenumi{\arabic{enumi}.}
+  \tightlist
+  \item
+    sample before treatment
+
+    \begin{itemize}
+    \tightlist
+    \item
+      BRAF inhibitor treatment
+    \end{itemize}
+  \item
+    sample after 4 days
+  \item
+    sample after 28 days
+  \item
+    sample after 57 days
+  \end{enumerate}
+\item
+  Small dataset containing only 3 cells per 4 sampling time points.
+\end{itemize}
+
+Current Project allows the user to save and load the parameters of the
+whole project or of the active tab.
+
+\hypertarget{processing-interface}{%
+\subsection{Processing interface}\label{processing-interface}}
+
+\hypertarget{single-cell-metadata}{%
+\subsubsection{Single Cell Metadata}\label{single-cell-metadata}}
+
+In order to perform clonal analyses it is required to provide some
+information about the experiment such as the cell IDs which are used to
+retrieve the VCF/BAM files and the sample name each cell belongs to.
+These metadata are generally included with the experimental sequencing
+data as part of the library preparation. LACE 2.0 accepts tsv/csv
+tabular formats with headers and rds standard data R format. Metadata
+file can include more information relative to the experimental setup and
+the platform used.
+
+\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/SCmeta_tab.png}
+
+The user should identify and select the ID and sampling columns. The
+user can also reorder the sampling names
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{./resources/samples_order.png}
+
+so to recreate the chronological order of longitudinal events of the
+experiment, or to explore different orders.
+
+\hypertarget{annotations}{%
+\subsubsection{Annotations}\label{annotations}}
+
+Annotations of variant calling data is performed using \emph{Annovar} as
+back-end. Each mutation of each cell is annotated based on the
+annotation database used. \emph{Annovar} provides a database for the
+human species useful to tag cancer mutations and whenever possible their
+functional effect.
+
+\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Annotation_tab.png}
+
+If \emph{Annovar}'s \emph{Perl} scripts are available in the standard
+binary paths, they are detected and the \emph{Annovar} folder field is
+autocompleted; otherwise, the user should provide the folder containing
+the \emph{Perl} scripts. The user should also provide the database to
+use for the annotation and the folder containing the variant calling
+files (VCF).
+
+\hypertarget{variant-filtering}{%
+\subsubsection{Variant filtering}\label{variant-filtering}}
+
+All types of single cell sequencing data is characterized by various
+sources of noise which depends on the technology used. Detected mutation
+might be characterized by low quality score or low statistical power.
+Some mutations can be neglected, while others might cause relevant
+effects, especially on exonic regions where variations can result in
+changes of the translational process and modify their functional form.
+
+In order to avoid small and possibly spurious fluctuations on sequencing
+data, variants can be filtered if they have low supporting evidences.
+The user can set the minimum values for:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  the number of reads supporting the alternative alleles in a cell,
+\item
+  the frequency of the minor allele for each referenced SNP included in
+  a default global population,
+\item
+  the cell frequency per sample showing the mutation at the same site.
+\end{enumerate}
+
+\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Filters_tab.png}
+
+Furthermore, the user can choose which functional exonic variation
+should be considered or neglected. For example, there are cases in which
+unknown and synonymous mutations in exonic regions are disregarded
+because their effect cannot be explicitly related to the experimental
+condition. All possible variant functions and their explanations are
+resumed in the following table:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule
+\begin{minipage}[b]{0.16\columnwidth}\raggedright
+Annotation (+)\strut
+\end{minipage} & \begin{minipage}[b]{0.78\columnwidth}\raggedright
+Explanation\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.16\columnwidth}\raggedright
+frameshift insertion\strut
+\end{minipage} & \begin{minipage}[t]{0.78\columnwidth}\raggedright
+an insertion of one or more nucleotides that cause frameshift changes in
+protein coding sequence\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.16\columnwidth}\raggedright
+frameshift deletion\strut
+\end{minipage} & \begin{minipage}[t]{0.78\columnwidth}\raggedright
+a deletion of one or more nucleotides that cause frameshift changes in
+protein coding sequence\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.16\columnwidth}\raggedright
+frameshift block substitution\strut
+\end{minipage} & \begin{minipage}[t]{0.78\columnwidth}\raggedright
+a block substitution of one or more nucleotides that cause frameshift
+changes in protein coding sequence\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.16\columnwidth}\raggedright
+stopgain\strut
+\end{minipage} & \begin{minipage}[t]{0.78\columnwidth}\raggedright
+a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift
+insertion/deletion or block substitution that lead to the immediate
+creation of stop codon at the variant site. For frameshift mutations,
+the creation of stop codon downstream of the variant will not be counted
+as ``stopgain''!\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.16\columnwidth}\raggedright
+stoploss\strut
+\end{minipage} & \begin{minipage}[t]{0.78\columnwidth}\raggedright
+a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift
+insertion/deletion or block substitution that lead to the immediate
+elimination of stop codon at the variant site\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.16\columnwidth}\raggedright
+nonframeshift insertion\strut
+\end{minipage} & \begin{minipage}[t]{0.78\columnwidth}\raggedright
+an insertion of 3 or multiples of 3 nucleotides that do not cause
+frameshift changes in protein coding sequence\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.16\columnwidth}\raggedright
+nonframeshift deletion\strut
+\end{minipage} & \begin{minipage}[t]{0.78\columnwidth}\raggedright
+a deletion of 3 or mutliples of 3 nucleotides that do not cause
+frameshift changes in protein coding sequence\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.16\columnwidth}\raggedright
+nonframeshift block substitution\strut
+\end{minipage} & \begin{minipage}[t]{0.78\columnwidth}\raggedright
+a block substitution of one or more nucleotides that do not cause
+frameshift changes in protein coding sequence\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.16\columnwidth}\raggedright
+nonsynonymous SNV\strut
+\end{minipage} & \begin{minipage}[t]{0.78\columnwidth}\raggedright
+a single nucleotide change that cause an amino acid change\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.16\columnwidth}\raggedright
+synonymous SNV\strut
+\end{minipage} & \begin{minipage}[t]{0.78\columnwidth}\raggedright
+a single nucleotide change that does not cause an amino acid
+change\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.16\columnwidth}\raggedright
+unknown\strut
+\end{minipage} & \begin{minipage}[t]{0.78\columnwidth}\raggedright
+unknown function (due to various errors in the gene structure definition
+in the database file)\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+(+) see \emph{Annovar}
+
+\hypertarget{single-cell-sampling-depth}{%
+\subsubsection{Single cell sampling
+depth}\label{single-cell-sampling-depth}}
+
+The number of reads per SNV site represents an optimal filter to
+retrieve relevant mutations. Depth at specific sites is usually not
+provided in standard alignment or variant calling pipelines and it is
+computationally expensive to retrieve. The user should provide the
+folder with aligned data and, if not found already, the \emph{samtools}
+executable folder location to compute depth only on sites passing the
+variant filters set in the previous tab.
+
+\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Depth_tab.png}
+
+\hypertarget{selection-of-relevant-variants}{%
+\subsection{Selection of relevant
+variants}\label{selection-of-relevant-variants}}
+
+Not all mutations are distinctive of the disease or experiment
+understudied. Identifying relevant and driver variants allows to
+reproduce a more significant longitudinal clonal tree. The user can
+select a set of filters based on gold standards and other analyses such
+as:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  the minimum number of reads at given mutation site
+\item
+  the maximum number of missing data per gene
+\item
+  the minimum median depth per locus
+\item
+  the minimum median depth supporting the mutation
+\item
+  subset of known genes
+\end{enumerate}
+
+\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Variant_tab.png}
+
+Finding the parameters to select variants is not an easy task, and the
+user might not know in advance how to choose the best set of filters.
+Hence, the user can press ``Select variants''
+(\includegraphics[width=0.1\textwidth,height=\textheight]{./resources/select_variant.png})
+to perform the aforementioned computations on VCF and BAM files to
+derive all the necessary aggregated information on the sampled cells.
+Afterward, the user is presented with a interactive live preview of
+variants passing the filters (including relevant parameters which can
+help in the selection) while values are changed.
+
+\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Interactive_Variant_tab.png}
+
+\hypertarget{inference}{%
+\subsection{Inference}\label{inference}}
+
+The inferential tab allows the user to set all the parameters to solve
+the boolean matrix factorization problem and estimate the model
+parameters of the Bayesian model using a MCMC to maximize the
+likelihood.
+
+Inferential step uses the following set of parameters:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Learning rate
+\item
+  False positive rates for each sample
+\item
+  False negative rates for each sample
+\item
+  Number of iterations in each MCMC search
+\item
+  Number of restart for the MCMC 5 Early stopping number of iterations
+  with no growing likelihood\\
+\item
+  Number of parallel processes
+\item
+  Random seed to recreate simulations
+\item
+  Initialize the clonal tree randomly
+\item
+  Marginalize the cell attachment matrix
+\item
+  Keep equivalent solutions and return all of them
+\item
+  Check indistinguishable event and remove them
+\item
+  Estimate error rates of MCMC moves
+\item
+  Show results
+\end{enumerate}
+
+\includegraphics[width=0.6\textwidth,height=\textheight]{./resources/Inference_tab2.png}
+
+The user must insert at least one false positive rate and one false
+negative rate value for each sample. By double clicking on any cell
+belonging to the row ``add row'', the user can insert a new set of false
+or positive rates for each sample. During the inferential step, the
+maximization of the likelihood for each set of rates is performed. The
+best results are returned.
+
+\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Inference_tab1.png}
+
+Press ``Run LACE'' to perform all computation and estimation steps and
+visualize the results.
+
+\hypertarget{longitudinal-display-and-outputs-interface}{%
+\subsection{Longitudinal display and outputs
+interface}\label{longitudinal-display-and-outputs-interface}}
+
+The longitudinal display tab shows the longitudinal clonal tree, the
+fishplot and the clonal tree, together with the best false positive and
+negative rate parameters.
+
+The longitudinal clonal tree is placed on the top left side. Continuous
+edges are used to represent parental relations between clones, while
+dashed edges show persistence relations. The size of the nodes is
+proportional to the clonal prevalence. Moving the mouse over a node, it
+is possible to see the clonal prevalence value. While moving the mouse
+over the mutation labels, it shows the complete set of mutations for
+that clone under the longitudinal clonal tree.
+
+The fishplot is on the top right side of the tab. Passing the mouse over
+the ribbons, the clonal prevalences of the clones at different time
+points are displayed. Similarly, with the mouse over the time tags, the
+clonal prevalences of all clones at the specified time point are
+visualized.
+
+By clicking on a mutation label of the longitudinal clonal tree as well
+as on a fishplot ribbon or a clonal tree node, the details of the
+mutation characterizing the clone can be queried and retrieved from the
+\emph{Ensembl} database.
+
+The bottom part of the tab is used to display the tree legend and the
+best estimated set false positive/negative rates.
+
+\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Display_tab.png}
 %\include{3}
 
 \section{\Rcode{sessionInfo()}}

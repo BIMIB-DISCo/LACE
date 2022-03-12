@@ -39,32 +39,46 @@ utils::globalVariables(".my_actual_wd",
 
 
 #' @md
-#' @title LACE Preprocessing and Analysis Interface
-#' @description `LACE2` displays a RStudio Shiny user interface to
+#' @title LACE Processing and Analysis Interface
+#' @description `LACE2` displays a Shiny user interface to
 #'     handle the VCF and BAM files processing that is needed to
 #'     construct the input for the LACE inference algorithms.
 #'     The function generates also the most likelihood longitudinal 
 #'     clonal tree, and shows the output for further explorations of
 #'     the results.
 #'
-#' @usage LACE2()
-#' @section Installation: To install the package with all the
-#'     dependecies, devtools and Bioconductor need to be present.
-#'
-#' The R version required is greater than 4.1.0.
+#' @section Installation: 
+#' The package is available on GitHub and Bioconductor.
+#' LACE 2.0 requires R > 4.1.0 and Bioconductor.
 #'
 #' To install directly from github run:
 #'
 #' ```
-#' remotes::install_github("https://github.com/BIMIB-DISCo/LACE2",  dependencies = T)
+#' remotes::install_github("https://github.com/BIMIB-DISCo/LACE2", 
+#'                         dependencies = TRUE)
 #' ```
 #'
 #' @section Dependencies:
-#' The genetic variant annotation software ANNOVAR
-#' (https://annovar.openbioinformatics.org/en/latest/) and the suite
-#' of programs for interacting with high-throughput sequencing data
-#' Samtools (http://www.htslib.org/) need to be installed.
-#'
+#' LACE 2.0 uses *Annovar* and *Samtools suite* as back-ends for variant calling
+#' annotation and depth computation, respectively.
+#' 
+#' *Annovar* is a variant calling software written in *Perl* freely available upon 
+#' registration to their website at 
+#' [https://annovar.openbioinformatics.org/en/latest/](https://annovar.openbioinformatics.org/en/latest/).
+#' 
+#' *Perl* can be found and installed at [https://www.perl.org/](https://www.perl.org/). 
+#' 
+#' *Samtools suite* is a set of tools to handle SAM/BAM/BED file format. It is 
+#' freely available at [http://www.htslib.org/](http://www.htslib.org/). To install *Samtools* follow the 
+#' instructions in their website. 
+#'  
+
+#' 
+#' @usage 
+#' library(LACE)
+#' LACE2()
+#' 
+#' 
 #' @note 
 #' The function `LACE` is still available for retrocompatibility.
 #' 

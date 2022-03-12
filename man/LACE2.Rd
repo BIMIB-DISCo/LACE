@@ -2,12 +2,12 @@
 % Please edit documentation in R/LACEinterface.R
 \name{LACE2}
 \alias{LACE2}
-\title{LACE Preprocessing and Analysis Interface}
+\title{LACE Processing and Analysis Interface}
 \usage{
 LACE2()
 }
 \description{
-\code{LACE2} displays a RStudio Shiny user interface to
+\code{LACE2} displays a Shiny user interface to
 handle the VCF and BAM files processing that is needed to
 construct the input for the LACE inference algorithms.
 The function generates also the most likelihood longitudinal
@@ -18,20 +18,28 @@ the results.
 The function \code{LACE} is still available for retrocompatibility.
 }
 \section{Installation}{
- To install the package with all the
-dependecies, devtools and Bioconductor need to be present.
 
-The R version required is greater than 4.1.0.
+The package is available on GitHub and Bioconductor.
+LACE 2.0 requires R > 4.1.0 and Bioconductor.
 
-To install directly from github run:\preformatted{remotes::install_github("https://github.com/BIMIB-DISCo/LACE2",  dependencies = T)
+To install directly from github run:\preformatted{remotes::install_github("https://github.com/BIMIB-DISCo/LACE2", 
+                        dependencies = TRUE)
 }
 }
 
 \section{Dependencies}{
 
-The genetic variant annotation software ANNOVAR
-(https://annovar.openbioinformatics.org/en/latest/) and the suite
-of programs for interacting with high-throughput sequencing data
-Samtools (http://www.htslib.org/) need to be installed.
+LACE 2.0 uses \emph{Annovar} and \emph{Samtools suite} as back-ends for variant calling
+annotation and depth computation, respectively.
+
+\emph{Annovar} is a variant calling software written in \emph{Perl} freely available upon
+registration to their website at
+\url{https://annovar.openbioinformatics.org/en/latest/}.
+
+\emph{Perl} can be found and installed at \url{https://www.perl.org/}.
+
+\emph{Samtools suite} is a set of tools to handle SAM/BAM/BED file format. It is
+freely available at \url{http://www.htslib.org/}. To install \emph{Samtools} follow the
+instructions in their website.
 }
 
