@@ -15,7 +15,7 @@ clonal tree, and shows the output for further explorations of
 the results.
 }
 \note{
-The function \code{LACE} is still available for retrocompatibility.
+The function LACE is still available for retrocompatibility.
 }
 \section{Installation}{
 

@@ -75,7 +75,6 @@ utils::globalVariables(".my_actual_wd",
 
 #' 
 #' @usage 
-#' library(LACE)
 #' LACE2()
 #' 
 #' 
