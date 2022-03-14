@@ -231,5 +231,3 @@ By clicking on a mutation label of the longitudinal clonal tree as well as on a 
 The bottom part of the tab is used to display the tree legend and the best estimated set false positive/negative rates.
 
 ![](./resources/Display_tab.png){width=95%}
-
-
