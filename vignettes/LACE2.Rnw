@@ -19,32 +19,13 @@ BiocStyle::latex()
 \usepackage{array}
 \usepackage{amsmath}
 
-\providecommand{\tightlist}{}
-\usepackage{listings}
-\newcommand{\passthrough}[1]{#1}
-\renewcommand{\passthrough}[1]{}
-%\renewcommand{\lstinline}{}
 
-\lstdefinestyle{Rcode}{
-  columns=fullflexible, basicstyle=\ttfamily, 
-  breaklines=true, backgroundcolor=\color[gray]{0.95},
-  xleftmargin=10pt, xrightmargin=10pt,
-  frame=lr, framesep=8pt,framerule=0pt
-  %resetmargins=true
-}
-\lstset{style=Rcode}
+
 
 \begin{document}
 
 
-%<<calltopandoc, eval=TRUE,echo=TRUE,include=FALSE>>=
-%cfg_file=list.files(pattern = "pd.cfg$", recursive = TRUE)
-%rmd_file=list.files(pattern = "3_LACE_interface.Rmd$", recursive = TRUE)
-%knitr::pandoc(config = normalizePath(cfg_file, mustWork=TRUE), input = normalizePath(rmd_file, mustWork=TRUE), format = "latex", ext = "tex" )
-%@
 
-%knitr::pandoc(config = normalizePath(file.path(".","resources","pd.cfg"), mustWork=TRUE), input = normalizePath(file.path(".","3_LACE_interface.Rmd"), mustWork=TRUE), format = "latex", ext = "tex" )
-%
 \title{LACE 2.0: an interactive R tool for the inference and visualization of longitudinal cancer evolution}
 
 
@@ -71,13 +52,6 @@ BiocStyle::latex()
 
 
 
-%\affil[1]{School of Medicine and Surgery, Univ. of Milan-Bicocca, Monza, Italy.}
-%\affil[2]{Dept. of Informatics, Systems and Communication, Univ. of Milan-Bicocca, Milan, Italy.}
-%\affil[3]{Fondazione IRCCS Istituto Nazionale dei Tumori, Milan, Italy.}
-%\affil[4]{Department of Physics "Giuseppe Occhialini", Univ. of Milan-Bicocca, Milan, Italy.}
-%\affil[5]{Inst. of Molecular Bioimaging and Physiology, Consiglio Nazionale delle Ricerche (IBFM-CNR), Segrate, Milan, Italy.}
-%\affil[6]{Incontry su zoome}
-
 
 \date{\today}
 \maketitle
@@ -92,7 +66,7 @@ and allows one to inspect the different portions of the model (i.e., clones and 
 
 \vspace{1.0cm}
 
-{\em In this vignette, we give an overview of the Shiny app by presenting its main functions.}
+{\em In this vignette, we give an overview of the Shiny App by presenting its main functions.}
 
 \vspace{1.0cm}
 
@@ -111,7 +85,7 @@ background = "#f3f3ff"
 \newpage
 
 \tableofcontents
-\passthrough{\lstinline!\{r, include = FALSE\} knitr::opts\_chunk$set(   collapse = TRUE,   comment = "\#>",   echo = TRUE,    eval = FALSE )!}
+
 
 LACE 2.0 is a new release of the LACE R package. LACE 2.0 is capable of
 performing clonal evolution analyses for single cell sequencing
@@ -125,31 +99,32 @@ investigate cancer clonal evolution under different experimental
 conditions and the occurrence of single mutations which can be queried
 via \emph{ensembl} database.
 
-\hypertarget{installation-of-lace-2.0-r-package}{%
+
 \section{Installation of LACE 2.0 R
-package}\label{installation-of-lace-2.0-r-package}}
+package}\label{installation-of-lace-2.0-r-package}
 
 The package is available on GitHub and Bioconductor. LACE 2.0 requires R
 \textgreater{} 4.1.0 and Bioconductor. To install Bioconductor run:
 
-\begin{lstlisting}
+\begin{verb}
 if (!require("BiocManager", quietly = TRUE))
+
     install.packages("BiocManager")
-\end{lstlisting}
+\end{verb}
 
 To install LACE 2.0 run:
 
-\begin{lstlisting}
+\begin{verb}
 remotes::install_github("https://github.com/BIMIB-DISCo/LACE2", dependencies = TRUE)
-\end{lstlisting}
+\end{verb}
 
 LACE 2.0 uses \emph{Annovar} and \emph{Samtools suite} as back-ends for
 variant calling annotation and depth computation, respectively. Please
 refer to the next section to install them.
 
-\hypertarget{installation-of-other-required-softwares}{%
+
 \section{Installation of other required
-softwares}\label{installation-of-other-required-softwares}}
+softwares}\label{installation-of-other-required-softwares}
 
 \emph{Annovar} is a widely used variant calling software freely
 available upon registration to their website at
@@ -167,18 +142,19 @@ sequencing data. It is freely available at http://www.htslib.org/ and
 https://github.com/samtools/htslib. To install \emph{Samtools} follow
 the instructions in their website.
 
-\hypertarget{run-lace-2.0}{%
-\section{Run LACE 2.0}\label{run-lace-2.0}}
+
+\section{Run LACE 2.0}\label{run-lace-2.0}
 
 To start LACE 2.0 user interface run:
 
-\begin{lstlisting}
+\begin{verb}
 library(LACE)
-LACE2()
-\end{lstlisting}
 
-\hypertarget{using-lace-2.0}{%
-\section{Using LACE 2.0}\label{using-lace-2.0}}
+LACE2()
+\end{verb}
+
+
+\section{Using LACE 2.0}\label{using-lace-2.0}
 
 LACE 2.0 has been thought to be used on single cell sequencing data for
 which it is available variant calling data in standard VCF format and
@@ -203,20 +179,20 @@ provided by the user.
 
 The results are displayed via an interactive interface.
 
-\hypertarget{interface}{%
-\section{Interface}\label{interface}}
+
+\section{Interface}\label{interface}
 
 The interface is divided in two parts interleaved by variant selection
 and inferential computation parts: the processing interface and the
 results interface.
 
-\hypertarget{project-creation}{%
-\subsection{Project creation}\label{project-creation}}
+
+\subsection{Project creation}\label{project-creation}
 
 To begin the clonal analyses the user needs to create a project by
 choosing a folder and a meaningful name for the project.
 
-\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Project_tab.png}
+%\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Project_tab.png}
 
 If the project path does not contain former LACE projects, it asks the
 user to create a new one (``Create project'') and all intermediate and
@@ -227,8 +203,8 @@ LACE 2.0 automatically recognizes if the selected path is a LACE project
 and proposes the user to load it
 (\includegraphics[width=0.1\textwidth,height=\textheight]{./resources/load_project.png})
 
-\hypertarget{sidebar-and-demos}{%
-\subsection{Sidebar and Demos}\label{sidebar-and-demos}}
+
+\subsection{Sidebar and Demos}\label{sidebar-and-demos}
 
 The sidebar is divided in Projects and Current Project. Projects contain
 a set of recently opened projects which can be reloaded by selecting the
@@ -240,7 +216,7 @@ Under Projects, there is the sub-menu Demos. LACE 2.0 provides the user
 with two demos:
 
 \begin{itemize}
-\tightlist
+
 \item
   Melanoma dataset {[}Rambow, Florian, et al.~``Toward minimal residual
   disease-directed therapy in melanoma.'' Cell 174.4 (2018): 843-855.{]}
@@ -249,12 +225,12 @@ with two demos:
 
   \begin{enumerate}
   \def\labelenumi{\arabic{enumi}.}
-  \tightlist
+
   \item
     sample before treatment
 
     \begin{itemize}
-    \tightlist
+
     \item
       BRAF inhibitor treatment
     \end{itemize}
@@ -272,11 +248,11 @@ with two demos:
 Current Project allows the user to save and load the parameters of the
 whole project or of the active tab.
 
-\hypertarget{processing-interface}{%
-\subsection{Processing interface}\label{processing-interface}}
 
-\hypertarget{single-cell-metadata}{%
-\subsubsection{Single Cell Metadata}\label{single-cell-metadata}}
+\subsection{Processing interface}\label{processing-interface}
+
+
+\subsubsection{Single Cell Metadata}\label{single-cell-metadata}
 
 In order to perform clonal analyses it is required to provide some
 information about the experiment such as the cell IDs which are used to
@@ -297,8 +273,8 @@ user can also reorder the sampling names
 so to recreate the chronological order of longitudinal events of the
 experiment, or to explore different orders.
 
-\hypertarget{annotations}{%
-\subsubsection{Annotations}\label{annotations}}
+
+\subsubsection{Annotations}\label{annotations}
 
 Annotations of variant calling data is performed using \emph{Annovar} as
 back-end. Each mutation of each cell is annotated based on the
@@ -306,7 +282,7 @@ annotation database used. \emph{Annovar} provides a database for the
 human species useful to tag cancer mutations and whenever possible their
 functional effect.
 
-\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Annotation_tab.png}
+%\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Annotation_tab.png}
 
 If \emph{Annovar}'s \emph{Perl} scripts are available in the standard
 binary paths, they are detected and the \emph{Annovar} folder field is
@@ -315,8 +291,9 @@ the \emph{Perl} scripts. The user should also provide the database to
 use for the annotation and the folder containing the variant calling
 files (VCF).
 
-\hypertarget{variant-filtering}{%
-\subsubsection{Variant filtering}\label{variant-filtering}}
+
+
+\subsubsection{Variant filtering}\label{variant-filtering}
 
 All types of single cell sequencing data is characterized by various
 sources of noise which depends on the technology used. Detected mutation
@@ -331,7 +308,6 @@ The user can set the minimum values for:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\tightlist
 \item
   the number of reads supporting the alternative alleles in a cell,
 \item
@@ -433,9 +409,9 @@ in the database file)\strut
 
 (+) see \emph{Annovar}
 
-\hypertarget{single-cell-sampling-depth}{%
+
 \subsubsection{Single cell sampling
-depth}\label{single-cell-sampling-depth}}
+depth}\label{single-cell-sampling-depth}
 
 The number of reads per SNV site represents an optimal filter to
 retrieve relevant mutations. Depth at specific sites is usually not
@@ -447,9 +423,9 @@ variant filters set in the previous tab.
 
 \includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Depth_tab.png}
 
-\hypertarget{selection-of-relevant-variants}{%
+
 \subsection{Selection of relevant
-variants}\label{selection-of-relevant-variants}}
+variants}\label{selection-of-relevant-variants}
 
 Not all mutations are distinctive of the disease or experiment
 understudied. Identifying relevant and driver variants allows to
@@ -459,7 +435,6 @@ as:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\tightlist
 \item
   the minimum number of reads at given mutation site
 \item
@@ -486,8 +461,8 @@ help in the selection) while values are changed.
 
 \includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Interactive_Variant_tab.png}
 
-\hypertarget{inference}{%
-\subsection{Inference}\label{inference}}
+
+\subsection{Inference}\label{inference}
 
 The inferential tab allows the user to set all the parameters to solve
 the boolean matrix factorization problem and estimate the model
@@ -498,7 +473,6 @@ Inferential step uses the following set of parameters:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
-\tightlist
 \item
   Learning rate
 \item
@@ -542,9 +516,9 @@ best results are returned.
 Press ``Run LACE'' to perform all computation and estimation steps and
 visualize the results.
 
-\hypertarget{longitudinal-display-and-outputs-interface}{%
+
 \subsection{Longitudinal display and outputs
-interface}\label{longitudinal-display-and-outputs-interface}}
+interface}\label{longitudinal-display-and-outputs-interface}
 
 The longitudinal display tab shows the longitudinal clonal tree, the
 fishplot and the clonal tree, together with the best false positive and
@@ -580,5 +554,7 @@ best estimated set false positive/negative rates.
 <<sessioninfo,results='asis',echo=FALSE>>=
 toLatex(sessionInfo())
 @
+
+
 
 \end{document}
