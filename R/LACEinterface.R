@@ -43,7 +43,7 @@ utils::globalVariables(".my_actual_wd",
 #' @description `LACE2` displays a Shiny user interface to
 #'     handle the VCF and BAM files processing that is needed to
 #'     construct the input for the LACE inference algorithms.
-#'     The function generates also the most likelihood longitudinal 
+#'     The function generates also the maximum likelihood longitudinal 
 #'     clonal tree, and shows the output for further explorations of
 #'     the results.
 #'
@@ -54,7 +54,7 @@ utils::globalVariables(".my_actual_wd",
 #' To install directly from github run:
 #'
 #' ```
-#' remotes::install_github("https://github.com/BIMIB-DISCo/LACE2", 
+#' remotes::install_github("https://github.com/BIMIB-DISCo/LACE", 
 #'                         dependencies = TRUE)
 #' ```
 #'

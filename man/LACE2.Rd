@@ -10,7 +10,7 @@ LACE2()
 \code{LACE2} displays a Shiny user interface to
 handle the VCF and BAM files processing that is needed to
 construct the input for the LACE inference algorithms.
-The function generates also the most likelihood longitudinal
+The function generates also the maximum likelihood longitudinal
 clonal tree, and shows the output for further explorations of
 the results.
 }
@@ -22,7 +22,7 @@ The function \code{LACE} is still available for retrocompatibility.
 The package is available on GitHub and Bioconductor.
 LACE 2.0 requires R > 4.1.0 and Bioconductor.
 
-To install directly from github run:\preformatted{remotes::install_github("https://github.com/BIMIB-DISCo/LACE2", 
+To install directly from github run:\preformatted{remotes::install_github("https://github.com/BIMIB-DISCo/LACE", 
                         dependencies = TRUE)
 }
 }
