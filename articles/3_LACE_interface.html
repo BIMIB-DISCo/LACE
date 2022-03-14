@@ -91,19 +91,21 @@
 
     
     
-<div class="section level2">
-<h2 id="lace-2-0">LACE 2.0<a class="anchor" aria-label="anchor" href="#lace-2-0"></a>
-</h2>
 <p>LACE 2.0 is a new release of the LACE R package. LACE 2.0 is capable of performing clonal evolution analyses for single cell sequencing libraries of longitudinal experiments using variant calling data. LACE 2.0 allows to annotate variants and retrieve the relevant mutations interactively based on user-defined filtering criteria; it infers the maximum likelihood clonal tree, cell matrix attachment and false positive/negative rates using boolean matrix factorization. Furthermore, it generates the longitudinal clonal tree. Finally, LACE 2.0 allows to investigate cancer clonal evolution under different experimental conditions and the occurrence of single mutations which can be queried via <em>ensembl</em> database.</p>
-</div>
 <div class="section level2">
 <h2 id="installation-of-lace-2-0-r-package">Installation of LACE 2.0 R package<a class="anchor" aria-label="anchor" href="#installation-of-lace-2-0-r-package"></a>
 </h2>
-<p>The package is available on GitHub and Bioconductor.</p>
-<p>LACE 2.0 uses <em>Annovar</em> and <em>Samtools suite</em> as back-ends for variant calling annotation and depth computation, respectively. Please refer to the next section to intsall them.</p>
+<p>The package is available on GitHub and Bioconductor. LACE 2.0 requires R &gt; 4.1.0 and Bioconductor. To install Bioconductor run:</p>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></code></pre></div>
+<p>To install LACE 2.0 run:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"https://github.com/BIMIB-DISCo/LACE2"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></code></pre></div>
+<p>LACE 2.0 uses <em>Annovar</em> and <em>Samtools suite</em> as back-ends for variant calling annotation and depth computation, respectively. Please refer to the next section to install them.</p>
 </div>
 <div class="section level2">
-<h2 id="installation-of-other-softwares-required-by-lace-2-0">Installation of other softwares required by LACE 2.0<a class="anchor" aria-label="anchor" href="#installation-of-other-softwares-required-by-lace-2-0"></a>
+<h2 id="installation-of-other-required-softwares">Installation of other required softwares<a class="anchor" aria-label="anchor" href="#installation-of-other-required-softwares"></a>
 </h2>
 <p><em>Annovar</em> is a widely used variant calling software freely available upon registration to their website at <a href="https://annovar.openbioinformatics.org/en/latest/" class="external-link uri">https://annovar.openbioinformatics.org/en/latest/</a>. The package contains <em>Perl</em> scripts and variant calling annotation reference databases for the human species. For other databases, please refer to their website. If the scripts are installed in binary search path, then LACE 2.0 will detect them automatically.</p>
 <p><em>Perl</em> (<a href="https://www.perl.org/" class="external-link uri">https://www.perl.org/</a>) is required to run <em>Annovar</em>.</p>
@@ -113,8 +115,9 @@
 <h2 id="run-lace-2-0">Run LACE 2.0<a class="anchor" aria-label="anchor" href="#run-lace-2-0"></a>
 </h2>
 <p>To start LACE 2.0 user interface run:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu">LACEinterface</span><span class="fu">::</span><span class="fu">LACEview</span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/BIMIB-DISCo/LACE" class="external-link">LACE</a></span><span class="op">)</span>
+<span class="fu"><a href="../reference/LACE2.html">LACE2</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="using-lace-2-0">Using LACE 2.0<a class="anchor" aria-label="anchor" href="#using-lace-2-0"></a>
@@ -144,9 +147,7 @@
 <p><img src="resources/Projects_menu.png" style="width:30.0%"></p>
 <p>Under Projects, there is the sub-menu Demos. LACE 2.0 provides the user with two demos:</p>
 <ul>
-<li>Melanoma dataset [cite Rambow et Al.] containing single cell variant annotations and depths for a total of 674 cells sampled at 4 different time points:</li>
-</ul>
-<blockquote>
+<li>Melanoma dataset [Rambow, Florian, et al. “Toward minimal residual disease-directed therapy in melanoma.” Cell 174.4 (2018): 843-855.] containing single cell variant annotations and depths for a total of 674 cells sampled at 4 different time points:
 <ol style="list-style-type: decimal">
 <li>sample before treatment
 <ul>
@@ -157,8 +158,7 @@
 <li>sample after 28 days</li>
 <li>sample after 57 days</li>
 </ol>
-</blockquote>
-<ul>
+</li>
 <li>Small dataset containing only 3 cells per 4 sampling time points.</li>
 </ul>
 <p>Current Project allows the user to save and load the parameters of the whole project or of the active tab.</p>
@@ -186,8 +186,7 @@
 <h4 id="variant-filtering">Variant filtering<a class="anchor" aria-label="anchor" href="#variant-filtering"></a>
 </h4>
 <p>All types of single cell sequencing data is characterized by various sources of noise which depends on the technology used. Detected mutation might be characterized by low quality score or low statistical power. Some mutations can be neglected, while others might cause relevant effects, especially on exonic regions where variations can result in changes of the translational process and modify their functional form.</p>
-<p>In order to avoid small and possibly spurious fluctuations on sequencing data, variants can be filtered if they have low supporting evidences.<br>
-The user can set the minimum values for:</p>
+<p>In order to avoid small and possibly spurious fluctuations on sequencing data, variants can be filtered if they have low supporting evidences. The user can set the minimum values for:</p>
 <ol style="list-style-type: decimal">
 <li>the number of reads supporting the alternative alleles in a cell,</li>
 <li>the frequency of the minor allele for each referenced SNP included in a default global population,</li>
@@ -197,8 +196,8 @@ The user can set the minimum values for:</p>
 <p>Furthermore, the user can choose which functional exonic variation should be considered or neglected. For example, there are cases in which unknown and synonymous mutations in exonic regions are disregarded because their effect cannot be explicitly related to the experimental condition. All possible variant functions and their explanations are resumed in the following table:</p>
 <table class="table">
 <colgroup>
-<col width="10%">
-<col width="89%">
+<col width="16%">
+<col width="83%">
 </colgroup>
 <thead><tr class="header">
 <th>Annotation (+)</th>
@@ -272,7 +271,7 @@ The user can set the minimum values for:</p>
 <li>subset of known genes</li>
 </ol>
 <p><img src="resources/Variant_tab.png" style="width:95.0%"></p>
-<p>Finding the parameters to select variants is not an easy task, and the user might not know in advance how to choose the best set of filters. Hence, the user can press “Select variants” (<img src="select_variant.png" style="width:10.0%">) to perform the aforementioned computations on VCF and BAM files to derive all the necessary aggregated information on the sampled cells. Afterward, the user is presented with a interactive live preview of variants passing the filters (including relevant parameters which can help in the selection) while values are changed.</p>
+<p>Finding the parameters to select variants is not an easy task, and the user might not know in advance how to choose the best set of filters. Hence, the user can press “Select variants” (<img src="resources/select_variant.png" style="width:10.0%">) to perform the aforementioned computations on VCF and BAM files to derive all the necessary aggregated information on the sampled cells. Afterward, the user is presented with a interactive live preview of variants passing the filters (including relevant parameters which can help in the selection) while values are changed.</p>
 <p><img src="resources/Interactive_Variant_tab.png" style="width:95.0%"></p>
 </div>
 <div class="section level3">
