@@ -1,4 +1,4 @@
-#' Perform inference of the maximum likelihood clonal tree from longitudinal data.
+#' Perform the inference of the maximum likelihood clonal tree from longitudinal data.
 #' @title LACE
 #'
 #' @examples

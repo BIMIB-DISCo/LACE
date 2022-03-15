@@ -81,7 +81,7 @@ the likelihood of the solutions at each individual time points and the joint lik
 solutions (B and C) with likelihood equivalent to the best solution are returned. Finally error_rates provides the best values of alpha and beta among the considered ones.
 }
 \description{
-Perform inference of the maximum likelihood clonal tree from longitudinal data.
+Perform the inference of the maximum likelihood clonal tree from longitudinal data.
 }
 \examples{
 data(longitudinal_sc_variants)

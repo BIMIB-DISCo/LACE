@@ -5,7 +5,7 @@
 ### Add lace_interface function
 
 #' @title LACE Interface
-#' @description `lace_interface` generates a longitudinal clonal tree and a
+#' @description This function generates a longitudinal clonal tree and a
 #' graphic interface to explore the data using as input the clonal tree
 #' formatted in the same way as the one produced by LACE during the imputation
 #' steps
@@ -17,21 +17,21 @@
 #' B is a binary matrix where 1 are the mutations associated to the clones.
 #' The wild type column has all ones
 #'
-#' @param clones_prevalence (Required) the clonal prevalence matrix
+#' @param clones_prevalence (Required) The clonal prevalence matrix
 #'
-#' @param C_mat (Required) the corrected clonal attachment
+#' @param C_mat (Required) The corrected clonal attachment
 #'
-#' @param error_rates (Required) the false positive alpha and false negative beta
+#' @param error_rates (Required) The false positive alpha and false negative beta
 #' error rates used to infer the clonal tree
 #'
 #' @param info (Optional). HTML formatted text with information regarding
 #' the experiments
 #'
-#' @param width (optional) size of the window interafce
+#' @param width (optional) Size of the window interafce
 #'
-#' @param height (optional) size of the window interafce
+#' @param height (optional) Size of the window interafce
 #'
-#' @param elementId (optional) element id
+#' @param elementId (optional) Element id
 #'
 #' @importFrom  Matrix rankMatrix
 #' @importFrom jsonlite toJSON

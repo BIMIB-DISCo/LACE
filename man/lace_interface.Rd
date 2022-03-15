@@ -23,24 +23,24 @@ the wild type, respectively.
 B is a binary matrix where 1 are the mutations associated to the clones.
 The wild type column has all ones}
 
-\item{clones_prevalence}{(Required) the clonal prevalence matrix}
+\item{clones_prevalence}{(Required) The clonal prevalence matrix}
 
-\item{C_mat}{(Required) the corrected clonal attachment}
+\item{C_mat}{(Required) The corrected clonal attachment}
 
-\item{error_rates}{(Required) the false positive alpha and false negative beta
+\item{error_rates}{(Required) The false positive alpha and false negative beta
 error rates used to infer the clonal tree}
 
-\item{width}{(optional) size of the window interafce}
+\item{width}{(optional) Size of the window interafce}
 
-\item{height}{(optional) size of the window interafce}
+\item{height}{(optional) Size of the window interafce}
 
-\item{elementId}{(optional) element id}
+\item{elementId}{(optional) Element id}
 
 \item{info}{(Optional). HTML formatted text with information regarding
 the experiments}
 }
 \description{
-`lace_interface` generates a longitudinal clonal tree and a
+This function generates a longitudinal clonal tree and a
 graphic interface to explore the data using as input the clonal tree
 formatted in the same way as the one produced by LACE during the imputation
 steps

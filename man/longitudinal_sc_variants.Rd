@@ -3,9 +3,9 @@
 \docType{data}
 \name{longitudinal_sc_variants}
 \alias{longitudinal_sc_variants}
-\title{mutation data from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.}
+\title{Mutation data from Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.}
 \format{
-list of mutation data for four time points
+List of mutation data for four time points
 }
 \source{
 Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in melanoma." Cell 174.4 (2018): 843-855.
@@ -14,10 +14,10 @@ Rambow, Florian, et al. "Toward minimal residual disease-directed therapy in mel
 data(longitudinal_sc_variants)
 }
 \value{
-list of mutational data for a total of 475 single cells
+List of mutational data for a total of 475 single cells
 }
 \description{
-the dataset includes somatic single nucleotide variants at the single cell resolution. SNVs are called from SMARTseq2 fastq obtained from Gene Expression Omnibus database 
+The dataset includes somatic single nucleotide variants at the single cell resolution. SNVs are called from SMARTseq2 fastq obtained from Gene Expression Omnibus database 
 with the accession number: GSE116237. The dataset includes single cell data from a PDX melanoma model before and on treatment with BRAF and MEK inhibitors. The fastq files are processed 
 to obtain the mutational profile following GATK best practice (https://gatkforums.broadinstitute.org/gatk/discussion/3891/calling-variants-in-rnaseq) usign the GRCh38 human genome as reference. 
 Mutation data are stored in an N x M binary matrix with N single cells and M somatic single nucleotide variants. Row names report the ID of the fastq file related to a specific single cell; 
