@@ -6,7 +6,7 @@
 BiocStyle::latex()
 @
 
-%\VignetteIndexEntry{LACE2}
+%\VignetteIndexEntry{LACE 2.0}
 
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
