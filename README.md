@@ -38,4 +38,4 @@ To start LACE 2.0 user interface run:
 library(LACE)
 LACE2()
 ```
-![Picture](https://github.com/BIMIB-DISCo/LACE/tree/master/vignettes/resources/Display_tab.png?raw=true)
+![Picture](https://github.com/BIMIB-DISCo/LACE/blob/master/vignettes/resources/Display_tab.png?raw=true)
