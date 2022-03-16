@@ -15,17 +15,21 @@ When using our tool, please cite: Ramazzotti, Daniele, et al. "LACE: Inference o
 ## Installation of LACE 2.0 R package
 
 The package is available on GitHub and Bioconductor.
-LACE 2.0 requires R > 4.1.0 and Bioconductor.
-To install Bioconductor run:
+LACE 2.0 requires R > 4.1.0.
 
+To install from Bioconductor, please run:
 ```
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
+
+BiocManager::install("LACE")
 ```
 
-To install LACE 2.0 run:
+To install LACE 2.0 from GitHub run:
 ```
-remotes::install_github("https://github.com/BIMIB-DISCo/LACE", dependencies = TRUE)
+if (!require("devtools")) install.packages("devtools")
+library("devtools")
+install_github("BIMIB-DISCo/LACE", ref = "master", dependencies = TRUE)
 ```
 
 LACE 2.0 uses *Annovar* and *Samtools suite* as back-ends for variant calling annotation and depth computation, respectively. Please refer to the next section to install them. 
