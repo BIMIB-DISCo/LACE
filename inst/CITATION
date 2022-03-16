@@ -8,5 +8,6 @@ citEntry(
   year     = "2022",
   volume   = "58",
   pages    = "101523",
-  url      = "https://www.sciencedirect.com/science/article/pii/S1877750321001848"
+  url      = "https://www.sciencedirect.com/science/article/pii/S1877750321001848",
+  textVersion = ""
 )
