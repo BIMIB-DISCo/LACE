@@ -52,7 +52,7 @@ disable_demo_tabs <- function() {
   
   enable_inputs <- F
   
-  browser()
+  #browser()
   
   input_list <- reactiveValuesToList(input)
   
@@ -382,13 +382,15 @@ observeEvent(input[["pr_next"]], {
     }
   }
   
-  if (inputs[["demo"]]() == -1)
-  {
-    inputs[["demo"]](NULL)
+  #browser()
+  if (!is.null(inputs[["demo"]]())) {
+    if (inputs[["demo"]]() == -1)
+    {
+      inputs[["demo"]](NULL)
+    }
+    else if (inputs[["demo"]]() == 0)
+      inputs[["demo"]](-1)
   }
-  else if (inputs[["demo"]]() == 0)
-    inputs[["demo"]](-1)
-  
 })
 
 ### End project observes ####

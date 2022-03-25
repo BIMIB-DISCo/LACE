@@ -40,9 +40,9 @@ not considered.")
 text[["av_tab_help"]] =
     list("Annotation of single nucleotide variants for each cell require
 Annovar, a database of variant annotations provided by or downloadable
-at Annovar (<-link), and the respective VCF files. If the database of
+at", tags$a("https://annovar.openbioinformatics.org/en/latest/user-guide/download/"),", and the respective VCF files. If the database of
 variant annotations is not suitable for the experiment under analysis,
-follow the instructions from Annovar (<- link) to generate your own
+follow the instructions from Annovar to generate your own
 database.",
          br(),
          br(),
@@ -152,7 +152,7 @@ text[["thr_freq"]] =
     "How frequent is a variant found in a sample. It represents the ratio of cells where the mutation was observed over the total number of cells at a specific sampling time."
 
 text[["thr_bucket_var_list"]] =
-    "Table with functions"
+    tags$table(tags$tr(tags$td("Annotation")))
 
 text[["dp_samtools_exec_dir"]] =
     'Folder containing the Samtools suit executables. Samtools is available at this <a href="https://www.htslib.org/">link</a>.'

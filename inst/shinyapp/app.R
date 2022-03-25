@@ -474,15 +474,15 @@ ui <- fluidPage(
                              actionButton("av_exec",
                                           "Annotate variants"),
 
-                             tags$span(icon("info-circle"),
-                                       id = "icon_av_exec",
-                                       style = "color: blue;"),
-                             bsPopover("icon_av_exec",
-                                       "Load inputs",
-                                       text[["av_exec"]],
-                                       placement = "right",
-                                       trigger = "hover",
-                                       options = list("delay':  {show : 500, hide : 2000}, 'a" = "show")),
+                             # tags$span(icon("info-circle"),
+                             #           id = "icon_av_exec",
+                             #           style = "color: blue;"),
+                             # bsPopover("icon_av_exec",
+                             #           "Load inputs",
+                             #           text[["av_exec"]],
+                             #           placement = "right",
+                             #           trigger = "hover",
+                             #           options = list("delay':  {show : 500, hide : 2000}, 'a" = "show")),
                              br(),br(),
                              ## tags$b("Result"),
                              ## br(),
@@ -1111,6 +1111,7 @@ server <- function(input, output, session) {
 
 
   createmenuitem <- function(x, projs) {
+    #browser()
     menuSubItem(
       text = names(projs)[x],
       tabName = str_replace_all(
