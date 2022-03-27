@@ -152,7 +152,18 @@ text[["thr_freq"]] =
     "How frequent is a variant found in a sample. It represents the ratio of cells where the mutation was observed over the total number of cells at a specific sampling time."
 
 text[["thr_bucket_var_list"]] =
-    tags$table(tags$tr(tags$td("Annotation")))
+    tags$ul(
+      tags$li("frameshift insertion: an insertion of one or more nucleotides that cause frameshift changes in protein coding sequence"), 
+      tags$li("frameshift deletion: a deletion of one or more nucleotides that cause frameshift changes in protein coding sequence"), 
+      tags$li("frameshift block substitution: a block substitution of one or more nucleotides that cause frameshift changes in protein coding sequence"),
+      tags$li("stopgain:  a mutation that lead to the immediate creation of stop codon at the variant site"), 
+      tags$li("stoploss: a mutation that lead to the immediate elimination of stop codon at the variant site"), 
+      tags$li("nonframeshift insertion: an insertion of 3 or multiples of 3 nucleotides that do not cause frameshift changes in protein coding sequence"), 
+      tags$li("nonframeshift deletion: a deletion of 3 or mutliples of 3 nucleotides that do not cause frameshift changes in protein coding sequence"),
+      tags$li("nonframeshift block substitution: a block substitution of one or more nucleotides that do not cause frameshift changes in protein coding"),
+      tags$li("nonsynonymous SNV: a single nucleotide change that cause an amino acid change"), 
+      tags$li("synonymous SNV: a single nucleotide change that does not cause an amino acid change"), 
+      tags$li("unknown:  unknown function (due to various errors in the gene structure definition in the database file)"))
 
 text[["dp_samtools_exec_dir"]] =
     'Folder containing the Samtools suit executables. Samtools is available at this <a href="https://www.htslib.org/">link</a>.'
