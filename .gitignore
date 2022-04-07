@@ -42,3 +42,8 @@ Meta
 /vignettes/lg_output.xml
 /doc/
 /Meta/
+
+/inst/shinyapp/Rambow_dataset
+/inst/shinyapp/Rambow_dataset/*
+/inst/shinyapp/Small_dataset
+/inst/shinyapp/Small_dataset/*
