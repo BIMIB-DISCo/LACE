@@ -1,0 +1,29 @@
+thr_vcf_in_dir:
+  path:
+  - ''
+  - Rambow_dataset
+  - vcf_out
+  root: ..
+thr_out_dir:
+  path:
+  - ''
+  - Rambow_dataset
+  - filtered_vcf
+  root: ..
+thr_alleles_ratio: 2
+thr_maf: 0.01
+thr_freq: 0.05
+thr_accepted_var:
+- stopgain
+- stoploss
+- nonframeshift insertion
+- nonframeshift block substitution
+- nonsynonymous SNV
+- frameshift block substitution
+- frameshift insertion
+- frameshift deletion
+- nonframeshift deletion
+thr_negleted_var:
+- synonymous SNV
+- unknown
+

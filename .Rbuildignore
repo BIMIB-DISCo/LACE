@@ -13,7 +13,3 @@
 ^vignettes/.*gml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^inst/shinyapp/Rambow_dataset/.*$
-^inst/shinyapp/Small_dataset/.*$
-^inst/shinyapp/Rambow_dataset$
-^inst/shinyapp/Small_dataset$

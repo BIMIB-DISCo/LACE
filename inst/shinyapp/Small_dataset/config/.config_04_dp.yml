@@ -1,0 +1,24 @@
+dp_out_dir:
+  path:
+  - ''
+  - Small_dataset
+  - sam_out
+  root: ..
+dp_samtools_exec_dir:
+  path:
+  - ''
+  - usr
+  - bin
+  root: Computer
+dp_bam_dir:
+  path:
+  - ''
+  - Small_dataset
+  - bam
+  root: ..
+dp_mut_dir:
+  path:
+  - ''
+  - Small_dataset
+  - filtered_vcf
+  root: ..

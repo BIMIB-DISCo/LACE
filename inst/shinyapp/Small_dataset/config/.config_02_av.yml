@@ -1,0 +1,25 @@
+av_vcf_out_dir:
+  path:
+  - ''
+  - Small_dataset
+  - vcf_out
+  root: ..
+av_anovar_exec_dir:
+  path:
+  - ''
+  - Small_dataset
+  - annovar
+  root: ..
+av_anovar_db_dir:
+  path:
+  - ''
+  - Small_dataset
+  - annovar
+  - RefGene_hg38
+  root: ..
+av_vcf_in_dir:
+  path:
+  - ''
+  - Small_dataset
+  - vcf
+  root: ..
