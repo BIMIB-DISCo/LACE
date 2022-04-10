@@ -38,7 +38,6 @@ library(data.table, exclude = c("first", "last", "between"))
 library(htmltools)
 library(shinyBS)
 library(bsplus)
-library(TRONCO)
 library(shinydashboard)
 #library(widgetframe)
 
