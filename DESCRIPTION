@@ -41,7 +41,6 @@ Imports:
     htmltools, 
     htmlwidgets,
     bsplus,
-    TRONCO,
     shiny,
     shinythemes,
     shinyFiles,
