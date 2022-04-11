@@ -922,6 +922,7 @@ server <- function(input, output, session) {
 
   ## Source?
 
+  source("check_demo.R", local = T)
   source("load_and_save.R", local = T)
   source("project_mgr.R", local = T)
   source("pipeline_io_ctrl.R")
@@ -1060,39 +1061,48 @@ server <- function(input, output, session) {
     if(inputs[["demo"]]() == "Small_dataset" || inputs[["demo"]]() == "Rambow_dataset")
     {
       #browser()
-      demo_dir<-file.path(.my_pkg_dir,inputs[["demo"]]())
-
-      # create tmp folder
-      tmp_dir <- tempdir()
-      tmp_path <- file.path(tmp_dir,inputs[["demo"]]())
-      dir.create(tmp_path, showWarnings = F)
-
-      inputs[["demo_remainder"]](tmp_path)
-
-      # fill tmp folder
-      if (dir.exists(tmp_path) && dir.exists(demo_dir))
-      {
-        #delay(100, {
-          hide_tab()
-        #})
-
-        dir_copy(demo_dir, tmp_path, overwrite = T)
-
-        inputs[["demo"]](1) # temporary project ready
-        inputs[["pr_path"]](tmp_path)
-
+      if(!check_demo()) {
+        inputs[["demo"]](NULL)
+        toggle_inputs(is.null(inputs[["demo"]]()))
+        showNotification("Impossible to download demos.", duration = 10, type = "warning")
       }
       else
       {
         #browser()
-        inputs[["demo"]](NULL)
-        toggle_inputs(is.null(inputs[["demo"]]()))
+        demo_dir<-file.path(.my_pkg_dir,inputs[["demo"]]())
+  
+        # create tmp folder
+        tmp_dir <- tempdir()
+        tmp_path <- file.path(tmp_dir,inputs[["demo"]]())
+        dir.create(tmp_path, showWarnings = F)
+  
+        inputs[["demo_remainder"]](tmp_path)
+  
+        # fill tmp folder
+        if (dir.exists(tmp_path) && dir.exists(demo_dir))
+        {
+          #delay(100, {
+            hide_tab()
+          #})
+  
+          dir_copy(demo_dir, tmp_path, overwrite = T)
+  
+          inputs[["demo"]](1) # temporary project ready
+          inputs[["pr_path"]](tmp_path)
+  
+        }
+        else
+        {
+          #browser()
+          inputs[["demo"]](NULL)
+          toggle_inputs(is.null(inputs[["demo"]]()))
+        }
+        # disable tab
+        #shinyjs::addClass()
+        #shinyjs::disable(selector = '.nav-tabs a[data-value="SC metadata"')
+        #shinyjs::disable(selector = '.navbar-nav a[data-value="Annotations"')
+        # load output
       }
-      # disable tab
-      #shinyjs::addClass()
-      #shinyjs::disable(selector = '.nav-tabs a[data-value="SC metadata"')
-      #shinyjs::disable(selector = '.navbar-nav a[data-value="Annotations"')
-      # load output
     }
     #else
     #  inputs[["demo"]](NULL)
