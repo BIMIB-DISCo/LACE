@@ -83,7 +83,7 @@ hide_tab <- function() {
   hideTab(inputId = "main_tabset", target = "Longitudinal display")
 }
 
-show_tab <- function(disp = F) {
+show_tab <- function(disp = FALSE) {
   #browser()
   shinyjs::hide(id="computation_idCol_div")
   showTab(inputId = "main_tabset", target = "Project")
@@ -111,7 +111,7 @@ inf_exec <- function() {
 
 
       make_numbers <- function(tab) {
-        tab_tmp <- as.data.frame(lapply(tab, FUN = as.numeric), check.names = F)
+        tab_tmp <- as.data.frame(lapply(tab, FUN = as.numeric), check.names = FALSE)
         rownames(tab_tmp) <- rownames(tab)
         return(tab_tmp)
       }
@@ -121,7 +121,7 @@ inf_exec <- function() {
         if (is.na(extra_col))
           extra_col <- FALSE
         if (extra_col) {
-          tab <- tab[ , -1, drop = F]
+          tab <- tab[ , -1, drop = FALSE]
           remove_repeated_rownames(tab)
         }
         return(tab)
@@ -173,7 +173,7 @@ inf_exec <- function() {
 
         print(keep_row)
 
-        tab_tmp <- tab[keep_row, ,drop = F]
+        tab_tmp <- tab[keep_row, ,drop = FALSE]
         if (nrow(tab_tmp)<=row_min)
           tab_tmp <- tab
 
@@ -183,7 +183,7 @@ inf_exec <- function() {
       put_valid_rates <- function(tab) {
 
         r_name <- rownames(tab)
-        tab_tmp <- as.data.frame(lapply(tab, FUN = abs), check.names = F)
+        tab_tmp <- as.data.frame(lapply(tab, FUN = abs), check.names = FALSE)
         tab_tmp[tab_tmp>=1.0] <- 0.999
         tab_tmp[is.na(tab_tmp)] <- 0.001
         rownames(tab_tmp) <- r_name
@@ -283,7 +283,7 @@ inf_exec <- function() {
 
 
       show_tmp <- list_par[["show"]]
-      list_par[["show"]] <- F
+      list_par[["show"]] <- FALSE
       inputs[['inf_params']](list_par)
 
       #browser()
@@ -300,7 +300,7 @@ inf_exec <- function() {
 
 
 
-show_result <- function (rs, show = T) {
+show_result <- function (rs, show = TRUE) {
 
 
   #browser()
@@ -357,7 +357,7 @@ show_result <- function (rs, show = T) {
 
           server_env <- environment(res$server)
           server_env$x <- x
-          shiny::runApp(res, display.mode = "normal", launch.browser=F, port = port, quiet = F )
+          shiny::runApp(res, display.mode = "normal", launch.browser=FALSE, port = port, quiet = FALSE )
         }
 
         port(httpuv::randomPort(min = 1024L, max = 49151L, host = "127.0.0.1", n = 20))
@@ -369,8 +369,8 @@ show_result <- function (rs, show = T) {
           rs$finalize()
         }
 
-        rs <- callr::r_session$new(options = sopt(), wait = T)
-        rs$supervise(T)
+        rs <- callr::r_session$new(options = sopt(), wait = TRUE)
+        rs$supervise(TRUE)
         rs$poll_process(4)
 
         rs$call(long_job, args= list("port" = port(), "x" = x))
@@ -427,8 +427,8 @@ show_result <- function (rs, show = T) {
 
 observeEvent(inputs[["long_job"]](),{
   #browser()
-  show_tab(T)
-}, ignoreInit = T)
+  show_tab(TRUE)
+}, ignoreInit = TRUE)
 
 ## inf_go
 
@@ -471,7 +471,7 @@ observeEvent(reactiveValuesToList(input), {
     outputOptions(output, name, suspendWhenHidden = FALSE)
   })
 },
-once = T,
+once = TRUE,
 priority = -1)
 
 
@@ -498,7 +498,7 @@ observeEvent(session$userData[["ed_table_react_list"]][["inf_alpha"]], {
 
   #inputs[["inf_alpha"]](session$userData[['ed_table_react_list']][['inf_alpha']]$x$data)
   #data.frame(rownames(session$userData[['ed_table_react_list']][['inf_alpha']]$x$data), session$userData[['ed_table_react_list']][['inf_alpha']]$x$data)
-  x <- data.frame(rownames(session$userData[['ed_table_react_list']][['inf_alpha']]$x$data), session$userData[['ed_table_react_list']][['inf_alpha']]$x$data, check.names=F)
+  x <- data.frame(rownames(session$userData[['ed_table_react_list']][['inf_alpha']]$x$data), session$userData[['ed_table_react_list']][['inf_alpha']]$x$data, check.names=FALSE)
   colnames(x)[1]=""
   inputs[["inf_alpha"]](x)
   #inputs[["inf_alpha"]](session$userData[["ed_table_react_list_obj"]]$obj[["inf_alpha"]]$x$data)
@@ -506,7 +506,7 @@ observeEvent(session$userData[["ed_table_react_list"]][["inf_alpha"]], {
 
 
 observeEvent(session$userData[["ed_table_react_list"]][["inf_beta"]], {
-  x <- data.frame(rownames(session$userData[['ed_table_react_list']][['inf_beta']]$x$data), session$userData[['ed_table_react_list']][['inf_beta']]$x$data, check.names=F)
+  x <- data.frame(rownames(session$userData[['ed_table_react_list']][['inf_beta']]$x$data), session$userData[['ed_table_react_list']][['inf_beta']]$x$data, check.names=FALSE)
   colnames(x)[1]=""
   inputs[["inf_beta"]](x)
 })
@@ -556,11 +556,11 @@ observeEvent(inputs[['m_time_points']](), {
         mm <- mm[-1]
 
       ## Reorder columns
-      mm <- mm[,inputs[['m_time_points']](), drop = F]
+      mm <- mm[,inputs[['m_time_points']](), drop = FALSE]
       session$userData[["ed_table_react_list"]][[id]]$x$data <- mm
 
       ## Remove extra last row on NAN
-      mm <- mm[-nrow(mm),, drop = F]
+      mm <- mm[-nrow(mm),, drop = FALSE]
 
       ## Create table and render it
       ## output[[id]] <-NULL
@@ -630,7 +630,7 @@ observeEvent(input[["inf_next"]], {
 
 
 },
-ignoreInit = T)
+ignoreInit = TRUE)
 
 
 observe({
@@ -654,11 +654,11 @@ observe({
 ### Inference outputs ####
 output[['inf_alpha']] <-
   DT::renderDT(session$userData[["ed_table_react_list_obj"]]$obj[['inf_alpha']],
-               server = T)
+               server = TRUE)
 outputOptions(output, 'inf_alpha', suspendWhenHidden = FALSE)
 output[['inf_beta']] <-
   DT::renderDT(session$userData[["ed_table_react_list_obj"]]$obj[['inf_beta']],
-               server = T)
+               server = TRUE)
 outputOptions(output, 'inf_beta', suspendWhenHidden = FALSE)
 
 

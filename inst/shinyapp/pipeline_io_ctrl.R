@@ -49,8 +49,8 @@ compare_named_lists <- function(l1,l2) {
 
 OneInOneOut <- function(InDir, InFilesMask, OutDir, OutExt, Opt) {
 
-	InFiles = list.files(path = InDir, pattern = InFilesMask, no.. = T)
-	AllOutFiles <- list.files(path = OutDir, no.. = T)
+	InFiles = list.files(path = InDir, pattern = InFilesMask, no.. = TRUE)
+	AllOutFiles <- list.files(path = OutDir, no.. = TRUE)
 
 
 	InFilesToDo <- c()
@@ -69,7 +69,7 @@ OneInOneOut <- function(InDir, InFilesMask, OutDir, OutExt, Opt) {
     EqFiles <- compare_named_lists(ActFileContent, StoredFileContent)
 
     if ( !EqFiles ) { # if conf files are non equal
-      file.copy(Opt$ActFile, Opt$StoredFile, overwrite = T)
+      file.copy(Opt$ActFile, Opt$StoredFile, overwrite = TRUE)
       InFilesToDo <- InFiles
       OutFilesToRm <- ResidualOutFiles
       OutFilesToRep <- OutFiles
@@ -89,8 +89,8 @@ OneInOneOut <- function(InDir, InFilesMask, OutDir, OutExt, Opt) {
 			OutFilesDate <- file.mtime(file.path(OutDir,OutFiles))
 			RightOutFilesTime <- OptStoredFileDateMax < OutFilesDate
 
-			ToDo=!replace_na( ANDx( RightOutFilesTime, RightInFilesTime), F)
-			ToRep=!replace_na( ANDx( RightOutFilesTime, RightInFilesTime), T)
+			ToDo=!replace_na( ANDx( RightOutFilesTime, RightInFilesTime), FALSE)
+			ToRep=!replace_na( ANDx( RightOutFilesTime, RightInFilesTime), TRUE)
 
 			#----------
 			print('InFiles -> OptStored -> OutFiles')
@@ -136,8 +136,8 @@ OneInOneOut <- function(InDir, InFilesMask, OutDir, OutExt, Opt) {
 # OneInOneOut( "./in/", InFilesMask = ".*", "./out/", OutExt = "out", Opt = Opt)
 
 ManyInSomeOut <- function(InDir, InFilesMask, OutDir, OutFiles, Opt) {
-  InFiles = list.files(path = InDir, pattern = InFilesMask, no.. = T)
-  AllOutFiles <- list.files(path = OutDir, no.. = T)
+  InFiles = list.files(path = InDir, pattern = InFilesMask, no.. = TRUE)
+  AllOutFiles <- list.files(path = OutDir, no.. = TRUE)
 
   InFilesToDo <- c()
   OutFilesToRm <- c()
@@ -156,7 +156,7 @@ ManyInSomeOut <- function(InDir, InFilesMask, OutDir, OutFiles, Opt) {
     EqFiles <- compare_named_lists(ActFileContent, StoredFileContent)
 
     if ( !EqFiles ) { # if conf files are non equal
-      file.copy(Opt$ActFile, Opt$StoredFile, overwrite = T)
+      file.copy(Opt$ActFile, Opt$StoredFile, overwrite = TRUE)
       InFilesToDo <- InFiles
       OutFilesToRm <- ResidualOutFiles
       OutFilesToRep <- OutFiles
@@ -173,7 +173,7 @@ ManyInSomeOut <- function(InDir, InFilesMask, OutDir, OutFiles, Opt) {
       OutFilesDate <- file.mtime(OutFiles)
       RightOutFilesTime <- OptStoredFileDateMax < OutFilesDate
 
-      ToDo=any(!replace_na( c(all(RightOutFilesTime), all(RightInFilesTime)), F))
+      ToDo=any(!replace_na( c(all(RightOutFilesTime), all(RightInFilesTime)), FALSE))
       #ToRep=!replace_na( ANDx( RightOutFilesTime, RightInFilesTime), T)
 
       #----------
@@ -212,7 +212,7 @@ ManyInSomeOut <- function(InDir, InFilesMask, OutDir, OutFiles, Opt) {
 
 
 SomeInSomeOut <- function(InFiles, OutFiles, Opt) {
-  AllOutFiles <- list.files(path = OutDir, no.. = T)
+  AllOutFiles <- list.files(path = OutDir, no.. = TRUE)
 
   InFilesToDo <- c()
   OutFilesToRm <- c()
@@ -243,8 +243,8 @@ SomeInSomeOut <- function(InFiles, OutFiles, Opt) {
       OutFilesDate <- file.mtime(OutFiles)
       RightOutFilesTime <- OptStoredFileDateMax < OutFilesDate
 
-      ToDo=any(!replace_na( ANDx( RightOutFilesTime, RightInFilesTime), F))
-      ToRm=!replace_na( ANDx( RightOutFilesTime, RightInFilesTime), T)
+      ToDo=any(!replace_na( ANDx( RightOutFilesTime, RightInFilesTime), FALSE))
+      ToRm=!replace_na( ANDx( RightOutFilesTime, RightInFilesTime), TRUE)
 
       #----------
       print('InFiles -> OptStored -> OutFiles')

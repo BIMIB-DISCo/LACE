@@ -24,15 +24,15 @@ av_compute <- function(anovar_convert,
     numCores <- detectCores()
     registerDoParallel(ceiling(numCores / 2))
     
-    dir.create(vcf_annot_dir, showWarnings = F)
+    dir.create(vcf_annot_dir, showWarnings = FALSE)
     stdout_log <- file.path(vcf_annot_dir, 'stdout.log') 
     stderr_log <- file.path(vcf_annot_dir, 'stderr.log') 
     log_bash <- paste0(' >> ', stdout_log, ' 2>> ', stderr_log) # UN*X! E Windows?
     stdout_log_tmp <- file.path("/tmp/av_stdout.log")           # UN*X! E Windows?
     stderr_log_tmp <- file.path("/tmp/av_stderr.log")           # UN*X! E Windows?
     
-    cat("", file = stdout_log, append=F) # comment to not erase log
-    cat("", file = stderr_log, append=F) # comment to not erase log
+    cat("", file = stdout_log, append=FALSE) # comment to not erase log
+    cat("", file = stderr_log, append=FALSE) # comment to not erase log
     
     
     vcf_filtered = list.files(path = vcf_in_dir, pattern = pattern)
@@ -71,7 +71,7 @@ av_compute <- function(anovar_convert,
                     args = cmd_exp,
                     stdout = stdout_log_tmp,
                     stderr = stderr_log_tmp,
-                    wait = T)
+                    wait = TRUE)
         now <- date()
         cat(paste0("\nExecuted: ",
                    now,
@@ -113,7 +113,7 @@ av_compute <- function(anovar_convert,
                                args = cmd_exp,
                                stdout = stdout_log_tmp,
                                stderr = stderr_log_tmp,
-                               wait = T)
+                               wait = TRUE)
         now <- date()
         cat(paste0("\nExecuted: ",
                    now,

@@ -16,7 +16,7 @@ create_default_config_dir_std <- function() {
 
 ## write the .config.yml in the user os default config folder
 write_default_yaml <- function(default_config_dir) {
-  res <- T
+  res <- TRUE
   if (dir.exists(default_config_dir))
     for (y in names(default_yaml)) {
       if (!file.exists(file.path(default_config_dir, y))) {
@@ -28,7 +28,7 @@ write_default_yaml <- function(default_config_dir) {
       }
     }
   else
-    res <- F
+    res <- FALSE
   return(res)
 }
 
@@ -53,18 +53,18 @@ copy_default_configs <- function(project_folder,
                                  seletor = NULL) {
   if (dir.exists(default_config_dir)) {
     file_default_config_list <-
-      list.files(default_config_dir, all.files = T, full.names=T, no..= T )
+      list.files(default_config_dir, all.files = TRUE, full.names=TRUE, no..= TRUE )
     if (dir.exists(project_folder))
       if (dir.exists(file.path(project_folder,config_dir))) {
         res <- file.copy(file_default_config_list,
                          file.path(project_folder,
                                    config_dir),
-                         overwrite = F)
+                         overwrite = FALSE)
         if (all(res))
-          return(T)
+          return(TRUE)
       }
   }
-  return(F)
+  return(FALSE)
 }
 
 observeEvent(reactiveValuesToList(input), {
@@ -73,7 +73,7 @@ observeEvent(reactiveValuesToList(input), {
     outputOptions(output, name, suspendWhenHidden = FALSE)
   })
 },
-once = T,
+once = TRUE,
 priority = -2)
 
 
@@ -94,13 +94,13 @@ create_project <- function(project_folder,
           res_tmp <- load_all_configs(project_folder,
                                         default_config_dir,
                                         config_dir,
-                                        default = F,
-                                        recent = F)
+                                        default = FALSE,
+                                        recent = FALSE)
           res <- res & res_tmp
           return(res)
         }
       }
-  return(F)
+  return(FALSE)
 }
 
 
@@ -110,9 +110,9 @@ load_project <- function(project_folder,
   if (dir.exists(project_folder))
     if (dir.exists(file.path(project_folder, config_dir))) {
       load_all_configs(project_folder, config_dir)
-      return(T)
+      return(TRUE)
     }
-  return(F)
+  return(FALSE)
 }
 
 ## Make .config.yml in user default .config.yml
@@ -127,14 +127,14 @@ write_default_configs <-
             list.files(file.path(project_folder,
                                  config_dir),
                        pattern = "^\\..*",
-                       full.names = F,
-                       no..= T )
+                       full.names = FALSE,
+                       no..= TRUE )
           file_config_list <- file.path(project_folder,
                                         file_config_list)
           return(file.copy(file_config_list,
                            default_config_dir))
         }
-    return(F)
+    return(FALSE)
   }
 
 
@@ -150,14 +150,14 @@ write_configs <-
             list.files(file.path(project_folder,
                                  config_dir),
                        pattern = "^[^\\.].*",
-                       full.names = F,
-                       no..= T )
+                       full.names = FALSE,
+                       no..= TRUE )
           #file_config_list <- substring(file_config_list,2)
           file_config_list <- paste0(".", file_config_list)
           file_config_list <- file.path(project_folder,file_config_list)
           return(file.copy(file_config_list, default_config_dir))
         }
-    return(F)
+    return(FALSE)
   } # should exist tab specific write_default_config ?
 
 ### end of file -- project_mgr.R

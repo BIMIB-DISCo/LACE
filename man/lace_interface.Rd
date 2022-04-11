@@ -39,6 +39,9 @@ error rates used to infer the clonal tree}
 \item{info}{(Optional). HTML formatted text with information regarding
 the experiments}
 }
+\value{
+An implementation of the htmlwidgets
+}
 \description{
 This function generates a longitudinal clonal tree and a
 graphic interface to explore the data using as input the clonal tree

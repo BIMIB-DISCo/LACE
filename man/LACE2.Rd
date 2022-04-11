@@ -6,6 +6,9 @@
 \usage{
 LACE2()
 }
+\value{
+The GUI
+}
 \description{
 \code{LACE2} displays a Shiny user interface to
 handle the VCF and BAM files processing that is needed to

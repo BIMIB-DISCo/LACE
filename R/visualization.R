@@ -67,7 +67,7 @@ longitudinal.tree.plot <- function( inference,
     adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = TRUE)
     
     M_leafs <- which(apply(X = adjMatrix_base, MARGIN = 1, FUN = sum)==0)
-    Clone_Mut <- sapply(inference$clones_summary, function(x){tail(x,1)}, USE.NAMES = T)
+    Clone_Mut <- sapply(inference$clones_summary, function(x){tail(x,1)}, USE.NAMES = TRUE)
     C_leafs <- Clone_Mut[match(names(M_leafs), Clone_Mut)]
     
     
@@ -88,7 +88,7 @@ longitudinal.tree.plot <- function( inference,
                 # Repeate
                 adjMatrix_base <- as.adj.matrix.unsorted(inference$B, root = TRUE)
                 M_leafs <- which(apply(X = adjMatrix_base, MARGIN = 1, FUN = sum)==0)
-                Clone_Mut <- sapply(inference$clones_summary, function(x){tail(x,1)}, USE.NAMES = T)
+                Clone_Mut <- sapply(inference$clones_summary, function(x){tail(x,1)}, USE.NAMES = TRUE)
                 C_leafs <- Clone_Mut[match(names(M_leafs), Clone_Mut)]
                 uns_cl_mut <- C_leafs[which(inference$clones_prevalence[match(names(C_leafs),rownames(inference$clones_prevalence)), "Total"] == 0)]
             }
@@ -204,7 +204,7 @@ longitudinal.tree.plot <- function( inference,
     
     cl_edges_parental <- cl_edges_parental[order(cl_edges_parental$to_tp),]
     
-    cl_edges_parental <- cl_edges_parental[!duplicated(cl_edges_parental[,c("from_cl", "to_cl")], fromLast = F), c("from","to","type","extincion")]
+    cl_edges_parental <- cl_edges_parental[!duplicated(cl_edges_parental[,c("from_cl", "to_cl")], fromLast = FALSE), c("from","to","type","extincion")]
     
     cl_edges <- rbind(cl_edges, cl_edges_parental)
     
@@ -214,7 +214,7 @@ longitudinal.tree.plot <- function( inference,
     fixing_clones$clones <- cl_vertex$clone[match(fixing_clones$names,cl_vertex$names)]
     fixing_clones$TP <- cl_vertex$TP[match(fixing_clones$names,cl_vertex$names)]
     
-    fixing_clones <- fixing_clones[duplicated(fixing_clones$clones) | duplicated(fixing_clones$clones, fromLast = T),]
+    fixing_clones <- fixing_clones[duplicated(fixing_clones$clones) | duplicated(fixing_clones$clones, fromLast = TRUE),]
     fixing_clones <- fixing_clones[order(fixing_clones$TP),]
     
     for(fxc in unique(fixing_clones$clones)){
@@ -375,7 +375,7 @@ longitudinal.tree.plot <- function( inference,
     cl_vertex$coord.y <- NA
 
     g <- igraph::graph_from_data_frame(cl_edges, directed=TRUE, vertices=cl_vertex)
-    adjMatrix_overall <- igraph::get.adjacency(g, sparse = F, attr = "type", names = TRUE)
+    adjMatrix_overall <- igraph::get.adjacency(g, sparse = FALSE, attr = "type", names = TRUE)
     
     adjMatrix_overall[which(adjMatrix_overall=="")] <- 0
     adjMatrix_overall[which(adjMatrix_overall=="persistence")] <- 2
@@ -488,20 +488,20 @@ longitudinal.tree.plot <- function( inference,
         if(tp_lines) {
             TPs <- sort(unique(cl_vertex$TP))
             
-            min_x <- min(g_mod$layout[,1], na.rm = T)
+            min_x <- min(g_mod$layout[,1], na.rm = TRUE)
             min_x <- ifelse(test = min_x < 0, yes = min_x*1.3, no = min_x*0.7)
             
             for(i in 1:(length(TPs))) {
                 
                 if(i < length(TPs)) {
-                    range_Y_curr <- range(g_mod$layout[cl_vertex$TP == TPs[i],2], na.rm = T)
-                    range_Y_next<- range(g_mod$layout[cl_vertex$TP == TPs[i+1],2], na.rm = T)
+                    range_Y_curr <- range(g_mod$layout[cl_vertex$TP == TPs[i],2], na.rm = TRUE)
+                    range_Y_next<- range(g_mod$layout[cl_vertex$TP == TPs[i+1],2], na.rm = TRUE)
                     
                     pos_l <- mean(c(range_Y_curr[1],range_Y_next[2]))
                     
                     abline(h = pos_l)
                 }
-                pos_text <- mean(range(g_mod$layout[cl_vertex$TP == TPs[i],2], na.rm = T))
+                pos_text <- mean(range(g_mod$layout[cl_vertex$TP == TPs[i],2], na.rm = TRUE))
                 
                 text(min_x, pos_text, paste0('TP: ', TPs[i]))
                 

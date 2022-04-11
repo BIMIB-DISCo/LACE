@@ -6,7 +6,7 @@ NA_compute2_load <- function(data_dir, depth_dir, out_dir) {
   #browser()
 
 
-  dir.create(out_dir, showWarnings = F)
+  dir.create(out_dir, showWarnings = FALSE)
   if (!dir.exists(out_dir))
     showNotification(paste("Filtered data output folder,", out_dir, ", cannot be created"), duration = 10, type = "warning")
 
@@ -152,12 +152,12 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   mutations[which(depth<=depth_minimum,arr.ind=TRUE)] = NA # missing values rate equals to 359/2850, that is approx 12.6%
 
   # make final data
-  cells_aggregate_info = cells_aggregate_info[which(cells_aggregate_info$scID%in%rownames(mutations)), , drop=F]
+  cells_aggregate_info = cells_aggregate_info[which(cells_aggregate_info$scID%in%rownames(mutations)), , drop=FALSE]
   print('cells_aggregate_info')
   print(dim(cells_aggregate_info))
   mycellsdata = list()
   for ( t in time_points )
-    mycellsdata[[t]] = mutations[sort(unique(cells_aggregate_info$scID[which(cells_aggregate_info$Time==t)])), , drop=F]
+    mycellsdata[[t]] = mutations[sort(unique(cells_aggregate_info$scID[which(cells_aggregate_info$Time==t)])), , drop=FALSE]
   D = mycellsdata
   save(D,file=file.path(out_dir,"D.RData"))
 

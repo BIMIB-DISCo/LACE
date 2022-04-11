@@ -14,7 +14,7 @@
                               InFilesToDo = NULL,
                               OutFilesToRm = NULL) {
 
-    dir.create(thr_out_dir, showWarnings = F)
+    dir.create(thr_out_dir, showWarnings = FALSE)
     if (!dir.exists(thr_out_dir))
       showNotification(paste("Filtered data output folder,",
                              thr_out_dir,
@@ -25,7 +25,7 @@
     listSC <- dir(path = vcf_out_dir,
                   pattern = ".exonic_variant_function",
                   ignore.case = TRUE,
-                  full.names = T)
+                  full.names = TRUE)
 
 
     print(InFilesToDo)
@@ -217,7 +217,7 @@
     listSC <- dir(path = vcf_out_dir,
                   pattern = ".exonic_variant_function",
                   ignore.case = TRUE,
-                  full.names = T)
+                  full.names = TRUE)
 
     print(InFilesToDo)
     if (!is.null(InFilesToDo)) {
@@ -296,7 +296,7 @@
     listSC <- dir(path = vcf_out_dir,
                   pattern = ".exonic_variant_function",
                   ignore.case = TRUE,
-                  full.names = T)
+                  full.names = TRUE)
 
     print(InFilesToDo)
     if (!is.null(InFilesToDo)) {

@@ -7,7 +7,7 @@ inputs[["default_config_dir_std"]] <-
 inputs[["config_dir_std"]] <- reactiveVal(os_conf_subdir)
 inputs[["project_folder_std"]] <- reactiveVal()
 inputs[["project_folder"]] <- reactiveVal()
-inputs[["project_loaded"]] <- reactiveVal(F)
+inputs[["project_loaded"]] <- reactiveVal(FALSE)
 
 
 inputs[["pr_folder"]] <- reactiveVal()
@@ -28,7 +28,7 @@ inputs[['inf_out_dir']] <- reactiveVal()
 
 ### Project functions ####
 
-toggle_inputs <- function(enable_inputs=T) {
+toggle_inputs <- function(enable_inputs=TRUE) {
   input_list <- reactiveValuesToList(input)
   
   dp_input <- catch_ui_names(input_list, dp_grep_str)
@@ -50,7 +50,7 @@ toggle_inputs <- function(enable_inputs=T) {
 
 disable_demo_tabs <- function() {
   
-  enable_inputs <- F
+  enable_inputs <- FALSE
   
   #browser()
   
@@ -141,7 +141,7 @@ observeEvent(input[["pr_folder"]],{
     normalizePath(
       parseDirPath(roots = roots_dir,
                    inputs[["pr_folder"]]()),
-      mustWork = F
+      mustWork = FALSE
     )
   )
 
@@ -152,11 +152,11 @@ observeEvent(input[["pr_folder"]],{
 
   updateActionButton(session,
                      'pr_folder',
-                     label = normalizePath(set_dir_ui("pr_folder"), mustWork = F))
+                     label = normalizePath(set_dir_ui("pr_folder"), mustWork = FALSE))
 })
 
 observeEvent(inputs[["pr_path"]](), {
-  inputs[["project_loaded"]](F)
+  inputs[["project_loaded"]](FALSE)
 
 
   hide(id = "pr_path_div")
@@ -238,7 +238,7 @@ observeEvent(inputs[["pr_path"]](), {
     }
   }
 
-}, ignoreInit = T)
+}, ignoreInit = TRUE)
 
 observeEvent(inputs[["project_loaded"]](), {
   if (!is.null(inputs[["project_loaded"]]()))
@@ -285,9 +285,9 @@ observeEvent(inputs[["project_loaded"]](), {
 
 observeEvent(input[["pr_next"]], {
   #browser()
-  warning_wd <- F
+  warning_wd <- FALSE
   if(length(inputs[["pr_path"]]()) == 0)
-    warning_wd <-T
+    warning_wd <-TRUE
   else {
     if (dir.exists(inputs[["pr_path"]]())) {
       if (normalizePath(inputs[["pr_path"]]()) == .my_actual_wd) {
@@ -297,13 +297,13 @@ observeEvent(input[["pr_next"]], {
         ##  immediate=F)
         ## warning_wd <- input$shinyalert
         print(warning_wd)
-        warning_wd <- F
+        warning_wd <- FALSE
       }
     } else
-      warning_wd <- F
+      warning_wd <- FALSE
   }
   if (!warning_wd) {
-    dir.create(inputs[["pr_path"]](), showWarnings = F)
+    dir.create(inputs[["pr_path"]](), showWarnings = FALSE)
     if (dir.exists(inputs[["pr_path"]]())) {
       inputs[["project_folder_std"]](inputs[["pr_path"]]())
       if (!dir.exists(file.path(inputs[["pr_path"]](),os_conf_subdir))) {
@@ -314,7 +314,7 @@ observeEvent(input[["pr_next"]], {
                            duration = 10,
                            type = "error")
         } else {
-          inputs[["project_loaded"]](T)
+          inputs[["project_loaded"]](TRUE)
           #showTab(inputId = "main_tabset", target = "SC metadata")
         }
       } else {
@@ -327,7 +327,7 @@ observeEvent(input[["pr_next"]], {
                            duration = 10,
                            type = "warning")
         } else {
-          inputs[["project_loaded"]](T)
+          inputs[["project_loaded"]](TRUE)
           #showTab(inputId = "main_tabset", target = "SC metadata")
         }
       }
