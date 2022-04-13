@@ -10,6 +10,7 @@ import(DT)
 import(RColorBrewer)
 import(SummarizedExperiment, except = c("trim","shift", "show"))
 import(TRONCO)
+import(curl)
 import(biomaRt, except = c("show","select"))
 
 import(bsplus)
