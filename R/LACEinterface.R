@@ -9,6 +9,7 @@
 #'
 #' @import foreach
 #' @import doParallel
+#' @rawNamespace import(curl, except = c("parse_date"))
 #' @import sortable
 #' @rawNamespace import(shiny, except = c("runExample", "dataTableOutput", "renderDataTable","validate"))
 #' @import shinythemes
@@ -28,7 +29,6 @@
 #' @import shinyBS
 #' @import bsplus
 #' @import shinydashboard
-#' @import TRONCO
 #' @import callr
 
 ## Declare name

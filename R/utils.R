@@ -292,7 +292,7 @@ recursiveLongitudinalLayout <- function( idx_Vc, Xc, Yc, cl_df, adjMatrix_base, 
             dif_clones <- unique(cl_df$cl_vertex$clone[cl_df$cl_vertex$names %in% colnames(adjMatrix_overall)[deep_tmp$mut_list]])
             deep <- c(deep, length(dif_clones))
         }
-        ord <- order(-cl_df$cl_vertex$TP[match(names(idx_next_v),cl_df$cl_vertex$names)], deep, decreasing = F)
+        ord <- order(-cl_df$cl_vertex$TP[match(names(idx_next_v),cl_df$cl_vertex$names)], deep, decreasing = FALSE)
         
         idx_next_v <- idx_next_v[ord]
         deep <- deep[ord]
