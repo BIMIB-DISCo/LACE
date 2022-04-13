@@ -236,7 +236,7 @@ m_doLoad_a <- function(config_path) {
 
 m_doLoad_b <- function() {
   #req(input)
-  loading_(T)
+  loading_(TRUE)
   inputs[['sc_metadata_file']](NULL)
   loaded_input <- isolate(m_loaded_input_())
   if (!is.null(loaded_input[['sc_metadata_file']])) {
@@ -306,21 +306,21 @@ m_doLoad_b <- function() {
   ## showNotification(paste("loaded", "time points"), duration = NULL)
   ## showNotification(paste(inputs[['m_time_column']]()), duration = NULL)
 
-  loading_(F)
+  loading_(FALSE)
 }
 
 ## Load project .config.yml configs
 
-inputs[["load_all_configs"]] <- reactiveVal(F)
+inputs[["load_all_configs"]] <- reactiveVal(FALSE)
 
 load_all_configs <- function(project_folder,
                              default_config_dir = NULL,
                              config_dir = os_conf_subdir,
-                             default = F,
-                             recent = F) {
+                             default = FALSE,
+                             recent = FALSE) {
 
 
-  inputs[["load_all_configs"]](F)
+  inputs[["load_all_configs"]](FALSE)
 
   ## Change to project folder
   setwd(inputs[["project_folder_std"]]())
@@ -364,7 +364,7 @@ load_all_configs <- function(project_folder,
   }
   #inf_doLoad_c() # now is called below
 
-  inputs[["load_all_configs"]](T)
+  inputs[["load_all_configs"]](TRUE)
 
   showNotification(paste("config files:", "loaded"),
                    duration = 10)
@@ -379,7 +379,7 @@ observeEvent(inputs[["load_all_configs"]](),{
     for(i in c("inf_alpha", "inf_beta")) {
       if( i %in% names(inf_loaded_input_())) {
         x <- (do.call(cbind, inputs[[i]]())) %>% {as.data.frame((.)[,-1], row.names = (.)[,1])}
-        x <- data.frame(rownames(x), x, check.names=F)
+        x <- data.frame(rownames(x), x, check.names=FALSE)
         colnames(x)[1]=""
         session$userData[["ed_table_react_list_obj"]]$obj[[i]]$x$data <- x
         session$userData[["ed_table_react_list"]][[i]]$x$data <- x
@@ -392,8 +392,8 @@ observeEvent(inputs[["load_all_configs"]](),{
 load_all_configs2 <- function(project_folder,
                               default_config_dir = NULL,
                               config_dir = os_conf_subdir,
-                              default = F,
-                              recent = F) {
+                              default = FALSE,
+                              recent = FALSE) {
 
   config_path <- NULL
   if (default)
@@ -410,14 +410,14 @@ load_all_configs2 <- function(project_folder,
   if (dir.exists(config_path))
     file_config_list <- list.files(config_path,
                                    pattern = pattern,
-                                   all.files = T,
-                                   full.names=F,
-                                   no..= T )
+                                   all.files = TRUE,
+                                   full.names=FALSE,
+                                   no..= TRUE )
 
   file_config_list <- file.path(config_path, file_config_list)
 
 
-  res <- T
+  res <- TRUE
   for (cf in file_config_list) {
     loaded_input <- read.config(file = cf)
     if (basename(cf) == ".config_01_m.yml") {
@@ -430,7 +430,7 @@ load_all_configs2 <- function(project_folder,
           value <- loaded_input[[id]]
           ## session$sendInputMessage(id, list(value = value))
 
-          check <- T
+          check <- TRUE
           runjs(getWidgetType(id))
 
           ## print('----------->>')
@@ -446,29 +446,29 @@ load_all_configs2 <- function(project_folder,
                   c("shinyDirectories", "shinyFiles"))
                 check <- dir.exists(parseDirPath(roots=roots_dir, loaded_input[[id]]))
               else if (input[[paste0('inputType_',id)]] %in% c("select")) {
-                check <- F
+                check <- FALSE
               }
               else if (input[[paste0('inputType_',id)]] %in% c("number")) {
-                check <- T
+                check <- TRUE
 
               }
               else if (input[[paste0('inputType_',id)]] %in% c("shiny-text-output")) {
-                check <- F
+                check <- FALSE
 
               }
               else if (input[[paste0('inputType_',id)]] %in% c("selectized")) {
-                check <- T
+                check <- TRUE
               }
 
               if (id %in% c('thr_accepted_var', 'thr_negleted_var')) {
-                check <- T
+                check <- TRUE
                 value <- loaded_input[[id]]
                 inputs[[id]](loaded_input[[id]])
                 session$sendInputMessage(id, list(value = value))
               }
 
               if (id=="va_list_genes") {
-                check <- F
+                check <- FALSE
                 updateSelectizeInput(session,
                                      'va_verified_genes',
                                      choices =
@@ -476,7 +476,7 @@ load_all_configs2 <- function(project_folder,
                                      server = TRUE)
               }
               if (id=="va_verified_genes") {
-                check <- F
+                check <- FALSE
                 updateSelectizeInput(session,
                                      'va_verified_genes',
                                      selected =
@@ -507,7 +507,7 @@ load_all_configs2 <- function(project_folder,
           }
         }
       else
-        res <- F
+        res <- FALSE
     }
   }
   Load_done <- showNotification(paste("config files:", "loaded"),

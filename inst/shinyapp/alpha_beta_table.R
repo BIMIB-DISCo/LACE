@@ -71,9 +71,9 @@ ed_table <- function(id, tb_data, row_basename='row_', session) {
       callback = JS(js_key),
       extensions = c('Scroller',"KeyTable"),#,"Buttons"),
       options = list(
-        keys = T,
+        keys = TRUE,
         #keys = list(blurable= FALSE, editOnFocus = F),
-        select =list(blurable=F),
+        select =list(blurable=FALSE),
         #deferRender = F,
         scrollY = 100,
         scroller = TRUE,
@@ -278,7 +278,7 @@ ed_table <- function(id, tb_data, row_basename='row_', session) {
     #print(id)
     #print(ed_table_react_list[[id]]$x$data)
     #print('fine')
-  }, ignoreInit = T)
+  }, ignoreInit = TRUE)
   ###
 
   return(isolate(session$userData[['ed_table_react_list']][[id]]))

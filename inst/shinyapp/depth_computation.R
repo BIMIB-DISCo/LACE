@@ -14,7 +14,7 @@
     ## GET DEPTH FOR EACH SELECTED MUTATION FROM BAMs #####
     ## ################################################################
 
-    dir.create(out_dir, showWarnings = F)
+    dir.create(out_dir, showWarnings = FALSE)
     if (!dir.exists(out_dir))
       showNotification(paste("Filtered data output folder,",
                              out_dir,

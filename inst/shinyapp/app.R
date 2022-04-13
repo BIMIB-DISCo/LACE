@@ -142,14 +142,14 @@ make_shiny_help_popover <- function(for_object,
                                     pop_title,
                                     pop_text,
                                     with_icon = shiny_iconlink(),
-                                    server = F) {
+                                    server = FALSE) {
   with_icon <- with_icon %>%
     bs_embed_popover(title = pop_title,
                      content = pop_text,
                      placement = "right",
                      trigger = "hover",
                      delay = list("show" = 200, "hide" = 3000),
-                     html = T
+                     html = TRUE
     )
 
   for_object <- for_object %>% shinyInput_label_embed(with_icon)
@@ -169,14 +169,14 @@ make_title_help_popover <- function(for_object,
                                     pop_title,
                                     pop_text,
                                     with_icon = shiny_iconlink(),
-                                    server = F) {
+                                    server = FALSE) {
   with_icon <- with_icon %>%
     bs_embed_popover(title = pop_title,
                      content = pop_text,
                      placement = "right",
                      trigger = "hover",
                      delay= list("show"= 200, "hide"= 3000),
-                     html = T
+                     html = TRUE
     )
   with_icon <- htmltools::div(class = "pull-right", with_icon)
 
@@ -319,7 +319,7 @@ ui <- fluidPage(
           # )
         )
       ),
-      collapsed = F
+      collapsed = FALSE
     ),
 
     dashboardBody(
@@ -351,7 +351,7 @@ ui <- fluidPage(
 
                              shinyDirButton('pr_folder',
                                             'Select folder',
-                                            'Please select the project root folder', F) %>%
+                                            'Please select the project root folder', FALSE) %>%
                                make_title_help_popover (
                                  tags$b("Project root folder"),
                                  "Project folder",
@@ -389,12 +389,12 @@ ui <- fluidPage(
                              br(), br(),
                              shinyFilesButton('sc_metadata_file',
                                               'Select file',
-                                              'Please select the experiment metadata file', F) %>%
+                                              'Please select the experiment metadata file', FALSE) %>%
                                make_title_help_popover (
                                  tags$b("Metadata file"),
                                  "Metadata info file",
                                  text[["sc_metadata_file"]],
-                                 server = T
+                                 server = TRUE
                                ),
                              br(),
                              br(),
@@ -671,7 +671,7 @@ ui <- fluidPage(
                                multiple = TRUE,
                                options = list (
                                  placeholder = 'Choose genes for inferential analysis',
-                                 hideSelected = F,
+                                 hideSelected = FALSE,
                                  plugins =
                                    list("drag_drop",
                                         "remove_button",
@@ -922,14 +922,14 @@ server <- function(input, output, session) {
 
   ## Source?
 
-  source("check_demo.R", local = T)
-  source("load_and_save.R", local = T)
-  source("project_mgr.R", local = T)
+  source("check_demo.R", local = TRUE)
+  source("load_and_save.R", local = TRUE)
+  source("project_mgr.R", local = TRUE)
   source("pipeline_io_ctrl.R")
-  source('alpha_beta_table.R', local = T)
+  source('alpha_beta_table.R', local = TRUE)
   source("annotation.R")
-  source("filters_computation.R", local = T)
-  source("depth_computation.R", local = T)
+  source("filters_computation.R", local = TRUE)
+  source("depth_computation.R", local = TRUE)
   source("step3_explore_lace_input_data.R")
   source("make_lace_final_input.R")
 
@@ -1018,8 +1018,8 @@ server <- function(input, output, session) {
 
 
 
-  source("project_tab.R", local = T)
-  source("inference_tab.R", local = T)
+  source("project_tab.R", local = TRUE)
+  source("inference_tab.R", local = TRUE)
 
 
   setwd(.my_actual_wd)
@@ -1074,7 +1074,7 @@ server <- function(input, output, session) {
         # create tmp folder
         tmp_dir <- tempdir()
         tmp_path <- file.path(tmp_dir,inputs[["demo"]]())
-        dir.create(tmp_path, showWarnings = F)
+        dir.create(tmp_path, showWarnings = FALSE)
   
         inputs[["demo_remainder"]](tmp_path)
   
@@ -1085,7 +1085,7 @@ server <- function(input, output, session) {
             hide_tab()
           #})
   
-          dir_copy(demo_dir, tmp_path, overwrite = T)
+          dir_copy(demo_dir, tmp_path, overwrite = TRUE)
   
           inputs[["demo"]](1) # temporary project ready
           inputs[["pr_path"]](tmp_path)
@@ -1107,7 +1107,7 @@ server <- function(input, output, session) {
     #else
     #  inputs[["demo"]](NULL)
 
-  }, ignoreInit = T)
+  }, ignoreInit = TRUE)
 
 
   # observeEvent(input[["sidebarItemExpanded"]], {
@@ -1153,7 +1153,7 @@ server <- function(input, output, session) {
     output$recent_projects <- renderMenu({recent_projects})
     print(recent_projects)
 
-  }, once = T )
+  }, once = TRUE )
 
   observeEvent( input[["sidemenu"]],{
     print(input[["sidemenu"]])
@@ -1171,7 +1171,7 @@ server <- function(input, output, session) {
       inputs[["reload_project"]](proj_dir)
     }
 
-  }, ignoreInit = T)
+  }, ignoreInit = TRUE)
 
   # observe({
   #   if (input[["sidemenu"]] == "Small dataset") {
@@ -1476,7 +1476,7 @@ server <- function(input, output, session) {
                            suspendWhenHidden = FALSE)
            })
   },
-  once = T,
+  once = TRUE,
   priority = -1)
 
   ## observeEvent(reactiveValuesToList(input),{
@@ -1545,7 +1545,7 @@ server <- function(input, output, session) {
           if (file.exists(ref_files2)) {
             ref_info <-
               read.table(file = ref_files2,
-                         header = F,
+                         header = FALSE,
                          sep = '\t',
                          stringsAsFactors = FALSE)
             list_gene_symbols <- ref_info[, 13] # 13? What is this?
@@ -1553,7 +1553,7 @@ server <- function(input, output, session) {
             updateSelectizeInput(session,
                                  'va_verified_genes',
                                  choices = inputs[['va_list_genes']](),
-                                 server = T)
+                                 server = TRUE)
             ## if (file.exists(file.path( av_anovar_db_dir_(), "snpMut_filt_freq.rds"))){
             ##  print('LOAD FILE2')
             ##  snpMut_filt_freq <- readRDS(file=paste0(file.path( thr_out_dir_(), "snpMut_filt_freq.rds")))
@@ -1589,8 +1589,8 @@ server <- function(input, output, session) {
                    va_minumum_median_total_(),
                    va_minumum_median_mutation_(), verified_genes_())
   }, { va_exec2() },
-  ignoreNULL = F,
-  ignoreInit = T)
+  ignoreNULL = FALSE,
+  ignoreInit = TRUE)
 
 
   ### End Variational observers ####
@@ -1598,7 +1598,7 @@ server <- function(input, output, session) {
   ### Variational outputs ####
 
   output$va_out <-
-    DT::renderDT(va_compute_output_(), server = T)
+    DT::renderDT(va_compute_output_(), server = TRUE)
   output[['va_verified_genes']] <-
     renderText(inputs[['va_verified_genes']]())
   output[['va_list_genes']] <-
@@ -1695,7 +1695,7 @@ server <- function(input, output, session) {
                            suspendWhenHidden = FALSE)
            })
   },
-  once = T,
+  once = TRUE,
   priority = -1)
 
   ## observeEvent(reactiveValuesToList(input),{
@@ -2026,7 +2026,7 @@ server <- function(input, output, session) {
                            suspendWhenHidden = FALSE)
            })
   },
-  once = T,
+  once = TRUE,
   priority = -1)
 
 
@@ -2068,7 +2068,7 @@ server <- function(input, output, session) {
     inputs[['thr_negleted_var']](NULL)
 
   },
-  once = T,
+  once = TRUE,
   priority = -1)
 
   output$thr_bucket_var_list <-
@@ -2102,12 +2102,12 @@ server <- function(input, output, session) {
               tags$b("Exonic variant function annotations"),
               "List of exonic varian functions",
               text[["thr_bucket_var_list"]],
-              server = T
+              server = TRUE
             ),
           bucket_list_basic
         )
       if (loading_()) {
-        loaded_(T)
+        loaded_(TRUE)
       }
       x
     })
@@ -2327,7 +2327,7 @@ server <- function(input, output, session) {
                            suspendWhenHidden = FALSE)
            })
   },
-  once = T,
+  once = TRUE,
   priority = -1)
 
   ## observeEvent(reactiveValuesToList(input), {
@@ -2396,7 +2396,7 @@ server <- function(input, output, session) {
   output$av_out <- eventReactive(input$av_exec, {
     av_exec()
   },
-  ignoreInit = T)
+  ignoreInit = TRUE)
 
   ### End annotation observers ####
 
@@ -2419,7 +2419,7 @@ server <- function(input, output, session) {
 
 
   loaded_input_ <- reactiveVal(list())
-  loaded_ <- reactiveVal(F)
+  loaded_ <- reactiveVal(FALSE)
   m_widgetId_ <- reactiveVal()
 
 
@@ -2441,7 +2441,7 @@ server <- function(input, output, session) {
       ## print(input$inputType)
     }
   },
-  once = T,
+  once = TRUE,
   priority = 5)
 
 
@@ -2524,8 +2524,8 @@ server <- function(input, output, session) {
   for (dir_ui in m_dir_uis)
     inputs[[dir_ui]] <- reactiveVal()
 
-  loading_ <- reactiveVal(F)
-  loaded_ <- reactiveVal(F)
+  loading_ <- reactiveVal(FALSE)
+  loaded_ <- reactiveVal(FALSE)
 
 
   #####
@@ -2640,8 +2640,8 @@ server <- function(input, output, session) {
       inputs[['m_time_points']](input[['m_time_points']])
     }
     if (loading_() & loaded_()) {
-      loading_(F)
-      loaded_(F)
+      loading_(FALSE)
+      loaded_(FALSE)
     }
     if (file.exists(sc_metadata_label_()) )
       if (!is.null(input[['m_time_points']]))
@@ -2734,7 +2734,7 @@ server <- function(input, output, session) {
     renderUI(selectInput("m_id_column", "Cell id column", c("")) %>%
                make_shiny_help_popover ("Ids column",
                                         text[["m_idCol"]],
-                                        server = T
+                                        server = TRUE
                )
     )
 
@@ -2742,7 +2742,7 @@ server <- function(input, output, session) {
     renderUI(selectInput("m_time_column", "Time column", c("")) %>%
                make_shiny_help_popover ("Sampling times column",
                                         text[["m_timePointsCol"]],
-                                        server = T
+                                        server = TRUE
                )
     )
 
@@ -2761,11 +2761,11 @@ server <- function(input, output, session) {
         make_title_help_popover (tags$b("Sampling points"),
                                  "Sampling time points",
                                  text[["m_timePoints"]],
-                                 server = T
+                                 server = TRUE
         )
 
       if (loading_()) {
-        loaded_(T)
+        loaded_(TRUE)
       }
       x
     })
@@ -2781,8 +2781,8 @@ server <- function(input, output, session) {
   ## output[['sc_metadata_file']] <- renderText(parseFilePaths(roots = roots_dir, inputs[['sc_metadata_file']]()))
   output[['m_id_column_tab']] <-
     renderTable(head(sc_metadata_()[inputs[['m_id_column']]()]),
-                bordered = T,
-                rownames = T)
+                bordered = TRUE,
+                rownames = TRUE)
   output[['sc_metadata_file']] <-
     renderPrint(inputs[['sc_metadata_file']]())
   output[['m_time_column']] <-

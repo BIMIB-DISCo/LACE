@@ -12,14 +12,16 @@ Authors@R: c(person("Daniele", "Ramazzotti", role=c("aut"),email="daniele.ramazz
     person("Gianluca","Ascolani",role=c("aut"),email="gianluca.ascolani@unimib.it"))
 Depends: R (>= 4.1.0)
 Imports:
+    curl,
+    igraph,
     foreach,
     doParallel,
+    TRONCO,
     sortable,
     dplyr,
     data.tree, 
     graphics, 
     grDevices, 
-    igraph, 
     parallel, 
     RColorBrewer, 
     Rfast, 
@@ -41,7 +43,6 @@ Imports:
     htmltools, 
     htmlwidgets,
     bsplus,
-    TRONCO,
     shiny,
     shinythemes,
     shinyFiles,

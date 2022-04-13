@@ -35,7 +35,7 @@
 
 utils::globalVariables(".my_actual_wd",
                        package = "LACE",
-                       add = F)
+                       add = FALSE)
 
 
 #' @md
@@ -77,6 +77,7 @@ utils::globalVariables(".my_actual_wd",
 #' @usage 
 #' LACE2()
 #' 
+#' @return The GUI
 #' 
 #' @note 
 #' The function `LACE` is still available for retrocompatibility.

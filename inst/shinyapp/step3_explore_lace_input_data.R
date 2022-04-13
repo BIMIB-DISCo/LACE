@@ -11,7 +11,7 @@ NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, o
 
 
 
-  dir.create(out_dir, showWarnings = F)
+  dir.create(out_dir, showWarnings = FALSE)
   if (!dir.exists(out_dir))
     showNotification(paste("Filtered data output folder,", out_dir, ", cannot be created"), duration = 10, type = "warning")
 

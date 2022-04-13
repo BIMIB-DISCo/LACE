@@ -33,6 +33,8 @@
 #'
 #' @param elementId (optional) Element id
 #'
+#' @return  An implementation of the htmlwidgets
+#'
 #' @importFrom  Matrix rankMatrix
 #' @importFrom jsonlite toJSON
 #' @importFrom grDevices colorRampPalette
@@ -261,7 +263,7 @@ lace_interface <- function (B_mat,
             one_col
             zero_col=names(zero_col[zero_col])
             zero_col
-            B2=B2[rownames(B2) !=first_r, , drop=F]
+            B2=B2[rownames(B2) !=first_r, , drop=FALSE]
             B2
             B3=cbind(B2[,colnames(B_tmp[,1:i-1,drop=FALSE]),drop=FALSE],
                      B2[,one_col,drop=FALSE],B2[,zero_col,drop=FALSE])
@@ -333,7 +335,7 @@ lace_interface <- function (B_mat,
     }
     prevalence=prevalence[rownames(B),]
 
-    clone_labels=as.list(str_split(colnames(B), pattern='_', n=2, simplify = T)[,1])
+    clone_labels=as.list(str_split(colnames(B), pattern='_', n=2, simplify = TRUE)[,1])
     ##clone_labels=str_split(colnames(B), pattern='_', n=2, simplify = T)[,1]
     names(clone_labels)<-rownames(B)
     clone_labels
@@ -390,7 +392,7 @@ lace_interface <- function (B_mat,
                                         #it resolves all the incongruences resulting from not considering the time at all
     chrono_occurences <- function(adj_matrix, prevalence) {
                                         #create first time mutations appearance based on clonal prevalence only
-        times= apply((prevalence)>0, 1, function(x) detect_index(x, ~ .x == T) )
+        times= apply((prevalence)>0, 1, function(x) detect_index(x, ~ .x == TRUE) )
                                         #times=times+1 #test
         times[1]=1 #setting root
 
@@ -402,7 +404,7 @@ lace_interface <- function (B_mat,
 
 
                                         #create first time mutations appearance based on chronological order
-        sources=apply( t(adj_matrix)>0, 1, function(x) detect_index(x, ~ .x == T) )
+        sources=apply( t(adj_matrix)>0, 1, function(x) detect_index(x, ~ .x == TRUE) )
         sources[1]=1
         for(target in 1: length(rownames(prevalence))) {
             source=sources[target]
