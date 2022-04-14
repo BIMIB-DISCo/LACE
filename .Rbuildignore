@@ -13,3 +13,4 @@
 ^vignettes/.*gml$
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^LICENSE\.md$
