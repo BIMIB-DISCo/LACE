@@ -1,5 +1,5 @@
 Package: LACE
-Version: 1.99.5
+Version: 1.99.4
 Date: 2022-04-15
 Title: Longitudinal Analysis of Cancer Evolution (LACE)
 Authors@R: c(person("Daniele", "Ramazzotti", role=c("aut"),email="daniele.ramazzotti@unimib.it",
@@ -61,7 +61,7 @@ Name:
 Description:
     LACE is an algorithmic framework that processes single-cell somatic mutation profiles from cancer samples collected at different time points and in distinct experimental settings, to produce longitudinal models of cancer evolution. The approach solves a Boolean Matrix Factorization problem with phylogenetic constraints, by maximizing a weighed likelihood function computed on multiple time points.
 Encoding: UTF-8
-License: GPL (>= 3)
+License: file LICENSE
 URL: https://github.com/BIMIB-DISCo/LACE
 BugReports: https://github.com/BIMIB-DISCo/LACE
 biocViews:
