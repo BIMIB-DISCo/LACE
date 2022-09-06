@@ -188,8 +188,8 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   #rownames(clusters) = c(rownames(D[[1]]),rownames(D[[2]]),rownames(D[[3]]),rownames(D[[4]]))
   #data = rbind(D[[1]],D[[2]],D[[3]],D[[4]])
   data[which(is.na(data))] = 0
-  data = import.genotypes(data)
-  data = annotate.stages(data,clusters)
+  #data = import.genotypes(data)
+  # data = annotate.stages(data,clusters)
   ## if (ncol(data$genotypes)>1 || length(unique(data$genotypes[,1]))>1) #errore generico
   ##  oncoprint(data,excl.sort=FALSE,group.by.stage=TRUE)
 
