@@ -20,7 +20,7 @@ steps"><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathj
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">LACE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0</span>
       </span>
     </div>
 
@@ -72,16 +72,16 @@ steps</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">lace_interface</span><span class="op">(</span>
-  <span class="va">B_mat</span>,
-  <span class="va">clones_prevalence</span>,
-  <span class="va">C_mat</span>,
-  <span class="va">error_rates</span>,
-  width <span class="op">=</span> <span class="cn">NULL</span>,
-  height <span class="op">=</span> <span class="cn">NULL</span>,
-  elementId <span class="op">=</span> <span class="cn">NULL</span>,
-  info <span class="op">=</span> <span class="st">""</span>
-<span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">lace_interface</span><span class="op">(</span></span>
+<span>  <span class="va">B_mat</span>,</span>
+<span>  <span class="va">clones_prevalence</span>,</span>
+<span>  <span class="va">C_mat</span>,</span>
+<span>  <span class="va">error_rates</span>,</span>
+<span>  width <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  height <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  elementId <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  info <span class="op">=</span> <span class="st">""</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -93,26 +93,43 @@ contain a column and a row named "Root" representing the root of the tree and
 the wild type, respectively.
 B is a binary matrix where 1 are the mutations associated to the clones.
 The wild type column has all ones</p></dd>
+
+
 <dt>clones_prevalence</dt>
 <dd><p>(Required) The clonal prevalence matrix</p></dd>
+
+
 <dt>C_mat</dt>
 <dd><p>(Required) The corrected clonal attachment</p></dd>
+
+
 <dt>error_rates</dt>
 <dd><p>(Required) The false positive alpha and false negative beta
 error rates used to infer the clonal tree</p></dd>
+
+
 <dt>width</dt>
 <dd><p>(optional) Size of the window interafce</p></dd>
+
+
 <dt>height</dt>
 <dd><p>(optional) Size of the window interafce</p></dd>
+
+
 <dt>elementId</dt>
 <dd><p>(optional) Element id</p></dd>
+
+
 <dt>info</dt>
 <dd><p>(Optional). HTML formatted text with information regarding
 the experiments</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>An implementation of the htmlwidgets</p>
+    
+
+<p>An implementation of the htmlwidgets</p>
     </div>
 
   </div>
@@ -127,7 +144,7 @@ the experiments</p></dd>
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>

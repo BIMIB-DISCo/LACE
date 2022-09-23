@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">LACE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.0.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.0</span>
       </span>
     </div>
 
@@ -66,28 +66,33 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="co"># S3 method for variants.error.rates</span>
-<span class="fu">compute</span><span class="op">(</span><span class="va">D</span>, <span class="va">inference</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for variants.error.rates</span></span>
+<span><span class="fu">compute</span><span class="op">(</span><span class="va">D</span>, <span class="va">inference</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div id="arguments">
     <h2>Arguments</h2>
     <dl><dt>D</dt>
 <dd><p>Mutation data from multiple experiments for a list of driver genes provided as a data matrix per time point.</p></dd>
+
+
 <dt>inference</dt>
 <dd><p>Results of the inference by LACE.</p></dd>
+
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A matrix variants_error_rates with the estimated error rates for the considered variants.</p>
+    
+
+<p>A matrix variants_error_rates with the estimated error rates for the considered variants.</p>
     </div>
 
     <div id="ref-examples">
     <h2>Examples</h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">longitudinal_sc_variants</span><span class="op">)</span></span>
-<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">inference</span><span class="op">)</span></span>
-<span class="r-in"><span class="va">variants_error_rates</span> <span class="op">&lt;-</span> <span class="fu">compute.variants.error.rates</span><span class="op">(</span><span class="va">longitudinal_sc_variants</span>,<span class="va">inference</span><span class="op">)</span></span>
-<span class="r-in"></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">longitudinal_sc_variants</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">inference</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">variants_error_rates</span> <span class="op">&lt;-</span> <span class="fu">compute.variants.error.rates</span><span class="op">(</span><span class="va">longitudinal_sc_variants</span>,<span class="va">inference</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
   </div>
@@ -102,7 +107,7 @@
 </div>
 
 <div class="pkgdown">
-  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.3.9000.</p>
+  <p></p><p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.9000.</p>
 </div>
 
       </footer></div>
