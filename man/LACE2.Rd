@@ -25,9 +25,11 @@ The function \code{LACE} is still available for retrocompatibility.
 The package is available on GitHub and Bioconductor.
 LACE 2.0 requires R > 4.1.0 and Bioconductor.
 
-To install directly from github run:\preformatted{remotes::install_github("https://github.com/BIMIB-DISCo/LACE", 
+To install directly from github run:
+
+\if{html}{\out{<div class="sourceCode">}}\preformatted{remotes::install_github("https://github.com/BIMIB-DISCo/LACE", 
                         dependencies = TRUE)
-}
+}\if{html}{\out{</div>}}
 }
 
 \section{Dependencies}{
