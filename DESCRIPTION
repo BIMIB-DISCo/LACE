@@ -42,6 +42,7 @@ Imports:
     htmltools, 
     htmlwidgets,
     bsplus,
+    shinyvalidate,
     shiny,
     shinythemes,
     shinyFiles,

@@ -502,10 +502,10 @@ ui <- fluidPage(
                              numericInput(
                                inputId = "thr_alleles_ratio",
                                label = "Alternate frequency",
-                               min = 1,
-                               max = 3,
-                               step = 1,
-                               value = 2
+                               min = 0,
+                               max = 1,
+                               step = 0.05,
+                               value = 0.8
                              ) %>%
                                make_shiny_help_popover(
                                  "Cell alternate allele frequency",
@@ -515,9 +515,9 @@ ui <- fluidPage(
                              numericInput(
                                inputId = "thr_maf",
                                label = "MAF",
-                               min = 0.005,
-                               max = 0.05,
-                               step = 0.005,
+                               min = 0.01,
+                               max = 0.5,
+                               step = 0.05,
                                value = 0.01
                              ) %>%
                                make_shiny_help_popover(
@@ -528,10 +528,10 @@ ui <- fluidPage(
                              numericInput(
                                inputId = "thr_freq",
                                label = "Variant frequency",
-                               min = 0.01,
-                               max = 0.1,
-                               step = 0.01,
-                               value = 0.05
+                               min = 0.,
+                               max = 1,
+                               step = 0.1,
+                               value = 0.5
                              ) %>%
                                make_shiny_help_popover(
                                  "Sample variant frequency",
@@ -1458,8 +1458,6 @@ server <- function(input, output, session) {
              function(i) {
                observe({
                  req(inputs[[i]]())
-                 ## updateActionButton(session, i, label = set_dir_ui(i))
-                 ## updateNumericInput(session, i, value = inputs[[i]]()) #####azzo
                })
              }
       )
@@ -1479,16 +1477,6 @@ server <- function(input, output, session) {
   once = TRUE,
   priority = -1)
 
-  ## observeEvent(reactiveValuesToList(input),{
-  ##   lapply(va_uis, function(i) {
-  ##     click(i)
-  ##     hide(paste0(i,'-modal'))
-  ##     delay(300,runjs(paste0("$('#",i,"-modal #sF-cancelButton').click()")))
-  ##   })
-  ## },once = T, priority = -1)
-
-  ###
-
 
   observe({
     va_observers = lapply(va_uis,
@@ -1503,20 +1491,7 @@ server <- function(input, output, session) {
   },
   priority = -1)
 
-  ## observeEvent(input$va_doLoad,{
-  ##   req(input)
-  ##   loaded_input <- va_loaded_input_()
-  ##   if (!is.null(loaded_input[['va_out_dir']])) {
-  ##     if (!is.integer(loaded_input[['va_out_dir']])) {
-  ##       if (dir.exists(parseDirPath(roots=roots_dir, loaded_input[['va_out_dir']])))
-  ##         inputs[['va_out_dir']](loaded_input[['va_out_dir']])
-  ##     }
-  ##   }
-  ##   else
-  ##     inputs[['thr_out_dir']](filter0_compute(inputs[['av_vcf_out_dir']]()))
-  ## })
 
-  ## output[['va_data_in_dir']] <- renderText(parseDirPath(roots=roots_dir, inputs[['va_data_in_dir']]()))
 
   observeEvent(inputs[['av_anovar_db_dir']](), {
     #browser()
@@ -1548,7 +1523,7 @@ server <- function(input, output, session) {
                          header = FALSE,
                          sep = '\t',
                          stringsAsFactors = FALSE)
-            list_gene_symbols <- ref_info[, 13] # 13? What is this?
+            list_gene_symbols <- ref_info[, 13] 
             inputs[['va_list_genes']](list_gene_symbols)
             updateSelectizeInput(session,
                                  'va_verified_genes',
@@ -1577,8 +1552,18 @@ server <- function(input, output, session) {
     inputs[['va_verified_genes']](input[['va_verified_genes']])
   })
 
+  
+  
+  
+  va_iv <- InputValidator$new()
+  va_iv$add_rule("va_depth_minimum", sv_between(1,100))
+  va_iv$add_rule("va_missing_values_max", sv_between(0.,1.))
+  va_iv$add_rule("va_minumum_median_total", sv_between(0.,50.))
+  va_iv$add_rule("va_minumum_median_mutation", sv_between(0.,50.))
+  va_iv$enable()
 
   observeEvent(input$va_exec,{
+    req(va_iv$is_valid())
     va_exec()
   })
 
@@ -1842,7 +1827,7 @@ server <- function(input, output, session) {
 
 
 
-  ### Threshold reactiveVals ####
+  ### Threshold reactiveVals #### 
 
   thr_uis = c('thr_alleles_ratio',
               'thr_maf',
@@ -1890,6 +1875,8 @@ server <- function(input, output, session) {
 
   ### Threshold functions ####
 
+  
+  
   thr_exec <- function() {
     if (length(thr_out_dir_()) == 0)
       return()
@@ -2112,6 +2099,11 @@ server <- function(input, output, session) {
       x
     })
 
+  thr_iv <- InputValidator$new()
+  thr_iv$add_rule("thr_alleles_ratio", sv_between(0,1))
+  thr_iv$add_rule("thr_maf", sv_between(0.,0.5))
+  thr_iv$add_rule("thr_freq", sv_between(0.,1.))
+  thr_iv$enable()
   ### Threshold observers ####
 
   ### Threshold outputs ####
@@ -2133,6 +2125,7 @@ server <- function(input, output, session) {
     })
 
   output$thr_out <- eventReactive(input$thr_exec, {
+    req(thr_iv$is_valid())
     thr_exec()
   })
 
