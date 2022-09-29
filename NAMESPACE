@@ -9,7 +9,7 @@ import(DT)
 import(RColorBrewer)
 import(SummarizedExperiment, except = c("trim","shift", "show"))
 import(biomaRt, except = c("show","select"))
-import(shinyvalidate)
+
 import(bsplus)
 import(callr)
 import(configr)
