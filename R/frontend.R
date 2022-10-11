@@ -337,3 +337,116 @@ LACE <- function( D,
     return(list(B=B,C=C,corrected_genotypes=corrected_genotypes,clones_prevalence=clones_prevalence,relative_likelihoods=relative_likelihoods,joint_likelihood=joint_likelihood,clones_summary=clones_summary,equivalent_solutions=equivalent_solutions,error_rates=error_rates, longitudinal_tree=longitudinal_tree))
 
 }
+
+
+
+
+
+#' Perform the inference of the maximum likelihood clonal tree from longitudinal data.
+#' @title lacedata
+#'
+#' @examples
+#' data(longitudinal_sc_variants)
+#' lacedata(D = longitudinal_sc_variants,
+#'          lik_w = c(0.2308772,0.2554386,0.2701754,0.2435088),
+#'          alpha = list(c(0.10,0.05,0.05,0.05)),
+#'          beta = list(c(0.10,0.05,0.05,0.05)),
+#'          keep_equivalent = TRUE,
+#'          num_rs = 5,
+#'          num_iter = 10,
+#'          n_try_bs = 5,
+#'          num_processes = NA,
+#'          seed = 12345,
+#'          verbose = FALSE)
+#'
+#' @param D Mutation data from multiple experiments for a list of driver genes. It can be either a list with a data matrix per time point or a SummarizedExperiment object.
+#' In this latter, the object must contain two fields: assays and colData. Assays stores one unique data matrix pooling all single cells observed at each time point and colData stores a vector of labels reporting the time point when each single cell was sequenced.
+#' Ordering of cells in assays field and colData field must be the same.
+#' @param lik_w Weight for each data point. If not provided, weights to correct for sample sizes are used.
+#' @param alpha False positive error rate provided as list of elements; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at
+#' maximum-likelihood is returned.
+#' @param beta False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at
+#' maximum-likelihood is returned.
+#' @param initialization Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns.
+#' This parameter overrides "random_tree".
+#' @param random_tree Boolean. Shall I start MCMC search from a random tree? If FALSE (default) and initialization is NULL, search
+#' is started from a TRaIT tree (BMC Bioinformatics . 2019 Apr 25;20(1):210.  doi: 10.1186/s12859-019-2795-4).
+#' @param keep_equivalent Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?
+#' @param check_indistinguishable Boolean. Shall I remove any indistinguishable event from input data prior inference?
+#' @param num_rs Number of restarts during mcmc inference.
+#' @param num_iter Maximum number of mcmc steps to be performed during the inference.
+#' @param n_try_bs Number of steps without change in likelihood of best solution after which to stop the mcmc.
+#' @param learning_rate Parameter to tune the probability of accepting solutions at lower values during mcmc. Value of learning_rate = 1 (default), set a
+#' probability proportional to the difference in likelihood; values of learning_rate greater than 1 inclease the chance of accepting solutions at lower likelihood
+#' during mcmc while values lower than 1 decrease such probability.
+#' @param marginalize Boolean. Shall I marginalize C when computing likelihood?
+#' @param error_move Boolean. Shall I include estimation of error rates in the MCMC moves?
+#' @param num_processes Number of processes to be used during parallel execution. To execute in single process mode,
+#' this parameter needs to be set to either NA or NULL.
+#' @param seed Seed for reproducibility.
+#' @param verbose Boolean. Shall I print to screen information messages during the execution?
+#' @param log_file log file where to print outputs when using parallel. If parallel execution is disabled, this parameter is ignored.
+#'
+#' @return shiny interface
+#' @export lacedata
+#'
+lacedata <- function( D,
+                      lik_w = NULL,
+                      alpha = NULL,
+                      beta = NULL,
+                      initialization = NULL,
+                      random_tree = FALSE,
+                      keep_equivalent = TRUE,
+                      check_indistinguishable = TRUE,
+                      num_rs = 50,
+                      num_iter = 10000,
+                      n_try_bs = 500,
+                      learning_rate = 1,
+                      marginalize = FALSE,
+                      error_move = FALSE,
+                      num_processes = Inf,
+                      seed = NULL,
+                      verbose = TRUE,
+                      log_file = "")  {
+  
+  show <- TRUE
+  
+  inp <- list(D=D,
+              lik_w = lik_w,
+              alpha = alpha,
+              beta = beta,
+              initialization = initialization,
+              random_tree = random_tree,
+              keep_equivalent = keep_equivalent,
+              check_indistinguishable = check_indistinguishable,
+              num_rs = num_rs,
+              num_iter = num_iter,
+              n_try_bs = n_try_bs,
+              learning_rate = learning_rate,
+              marginalize = marginalize,
+              error_move = error_move,
+              num_processes = num_processes,
+              seed = seed,
+              verbose = verbose,
+              log_file = log_file,
+              show = show )
+  
+  inference_res=do.call('LACE',inp)
+  
+  B <- inference_res$B
+  clones_prevalence <- inference_res$clones_prevalence
+  C <- inference_res$C
+  error_rates <- inference_res$error_rates
+  
+  if (!is.null(B) && !is.null(C) && !is.null(clones_prevalence) && !is.null(error_rates)) {
+    x <- LACE:::lace_interface(
+      B_mat = B,
+      clones_prevalence = clones_prevalence,
+      C_mat = C,
+      error_rates = error_rates
+    )
+    return(x)
+  }
+  else
+    return(NULL)
+}
