@@ -93,7 +93,7 @@ jsCode <- "shinyBS.addTooltip = function(id, type, opts) {
 
 #log2_print <- function(x, pre = "") {log_print(paste(pre,x), console = FALSE)}
 #log2_print <- function(x, pre = "") {print(paste(pre,x), console = FALSE)}
-log2_print <- function(x, pre = "") {}
+log2_print <- function(x, msg = "") {}
 
 ### compare_named_lists --
 ###
