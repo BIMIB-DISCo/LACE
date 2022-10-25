@@ -51,7 +51,7 @@ If the scripts are installed in binary search path, then LACE 2.0 will detect th
 To start LACE 2.0 user interface run: 
 ```{r}
 library(LACE)
-LACE2()
+LACEview()
 ```
 
 ## Using LACE 2.0

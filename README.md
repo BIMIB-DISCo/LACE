@@ -49,6 +49,6 @@ If the scripts are installed in binary search path, then LACE 2.0 will detect th
 To start LACE 2.0 user interface run: 
 ```
 library(LACE)
-LACE2()
+LACEview()
 ```
 ![Picture](https://github.com/BIMIB-DISCo/LACE/blob/master/vignettes/resources/Display_tab.png?raw=true)
