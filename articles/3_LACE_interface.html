@@ -91,25 +91,47 @@
 
     
     
-<p>LACE 2.0 is a new release of the LACE R package. LACE 2.0 is capable of performing clonal evolution analyses for single-cell sequencing data including longitudinal experiments. LACE 2.0 allows to annotate variants and retrieve the relevant mutations interactively based on user-defined filtering criteria; it infers the maximum likelihood clonal tree, cell matrix attachments and false positive/negative rates using boolean matrix factorization. Furthermore, LACE 2.0 allows to investigate cancer clonal evolution under different experimental conditions and the occurrence of single mutations which can be queried via <em>ensembl</em> database.</p>
+<p>LACE 2.0 is a new release of the LACE R package. LACE 2.0 is capable
+of performing clonal evolution analyses for single-cell sequencing data
+including longitudinal experiments. LACE 2.0 allows to annotate variants
+and retrieve the relevant mutations interactively based on user-defined
+filtering criteria; it infers the maximum likelihood clonal tree, cell
+matrix attachments and false positive/negative rates using boolean
+matrix factorization. Furthermore, LACE 2.0 allows to investigate cancer
+clonal evolution under different experimental conditions and the
+occurrence of single mutations which can be queried via <em>ensembl</em>
+database.</p>
 <div class="section level2">
 <h2 id="installation-of-lace-2-0-r-package">Installation of LACE 2.0 R package<a class="anchor" aria-label="anchor" href="#installation-of-lace-2-0-r-package"></a>
 </h2>
-<p>The package is available on GitHub and Bioconductor. LACE 2.0 requires R &gt; 4.1.0 and Bioconductor. To install Bioconductor run:</p>
+<p>The package is available on GitHub and Bioconductor. LACE 2.0
+requires R &gt; 4.1.0 and Bioconductor. To install Bioconductor run:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span></code></pre></div>
 <p>To install LACE 2.0 run:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"https://github.com/BIMIB-DISCo/LACE"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
-<p>LACE 2.0 uses <em>Annovar</em> and <em>Samtools suite</em> as back-ends for variant calling annotation and depth computation, respectively. Please refer to the next section to install them.</p>
+<p>LACE 2.0 uses <em>Annovar</em> and <em>Samtools suite</em> as
+back-ends for variant calling annotation and depth computation,
+respectively. Please refer to the next section to install them.</p>
 </div>
 <div class="section level2">
 <h2 id="installation-of-other-required-softwares">Installation of other required softwares<a class="anchor" aria-label="anchor" href="#installation-of-other-required-softwares"></a>
 </h2>
-<p><em>Annovar</em> is a widely used variant calling software freely available upon registration to their website at <a href="https://annovar.openbioinformatics.org/en/latest/" class="external-link uri">https://annovar.openbioinformatics.org/en/latest/</a>. The package contains <em>Perl</em> scripts and variant calling annotation reference databases for the human species. For other databases, please refer to their website. If the scripts are installed in binary search path, then LACE 2.0 will detect them automatically.</p>
-<p><em>Perl</em> (<a href="https://www.perl.org/" class="external-link uri">https://www.perl.org/</a>) is required to run <em>Annovar</em>.</p>
-<p><em>Samtools suite</em> is a standard set of tools and libraries to handle SAM/BAM/BED file format and perform a variety of common operations on sequencing data. It is freely available at <a href="http://www.htslib.org/" class="external-link uri">http://www.htslib.org/</a> and <a href="https://github.com/samtools/htslib" class="external-link uri">https://github.com/samtools/htslib</a>. To install <em>Samtools</em> follow the instructions in their website.</p>
+<p><em>Annovar</em> is a widely used variant calling software freely
+available upon registration to their website at <a href="https://annovar.openbioinformatics.org/en/latest/" class="external-link uri">https://annovar.openbioinformatics.org/en/latest/</a>. The
+package contains <em>Perl</em> scripts and variant calling annotation
+reference databases for the human species. For other databases, please
+refer to their website. If the scripts are installed in binary search
+path, then LACE 2.0 will detect them automatically.</p>
+<p><em>Perl</em> (<a href="https://www.perl.org/" class="external-link uri">https://www.perl.org/</a>) is required to run
+<em>Annovar</em>.</p>
+<p><em>Samtools suite</em> is a standard set of tools and libraries to
+handle SAM/BAM/BED file format and perform a variety of common
+operations on sequencing data. It is freely available at <a href="http://www.htslib.org/" class="external-link uri">http://www.htslib.org/</a> and
+<a href="https://github.com/samtools/htslib" class="external-link uri">https://github.com/samtools/htslib</a>. To install
+<em>Samtools</em> follow the instructions in their website.</p>
 </div>
 <div class="section level2">
 <h2 id="running-lace-2-0">Running LACE 2.0<a class="anchor" aria-label="anchor" href="#running-lace-2-0"></a>
@@ -122,32 +144,58 @@
 <div class="section level2">
 <h2 id="using-lace-2-0">Using LACE 2.0<a class="anchor" aria-label="anchor" href="#using-lace-2-0"></a>
 </h2>
-<p>LACE 2.0 has been thought to be used on single cell sequencing data for which it is available variant calling data in standard VCF format and binary aligned data in standard BAM format.</p>
-<p>The user is provided with an interface to initiate a project and to set filter thresholds after which annotation of variants, filtering of data and depth at variant sites are retrieved. Both annotation and depth derivation are computationally expensive steps. LACE 2.0 reduces possible re-computation by detecting parameter variations of the user interface and by comparison of the timestamps of interface state, inputs and outputs. Intermediary and final data are stored in the designated folders.</p>
-<p>The operation is followed by the possibility for the user to select variants which are drivers of the understudied biological problem.</p>
-<p>At this point, the inferential step is executed so that the most likelihood longitudinal clonal tree and clonal prevalences are retrieved together with the best set of false positive/negative rates among those provided by the user.</p>
+<p>LACE 2.0 has been thought to be used on single cell sequencing data
+for which it is available variant calling data in standard VCF format
+and binary aligned data in standard BAM format.</p>
+<p>The user is provided with an interface to initiate a project and to
+set filter thresholds after which annotation of variants, filtering of
+data and depth at variant sites are retrieved. Both annotation and depth
+derivation are computationally expensive steps. LACE 2.0 reduces
+possible re-computation by detecting parameter variations of the user
+interface and by comparison of the timestamps of interface state, inputs
+and outputs. Intermediary and final data are stored in the designated
+folders.</p>
+<p>The operation is followed by the possibility for the user to select
+variants which are drivers of the understudied biological problem.</p>
+<p>At this point, the inferential step is executed so that the most
+likelihood longitudinal clonal tree and clonal prevalences are retrieved
+together with the best set of false positive/negative rates among those
+provided by the user.</p>
 <p>The results are displayed via an interactive interface.</p>
 </div>
 <div class="section level2">
 <h2 id="interface">Interface<a class="anchor" aria-label="anchor" href="#interface"></a>
 </h2>
-<p>The interface is divided in two parts interleaved by variant selection and inferential computation parts: the processing interface and the results interface.</p>
+<p>The interface is divided in two parts interleaved by variant
+selection and inferential computation parts: the processing interface
+and the results interface.</p>
 <div class="section level3">
 <h3 id="project-creation">Project creation<a class="anchor" aria-label="anchor" href="#project-creation"></a>
 </h3>
-<p>To begin the clonal analyses the user needs to create a project by choosing a folder and a meaningful name for the project.</p>
+<p>To begin the clonal analyses the user needs to create a project by
+choosing a folder and a meaningful name for the project.</p>
 <p><img src="resources/Project_tab.png" style="width:95.0%"></p>
-<p>If the project path does not contain former LACE projects, it asks the user to create a new one (“Create project”) and all intermediate and final results will be stored in structured sub-folders of the chosen project path.</p>
-<p>LACE 2.0 automatically recognizes if the selected path is a LACE project and proposes the user to load it (<img src="resources/load_project.png" style="width:10.0%">)</p>
+<p>If the project path does not contain former LACE projects, it asks
+the user to create a new one (“Create project”) and all intermediate and
+final results will be stored in structured sub-folders of the chosen
+project path.</p>
+<p>LACE 2.0 automatically recognizes if the selected path is a LACE
+project and proposes the user to load it (<img src="resources/load_project.png" style="width:10.0%">)</p>
 </div>
 <div class="section level3">
 <h3 id="sidebar-and-demos">Sidebar and Demos<a class="anchor" aria-label="anchor" href="#sidebar-and-demos"></a>
 </h3>
-<p>The sidebar is divided in Projects and Current Project. Projects contain a set of recently opened projects which can be reloaded by selecting the respective project name.</p>
+<p>The sidebar is divided in Projects and Current Project. Projects
+contain a set of recently opened projects which can be reloaded by
+selecting the respective project name.</p>
 <p><img src="resources/Projects_menu.png" style="width:30.0%"></p>
-<p>Under Projects, there is the sub-menu Demos. LACE 2.0 provides the user with two demos:</p>
+<p>Under Projects, there is the sub-menu Demos. LACE 2.0 provides the
+user with two demos:</p>
 <ul>
-<li>Melanoma dataset [Rambow, Florian, et al. “Toward minimal residual disease-directed therapy in melanoma.” Cell 174.4 (2018): 843-855.] containing single cell variant annotations and depths for a total of 674 cells sampled at 4 different time points:
+<li>Melanoma dataset [Rambow, Florian, et al. “Toward minimal residual
+disease-directed therapy in melanoma.” Cell 174.4 (2018): 843-855.]
+containing single cell variant annotations and depths for a total of 674
+cells sampled at 4 different time points:
 <ol style="list-style-type: decimal">
 <li>sample before treatment
 <ul>
@@ -159,9 +207,11 @@
 <li>sample after 57 days</li>
 </ol>
 </li>
-<li>Small dataset containing only 3 cells per 4 sampling time points.</li>
+<li>Small dataset containing only 3 cells per 4 sampling time
+points.</li>
 </ul>
-<p>Current Project allows the user to save and load the parameters of the whole project or of the active tab.</p>
+<p>Current Project allows the user to save and load the parameters of
+the whole project or of the active tab.</p>
 </div>
 <div class="section level3">
 <h3 id="processing-interface">Processing interface<a class="anchor" aria-label="anchor" href="#processing-interface"></a>
@@ -169,31 +219,65 @@
 <div class="section level4">
 <h4 id="single-cell-metadata">Single Cell Metadata<a class="anchor" aria-label="anchor" href="#single-cell-metadata"></a>
 </h4>
-<p>In order to perform clonal analyses it is required to provide some information about the experiment such as the cell IDs which are used to retrieve the VCF/BAM files and the sample name each cell belongs to. These metadata are generally included with the experimental sequencing data as part of the library preparation. LACE 2.0 accepts tsv/csv tabular formats with headers and rds standard data R format. Metadata file can include more information relative to the experimental setup and the platform used.</p>
+<p>In order to perform clonal analyses it is required to provide some
+information about the experiment such as the cell IDs which are used to
+retrieve the VCF/BAM files and the sample name each cell belongs to.
+These metadata are generally included with the experimental sequencing
+data as part of the library preparation. LACE 2.0 accepts tsv/csv
+tabular formats with headers and rds standard data R format. Metadata
+file can include more information relative to the experimental setup and
+the platform used.</p>
 <p><img src="resources/SCmeta_tab.png" style="width:95.0%"></p>
-<p>The user should identify and select the ID and sampling columns. The user can also reorder the sampling names</p>
+<p>The user should identify and select the ID and sampling columns. The
+user can also reorder the sampling names</p>
 <p><img src="resources/samples_order.png" style="width:60.0%"></p>
-<p>so to recreate the chronological order of longitudinal events of the experiment, or to explore different orders.</p>
+<p>so to recreate the chronological order of longitudinal events of the
+experiment, or to explore different orders.</p>
 </div>
 <div class="section level4">
 <h4 id="annotations">Annotations<a class="anchor" aria-label="anchor" href="#annotations"></a>
 </h4>
-<p>Annotations of variant calling data is performed using <em>Annovar</em> as back-end. Each mutation of each cell is annotated based on the annotation database used. <em>Annovar</em> provides a database for the human species useful to tag cancer mutations and whenever possible their functional effect.</p>
+<p>Annotations of variant calling data is performed using
+<em>Annovar</em> as back-end. Each mutation of each cell is annotated
+based on the annotation database used. <em>Annovar</em> provides a
+database for the human species useful to tag cancer mutations and
+whenever possible their functional effect.</p>
 <p><img src="resources/Annotation_tab.png" style="width:95.0%"></p>
-<p>If <em>Annovar</em>’s <em>Perl</em> scripts are available in the standard binary paths, they are detected and the <em>Annovar</em> folder field is autocompleted; otherwise, the user should provide the folder containing the <em>Perl</em> scripts. The user should also provide the database to use for the annotation and the folder containing the variant calling files (VCF).</p>
+<p>If <em>Annovar</em>’s <em>Perl</em> scripts are available in the
+standard binary paths, they are detected and the <em>Annovar</em> folder
+field is autocompleted; otherwise, the user should provide the folder
+containing the <em>Perl</em> scripts. The user should also provide the
+database to use for the annotation and the folder containing the variant
+calling files (VCF).</p>
 </div>
 <div class="section level4">
 <h4 id="variant-filtering">Variant filtering<a class="anchor" aria-label="anchor" href="#variant-filtering"></a>
 </h4>
-<p>All types of single cell sequencing data is characterized by various sources of noise which depends on the technology used. Detected mutation might be characterized by low quality score or low statistical power. Some mutations can be neglected, while others might cause relevant effects, especially on exonic regions where variations can result in changes of the translational process and modify their functional form.</p>
-<p>In order to avoid small and possibly spurious fluctuations on sequencing data, variants can be filtered if they have low supporting evidences. The user can set the minimum values for:</p>
+<p>All types of single cell sequencing data is characterized by various
+sources of noise which depends on the technology used. Detected mutation
+might be characterized by low quality score or low statistical power.
+Some mutations can be neglected, while others might cause relevant
+effects, especially on exonic regions where variations can result in
+changes of the translational process and modify their functional
+form.</p>
+<p>In order to avoid small and possibly spurious fluctuations on
+sequencing data, variants can be filtered if they have low supporting
+evidences. The user can set the minimum values for:</p>
 <ol style="list-style-type: decimal">
-<li>the number of reads supporting the alternative alleles in a cell,</li>
-<li>the frequency of the minor allele for each referenced SNP included in a default global population,</li>
-<li>the cell frequency per sample showing the mutation at the same site.</li>
+<li>the number of reads supporting the alternative alleles in a
+cell,</li>
+<li>the frequency of the minor allele for each referenced SNP included
+in a default global population,</li>
+<li>the cell frequency per sample showing the mutation at the same
+site.</li>
 </ol>
 <p><img src="resources/Filters_tab.png" style="width:95.0%"></p>
-<p>Furthermore, the user can choose which functional exonic variation should be considered or neglected. For example, there are cases in which unknown and synonymous mutations in exonic regions are disregarded because their effect cannot be explicitly related to the experimental condition. All possible variant functions and their explanations are resumed in the following table:</p>
+<p>Furthermore, the user can choose which functional exonic variation
+should be considered or neglected. For example, there are cases in which
+unknown and synonymous mutations in exonic regions are disregarded
+because their effect cannot be explicitly related to the experimental
+condition. All possible variant functions and their explanations are
+resumed in the following table:</p>
 <table class="table">
 <colgroup>
 <col width="16%">
@@ -206,35 +290,47 @@
 <tbody>
 <tr class="odd">
 <td>frameshift insertion</td>
-<td>an insertion of one or more nucleotides that cause frameshift changes in protein coding sequence</td>
+<td>an insertion of one or more nucleotides that cause frameshift
+changes in protein coding sequence</td>
 </tr>
 <tr class="even">
 <td>frameshift deletion</td>
-<td>a deletion of one or more nucleotides that cause frameshift changes in protein coding sequence</td>
+<td>a deletion of one or more nucleotides that cause frameshift changes
+in protein coding sequence</td>
 </tr>
 <tr class="odd">
 <td>frameshift block substitution</td>
-<td>a block substitution of one or more nucleotides that cause frameshift changes in protein coding sequence</td>
+<td>a block substitution of one or more nucleotides that cause
+frameshift changes in protein coding sequence</td>
 </tr>
 <tr class="even">
 <td>stopgain</td>
-<td>a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift insertion/deletion or block substitution that lead to the immediate creation of stop codon at the variant site. For frameshift mutations, the creation of stop codon downstream of the variant will not be counted as “stopgain”!</td>
+<td>a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift
+insertion/deletion or block substitution that lead to the immediate
+creation of stop codon at the variant site. For frameshift mutations,
+the creation of stop codon downstream of the variant will not be counted
+as “stopgain”!</td>
 </tr>
 <tr class="odd">
 <td>stoploss</td>
-<td>a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift insertion/deletion or block substitution that lead to the immediate elimination of stop codon at the variant site</td>
+<td>a nonsynonymous SNV, frameshift insertion/deletion, nonframeshift
+insertion/deletion or block substitution that lead to the immediate
+elimination of stop codon at the variant site</td>
 </tr>
 <tr class="even">
 <td>nonframeshift insertion</td>
-<td>an insertion of 3 or multiples of 3 nucleotides that do not cause frameshift changes in protein coding sequence</td>
+<td>an insertion of 3 or multiples of 3 nucleotides that do not cause
+frameshift changes in protein coding sequence</td>
 </tr>
 <tr class="odd">
 <td>nonframeshift deletion</td>
-<td>a deletion of 3 or mutliples of 3 nucleotides that do not cause frameshift changes in protein coding sequence</td>
+<td>a deletion of 3 or mutliples of 3 nucleotides that do not cause
+frameshift changes in protein coding sequence</td>
 </tr>
 <tr class="even">
 <td>nonframeshift block substitution</td>
-<td>a block substitution of one or more nucleotides that do not cause frameshift changes in protein coding sequence</td>
+<td>a block substitution of one or more nucleotides that do not cause
+frameshift changes in protein coding sequence</td>
 </tr>
 <tr class="odd">
 <td>nonsynonymous SNV</td>
@@ -242,11 +338,13 @@
 </tr>
 <tr class="even">
 <td>synonymous SNV</td>
-<td>a single nucleotide change that does not cause an amino acid change</td>
+<td>a single nucleotide change that does not cause an amino acid
+change</td>
 </tr>
 <tr class="odd">
 <td>unknown</td>
-<td>unknown function (due to various errors in the gene structure definition in the database file)</td>
+<td>unknown function (due to various errors in the gene structure
+definition in the database file)</td>
 </tr>
 </tbody>
 </table>
@@ -255,14 +353,24 @@
 <div class="section level4">
 <h4 id="single-cell-sampling-depth">Single cell sampling depth<a class="anchor" aria-label="anchor" href="#single-cell-sampling-depth"></a>
 </h4>
-<p>The number of reads per SNV site represents an optimal filter to retrieve relevant mutations. Depth at specific sites is usually not provided in standard alignment or variant calling pipelines and it is computationally expensive to retrieve. The user should provide the folder with aligned data and, if not found already, the <em>samtools</em> executable folder location to compute depth only on sites passing the variant filters set in the previous tab.</p>
+<p>The number of reads per SNV site represents an optimal filter to
+retrieve relevant mutations. Depth at specific sites is usually not
+provided in standard alignment or variant calling pipelines and it is
+computationally expensive to retrieve. The user should provide the
+folder with aligned data and, if not found already, the
+<em>samtools</em> executable folder location to compute depth only on
+sites passing the variant filters set in the previous tab.</p>
 <p><img src="resources/Depth_tab.png" style="width:95.0%"></p>
 </div>
 </div>
 <div class="section level3">
 <h3 id="selection-of-relevant-variants">Selection of relevant variants<a class="anchor" aria-label="anchor" href="#selection-of-relevant-variants"></a>
 </h3>
-<p>Not all mutations are distinctive of the disease or experiment understudied. Identifying relevant and driver variants allows to reproduce a more significant longitudinal clonal tree. The user can select a set of filters based on gold standards and other analyses such as:</p>
+<p>Not all mutations are distinctive of the disease or experiment
+understudied. Identifying relevant and driver variants allows to
+reproduce a more significant longitudinal clonal tree. The user can
+select a set of filters based on gold standards and other analyses such
+as:</p>
 <ol style="list-style-type: decimal">
 <li>the minimum number of reads at given mutation site</li>
 <li>the maximum number of missing data per gene</li>
@@ -271,20 +379,31 @@
 <li>subset of known genes</li>
 </ol>
 <p><img src="resources/Variant_tab.png" style="width:95.0%"></p>
-<p>Finding the parameters to select variants is not an easy task, and the user might not know in advance how to choose the best set of filters. Hence, the user can press “Select variants” (<img src="resources/select_variant.png" style="width:10.0%">) to perform the aforementioned computations on VCF and BAM files to derive all the necessary aggregated information on the sampled cells. Afterward, the user is presented with a interactive live preview of variants passing the filters (including relevant parameters which can help in the selection) while values are changed.</p>
+<p>Finding the parameters to select variants is not an easy task, and
+the user might not know in advance how to choose the best set of
+filters. Hence, the user can press “Select variants” (<img src="resources/select_variant.png" style="width:10.0%">) to perform
+the aforementioned computations on VCF and BAM files to derive all the
+necessary aggregated information on the sampled cells. Afterward, the
+user is presented with a interactive live preview of variants passing
+the filters (including relevant parameters which can help in the
+selection) while values are changed.</p>
 <p><img src="resources/Interactive_Variant_tab.png" style="width:95.0%"></p>
 </div>
 <div class="section level3">
 <h3 id="inference">Inference<a class="anchor" aria-label="anchor" href="#inference"></a>
 </h3>
-<p>The inferential tab allows the user to set all the parameters to solve the boolean matrix factorization problem and estimate the model parameters of the Bayesian model using a MCMC to maximize the likelihood.</p>
+<p>The inferential tab allows the user to set all the parameters to
+solve the boolean matrix factorization problem and estimate the model
+parameters of the Bayesian model using a MCMC to maximize the
+likelihood.</p>
 <p>Inferential step uses the following set of parameters:</p>
 <ol style="list-style-type: decimal">
 <li>Learning rate</li>
 <li>False positive rates for each sample</li>
 <li>False negative rates for each sample</li>
 <li>Number of iterations in each MCMC search</li>
-<li>Number of restart for the MCMC 5 Early stopping number of iterations with no growing likelihood<br>
+<li>Number of restart for the MCMC 5 Early stopping number of iterations
+with no growing likelihood<br>
 </li>
 <li>Number of parallel processes</li>
 <li>Random seed to recreate simulations</li>
@@ -296,18 +415,40 @@
 <li>Show results</li>
 </ol>
 <p><img src="resources/Inference_tab2.png" style="width:60.0%"></p>
-<p>The user must insert at least one false positive rate and one false negative rate value for each sample. By double clicking on any cell belonging to the row “add row”, the user can insert a new set of false or positive rates for each sample. During the inferential step, the maximization of the likelihood for each set of rates is performed. The best results are returned.</p>
+<p>The user must insert at least one false positive rate and one false
+negative rate value for each sample. By double clicking on any cell
+belonging to the row “add row”, the user can insert a new set of false
+or positive rates for each sample. During the inferential step, the
+maximization of the likelihood for each set of rates is performed. The
+best results are returned.</p>
 <p><img src="resources/Inference_tab1.png" style="width:95.0%"></p>
-<p>Press “Run LACE” to perform all computation and estimation steps and visualize the results.</p>
+<p>Press “Run LACE” to perform all computation and estimation steps and
+visualize the results.</p>
 </div>
 <div class="section level3">
 <h3 id="longitudinal-display-and-outputs-interface">Longitudinal display and outputs interface<a class="anchor" aria-label="anchor" href="#longitudinal-display-and-outputs-interface"></a>
 </h3>
-<p>The longitudinal display tab shows the longitudinal clonal tree, the fishplot and the clonal tree, together with the best false positive and negative rate parameters.</p>
-<p>The longitudinal clonal tree is placed on the top left side. Continuous edges are used to represent parental relations between clones, while dashed edges show persistence relations. The size of the nodes is proportional to the clonal prevalence. Moving the mouse over a node, it is possible to see the clonal prevalence value. While moving the mouse over the mutation labels, it shows the complete set of mutations for that clone under the longitudinal clonal tree.</p>
-<p>The fishplot is on the top right side of the tab. Passing the mouse over the ribbons, the clonal prevalences of the clones at different time points are displayed. Similarly, with the mouse over the time tags, the clonal prevalences of all clones at the specified time point are visualized.</p>
-<p>By clicking on a mutation label of the longitudinal clonal tree as well as on a fishplot ribbon or a clonal tree node, the details of the mutation characterizing the clone can be queried and retrieved from the <em>Ensembl</em> database.</p>
-<p>The bottom part of the tab is used to display the tree legend and the best estimated set false positive/negative rates.</p>
+<p>The longitudinal display tab shows the longitudinal clonal tree, the
+fishplot and the clonal tree, together with the best false positive and
+negative rate parameters.</p>
+<p>The longitudinal clonal tree is placed on the top left side.
+Continuous edges are used to represent parental relations between
+clones, while dashed edges show persistence relations. The size of the
+nodes is proportional to the clonal prevalence. Moving the mouse over a
+node, it is possible to see the clonal prevalence value. While moving
+the mouse over the mutation labels, it shows the complete set of
+mutations for that clone under the longitudinal clonal tree.</p>
+<p>The fishplot is on the top right side of the tab. Passing the mouse
+over the ribbons, the clonal prevalences of the clones at different time
+points are displayed. Similarly, with the mouse over the time tags, the
+clonal prevalences of all clones at the specified time point are
+visualized.</p>
+<p>By clicking on a mutation label of the longitudinal clonal tree as
+well as on a fishplot ribbon or a clonal tree node, the details of the
+mutation characterizing the clone can be queried and retrieved from the
+<em>Ensembl</em> database.</p>
+<p>The bottom part of the tab is used to display the tree legend and the
+best estimated set false positive/negative rates.</p>
 <p><img src="resources/Display_tab.png" style="width:95.0%"></p>
 </div>
 </div>
