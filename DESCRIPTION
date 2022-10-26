@@ -51,6 +51,7 @@ Imports:
     shinydashboard,
     biomaRt,
     callr
+    logr
 Suggests:
     BiocGenerics,
     BiocStyle,
