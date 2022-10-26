@@ -67,9 +67,9 @@ NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, o
   #}
   valid_genes_names <- str_split_fixed(valid[1:4],"_", n=2 )[,1]
 
-  print(length(valid_genes_names))
-  print(length(unique(valid_genes_names)))
-  print(sort(valid_genes_names[which(duplicated(valid_genes_names))]))
+  log2_print(length(valid_genes_names), msg = "NA_compute: # valid genes")
+  log2_print(length(unique(valid_genes_names)))
+  log2_print(sort(valid_genes_names[which(duplicated(valid_genes_names))]))
 
   # make final list of candidate selected variants
   snpMut_filt_freq_reduced = unique(snpMut_filt_freq[which(snpMut_filt_freq$Gene%in%valid_genes_names),c("Gene","Chr","PosStart","PosEnd","REF","ALT")])

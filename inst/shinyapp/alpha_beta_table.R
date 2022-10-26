@@ -81,8 +81,8 @@ ed_table <- function(id, tb_data, row_basename='row_', session) {
         #buttons = c('copy')
       )
     )
-    print('create')
-    print(session$userData[['ed_table_react_list']][[id]]$x$data)
+    log2_print('create alfa and beta tables')
+    log2_print(session$userData[['ed_table_react_list']][[id]]$x$data)
     #print('step 0')
     #print(ed_table_react_list)
     #print(ed_table_react_list[[id]])
@@ -113,23 +113,23 @@ ed_table <- function(id, tb_data, row_basename='row_', session) {
 
   session$userData$ed_table_react_list_obj$observers[[paste0(id,'cell_edit')]]<-observeEvent(input[[paste0(id,'_cell_edit')]],{
 
-    print('-------------')
+    log2_print('-------------')
     #req(inputs[[paste0(id,'_cell_edit')]])
     # print(input[[paste0(id,'_cell_edit')]])
     # print('aaa')
     #old_e <- inputs[[paste0(id,'_cell_edit_old')]]()
 
     new_e <- isolate(inputs[[paste0(id,'_cell_edit')]]())
-    print('ccc')
+    #log2_print('ccc')
     act_e <- isolate(input[[paste0(id,'_cell_edit')]])
-    print('bbb2')
+    #log2_print('bbb2')
 
     # print('old_e')
     # print(old_e)
     # print('act_e')
-    print(act_e)
+    #log2_print(act_e)
     # print('new_e')
-    print(new_e)
+    #log2_print(new_e)
     if ((new_e$col != act_e$col) | (new_e$row != act_e$row) | (new_e$value != act_e$value)) {
       #print((new_e$col != act_e$col) | (new_e$row != act_e$row) | (new_e$value != act_e$value))
       #print(new_e$col != act_e$col)
@@ -137,8 +137,8 @@ ed_table <- function(id, tb_data, row_basename='row_', session) {
       #print(new_e$value != act_e$value)
       #print(typeof(new_e$value))
       #print(typeof(act_e$value))
-      print('made equal')
-      print(paste('should pre fire', id))
+      #log2_print('made equal')
+      #log2_print(paste('should pre fire', id))
       #print(act_e)
       #print(new_e)
 
@@ -150,16 +150,17 @@ ed_table <- function(id, tb_data, row_basename='row_', session) {
       #print(inputs[[paste0(id,'_cell_edit')]]())
 
     }
-    else
-      print(paste('should no prefire', id))
+    else {
+      #log2_print(paste('should no prefire', id))
+    }
   })
 
   if (!is.null(session$userData$ed_table_react_list_obj$observers[[paste0(id,'cell_edit_s')]]))
     session$userData$ed_table_react_list_obj$observers[[paste0(id,'cell_edit_s')]]$destroy()
 
   session$userData$ed_table_react_list_obj$observers[[paste0(id,'cell_edit_s')]]<-observeEvent(inputs[[paste0(id,'_cell_edit')]](),{
-    print(paste('pre fire', id))
-    print(isolate(inputs[[paste0(id,'_cell_edit')]]()))
+    #log2_print(paste('pre fire', id))
+    log2_print(isolate(inputs[[paste0(id,'_cell_edit')]]()))
 
     # if(inputs[[paste0(id,'_cell_edit')]]()$row==-1)
     # {
@@ -169,8 +170,8 @@ ed_table <- function(id, tb_data, row_basename='row_', session) {
     #
     new_e <-  isolate(inputs[[paste0(id,'_cell_edit')]]())
     act_e <-  isolate(input[[paste0(id,'_cell_edit')]])
-    print(paste('new_e',new_e))
-    print(paste('act_e',act_e))
+    #print(paste('new_e',new_e))
+    #print(paste('act_e',act_e))
     #if ((new_e$col == act_e$col) | (new_e$row == act_e$row) | (new_e$value == act_e$value)) {
     #  print('return')
     #  return()
@@ -271,8 +272,8 @@ ed_table <- function(id, tb_data, row_basename='row_', session) {
 
     session$userData[['ed_table_react_list']][[id]]$x$data <- editData(mm, val_tmp, resetPaging = FALSE, rownames=TRUE )
     replaceData(proxy, mm)
-    print('update')
-    print(isolate(session$userData[['ed_table_react_list']][[id]]$x$data))
+    #print('update')
+    log2_print(isolate(session$userData[['ed_table_react_list']][[id]]$x$data))
     #print(proxy)
     #session$userData[['ed_table_react_list']][[id]]$x$data
     #print(id)

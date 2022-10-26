@@ -37,8 +37,8 @@ toggle_inputs <- function(enable_inputs=TRUE) {
   m_input <- catch_ui_names(input_list, m_grep_str)
   input_list <- c(m_input, av_input, thr_input, dp_input)
   #browser()
-  print("enable_inputs")
-  print(enable_inputs)
+  log2_print("enable_inputs")
+  log2_print(enable_inputs)
   # Toggle elements
   for(x in names(input_list))
     if(enable_inputs){
@@ -245,8 +245,8 @@ observeEvent(inputs[["project_loaded"]](), {
     if (inputs[["project_loaded"]]()) {
       shinyjs::hide(id = "pr_next")
       
-      print('disable tabs--------------------------------------------------------------------------')
-      print(inputs[["demo"]]())
+      log2_print('disable tabs--------------------------------------------------------------------------')
+      log2_print(inputs[["demo"]]())
       toggle_inputs(is.null(inputs[["demo"]]()))
       #browser()
 
@@ -296,7 +296,7 @@ observeEvent(input[["pr_next"]], {
         ##  paste("You experiment will be you current working folder,", getwd(), ". Create expriment?"), type = "warning",
         ##  immediate=F)
         ## warning_wd <- input$shinyalert
-        print(warning_wd)
+        log2_print(warning_wd)
         warning_wd <- FALSE
       }
     } else

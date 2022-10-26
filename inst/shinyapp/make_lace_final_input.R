@@ -153,8 +153,8 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
 
   # make final data
   cells_aggregate_info = cells_aggregate_info[which(cells_aggregate_info$scID%in%rownames(mutations)), , drop=FALSE]
-  print('cells_aggregate_info')
-  print(dim(cells_aggregate_info))
+  log2_print('cells_aggregate_info')
+  log2_print(dim(cells_aggregate_info))
   mycellsdata = list()
   for ( t in time_points )
     mycellsdata[[t]] = mutations[sort(unique(cells_aggregate_info$scID[which(cells_aggregate_info$Time==t)])), , drop=FALSE]

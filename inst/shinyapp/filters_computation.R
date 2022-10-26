@@ -28,19 +28,19 @@
                   full.names = TRUE)
 
 
-    print(InFilesToDo)
+    log2_print(InFilesToDo)
     if (!is.null(InFilesToDo)) {
-      print('In')
-      print(listSC)
+      log2_print('In')
+      log2_print(listSC)
       listSC <- listSC[listSC %in% InFilesToDo]
-      print(listSC)
+      log2_print(listSC)
     }
     if (!is.null(OutFilesToRm)) {
-      print('Out')
+      log2_print('Out')
       ## OutFilesToRm <- file.path(thr_out_dir, OutFilesToRm)
-      print(OutFilesToRm)
+      log2_print(OutFilesToRm)
       ## file.remove(OutFilesToRm)
-      print(list.files(path = thr_out_dir))
+      log2_print(list.files(path = thr_out_dir))
     }
 
     if (length(listSC) == 0)
@@ -219,19 +219,19 @@
                   ignore.case = TRUE,
                   full.names = TRUE)
 
-    print(InFilesToDo)
+    log2_print(InFilesToDo)
     if (!is.null(InFilesToDo)) {
-      print('In')
-      print(listSC)
+      log2_print('In')
+      log2_print(listSC)
       listSC <- listSC[listSC %in% InFilesToDo]
-      print(listSC)
+      log2_print(listSC)
     }
     if (!is.null(OutFilesToRm)) {
-      print('Out')
+      log2_print('Out')
       ## OutFilesToRm <- file.path(thr_out_dir, OutFilesToRm)
-      print(OutFilesToRm)
+      log2_print(OutFilesToRm)
       ## file.remove(OutFilesToRm)
-      print(list.files(path = thr_out_dir))
+      log2_print(list.files(path = thr_out_dir))
     }
 
     if (length(listSC)==0)
@@ -298,20 +298,20 @@
                   ignore.case = TRUE,
                   full.names = TRUE)
 
-    print(InFilesToDo)
+    log2_print(InFilesToDo)
     if (!is.null(InFilesToDo)) {
-      print('In')
-      print(listSC)
+      log2_print('In')
+      log2_print(listSC)
       listSC <- listSC[listSC %in% InFilesToDo]
-      print(listSC)
+      log2_print(listSC)
     }
 
     if (!is.null(OutFilesToRm)) {
-      print('Out')
+      log2_print('Out')
       ## OutFilesToRm <- file.path(thr_out_dir, OutFilesToRm)
-      print(OutFilesToRm)
+      log2_print(OutFilesToRm)
       ## file.remove(OutFilesToRm)
-      print(list.files(path = thr_out_dir))
+      log2_print(list.files(path = thr_out_dir))
     }
 
     if (length(listSC) == 0)

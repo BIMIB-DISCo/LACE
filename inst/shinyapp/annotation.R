@@ -36,19 +36,19 @@ av_compute <- function(anovar_convert,
     
     
     vcf_filtered = list.files(path = vcf_in_dir, pattern = pattern)
-    print(InFilesToDo)
+    log2_print(InFilesToDo)
     if (!is.null(InFilesToDo)) {
-        print('In')
-        print(vcf_filtered)
+        log2_print('In')
+        log2_print(vcf_filtered)
         vcf_filtered <- vcf_filtered[vcf_filtered %in% basename(InFilesToDo)]
-        print(vcf_filtered)
+        log2_print(vcf_filtered)
     }
     if (!is.null(OutFilesToRm)) {
-        print('Out')
+        log2_print('Out')
         ## OutFilesToRm <- file.path(vcf_annot_dir, OutFilesToRm)
-        print(OutFilesToRm)
+        log2_print(OutFilesToRm)
         ## file.remove(OutFilesToRm)
-        print(list.files(path = vcf_annot_dir))
+        log2_print(list.files(path = vcf_annot_dir))
     }
     
     ## res <- foreach(f = vcf_filtered, .combine=c) %dopar% {
@@ -65,7 +65,7 @@ av_compute <- function(anovar_convert,
                          ' --outfile ',
                          f_out,
                          ' --includeinfo')
-        print(cmd_exp)
+        log2_print(cmd_exp)
         exit_status <-
             system2(anovar_convert,
                     args = cmd_exp,
@@ -108,7 +108,7 @@ av_compute <- function(anovar_convert,
         cmd_exp = paste0(' -out ', f_out,
                          ' -exonicsplicing -build ',
                          v_ref, ' ', f_in, ' ', anovar_db)
-        print(cmd_exp)
+        log2_print(cmd_exp)
         exit_status <- system2(anovar_annot,
                                args = cmd_exp,
                                stdout = stdout_log_tmp,

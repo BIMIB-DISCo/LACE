@@ -20,7 +20,7 @@ download_demo <- function() {
       bStatus <- FALSE
       
       tmp=tempdir()
-      print(tmp)
+      log2_print(tmp, msg = "download_demo: Rambow tmp folder =")
       list.files(tmp)
       
       #download repository
@@ -30,11 +30,11 @@ download_demo <- function() {
         if (curl::has_internet()) {
           #httr::GET(url, httr::write_disk(filen, overwrite=TRUE), httr::timeout(10))
           file_path <- curl::curl_fetch_disk(url, filen)
-          print(file_path)
+          log2_print(file_path, msg = "download_demo: downloading dataset url =")
         }
         #return(TRUE)
       }, error = function(e){
-        print("Download error")
+        log2_print("Download error", msg = "download_demo:")
         #return(FALSE)
       })
       
@@ -69,7 +69,7 @@ check_demo <- function() {
     }
     else {
       bStatus <- TRUE
-      print("demo already downloaded")
+      log2_print("demo already downloaded", msg = "check_demo:")
     }
   }
   
