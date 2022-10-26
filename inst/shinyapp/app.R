@@ -10,35 +10,37 @@
 
 ### Libraries needed by the app.
 
-library(biomaRt, exclude = c("show", "select"))
-library(foreach)
-library(doParallel)
-library(sortable)
-library(shiny,
+suppressMessages(library(biomaRt, exclude = c("show", "select")))
+suppressMessages(library(foreach))
+suppressMessages(library(doParallel))
+suppressMessages(library(sortable))
+suppressMessages(library(shiny,
         exclude = c("runExample",
                     "dataTableOutput",
                     "renderDataTable",
                     "validate",
-                    "show"))
-library(shinythemes)
-library(dplyr)
-library(tidyr)
-library(readr)
-library(shinyFiles)
-library(shinyjs, exclude = c("show"))
+                    "show")))
+suppressMessages(library(shinythemes))
+suppressMessages(library(dplyr))
+suppressMessages(library(tidyr))
+suppressMessages(library(readr))
+suppressMessages(library(shinyFiles))
+suppressMessages(library(shinyjs, exclude = c("show")))
 ## library(shinyBS)
-library(jsonlite)
-library(configr)
+suppressMessages(library(jsonlite))
+suppressMessages(library(configr))
 ## library(readr)
-library(DT)
-library(stringr)
-library(tools)
-library(fs)
-library(data.table, exclude = c("first", "last", "between"))
-library(htmltools)
-library(shinyBS)
-library(bsplus)
-library(shinydashboard)
+suppressMessages(library(DT))
+suppressMessages(library(stringr))
+suppressMessages(library(tools))
+suppressMessages(library(fs))
+suppressMessages(library(data.table, exclude = c("first", "last", "between")))
+suppressMessages(library(htmltools))
+suppressMessages(library(shinyBS))
+suppressMessages(library(bsplus))
+suppressMessages(library(shinydashboard))
+suppressMessages(library(shinyvalidate))
+suppressMessages(library(logr))
 #library(widgetframe)
 
 ### Code
@@ -91,8 +93,8 @@ jsCode <- "shinyBS.addTooltip = function(id, type, opts) {
   }
 }"
 
-#log2_print <- function(x, pre = "") {log_print(paste(pre,x), console = FALSE)}
-#log2_print <- function(x, pre = "") {print(paste(pre,x), console = FALSE)}
+#log2_print <- function(x, msg = "") {log_print(print(paste(pre,x)), console = FALSE)}
+#log2_print <- function(x, msg = "") {print(paste(pre,x), console = FALSE)}
 log2_print <- function(x, msg = "") {}
 
 ### compare_named_lists --

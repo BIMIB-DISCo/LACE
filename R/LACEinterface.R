@@ -30,6 +30,8 @@
 #' @import bsplus
 #' @import shinydashboard
 #' @import callr
+#' @import shinyvalidate
+#' @import logr
 
 ## Declare name
 
@@ -82,6 +84,8 @@ utils::globalVariables(".my_actual_wd",
 #' @note 
 #' The function `LACE` is still available for retrocompatibility.
 #' 
+#' @import logr
+#' 
 #' @export
 LACEview <- function() {
     appDir <- system.file("shinyapp", package = "LACE")
@@ -95,11 +99,16 @@ LACEview <- function() {
 
     .GlobalEnv$.my_actual_wd <- getwd()
     .GlobalEnv$.my_pkg_dir <- appDir
+    .GlobalEnv$.my_tmp_file <- file.path(tempdir(), "test.log")
+    .GlobalEnv$.my_lf <- logr::log_open(.GlobalEnv$.my_tmp_file)
+    
     print(.GlobalEnv$.my_actual_wd)
+    print(.GlobalEnv$.my_tmp_file)
 
     on.exit({
         setwd(.my_actual_wd)
         rm(list = c(".my_actual_wd"), pos = .GlobalEnv)
+        logr::log_close()
     })
 
     shiny::runApp(file.path(appDir, 'app.R'), display.mode = "normal")

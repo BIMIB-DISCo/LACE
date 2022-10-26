@@ -97,18 +97,18 @@ lace_interface <- function (B_mat,
 
     make_binary<-function(B) {
         if (!is.numeric(B)){
-          log2_print('B is not a valid matrix')
+          # - log2_print('B is not a valid matrix')
             return(NULL)
         }
 
         is_binary=sum(B==1)+sum(B==0)==ncol(B)*nrow(B)
         if (!is_binary) {
-          log2_print('B is not binary')
+          # - log2_print('B is not binary')
             B[B==1]=1
             B[B==0]=0
         }
         else {
-          log2_print('B is already binary')
+          # - log2_print('B is already binary')
         }
         return(B)
     }
@@ -124,12 +124,12 @@ lace_interface <- function (B_mat,
                 proj=sum(B[i,]*B[j,])
                 if (sum(B[i,])==proj) {
                     set_of_roots=setdiff(set_of_roots,j)
-                    log2_print(paste(i,'is parent of', j))
+                    # - log2_print(paste(i,'is parent of', j))
                                         #print(set_of_roots)
                 }
                 if (sum(B[j,])==proj) {
                     set_of_roots=setdiff(set_of_roots,i)
-                    log2_print(paste(j,'is parent of', i))
+                    # - log2_print(paste(j,'is parent of', i))
                                         #print(set_of_roots)
                 }
             }
@@ -151,20 +151,20 @@ lace_interface <- function (B_mat,
                 check_forest_tmp=(sum(abs(B[j,]-B[i,]))==1)
                 check_forest[j,1]=check_forest[j,1]+check_forest_tmp
                                         #check_forest_tmp_ = check_forest_tmp_+ check_forest_tmp
-                log2_print(paste(rownames(B)[i], rownames(B)[j], check_forest[j,1]))
+                # - log2_print(paste(rownames(B)[i], rownames(B)[j], check_forest[j,1]))
             }
 
                                         #check_forest=rbind(check_forest, check_forest_tmp_)
 
         }
-        log2_print(check_forest)
-        log2_print(check_forest_control)
-        log2_print(all(check_forest==check_forest_control))
+        # - log2_print(check_forest)
+        # - log2_print(check_forest_control)
+        # - log2_print(all(check_forest==check_forest_control))
         is_forest=all(check_forest==check_forest_control)
         if (is_forest) {
-          log2_print("B represents a forest")
+          # - log2_print("B represents a forest")
         } else {
-          log2_print("B is not a forest or a tree")
+          # - log2_print("B is not a forest or a tree")
         }
         return(is_forest)
     }
@@ -179,19 +179,19 @@ lace_interface <- function (B_mat,
                                         #check if it has one root
         num_roots=length(set_of_roots)
         if (num_roots==1) {
-          log2_print("nodes in B are sprouting from a single node")
+          # - log2_print("nodes in B are sprouting from a single node")
         }
         else {
-          log2_print("there are multiple roots")
+          # - log2_print("there are multiple roots")
         }
 
         if (B_rank==nrow(B) || B_rank==ncol(B)) {
-          log2_print('B is a full-rank matrix.')
+          # - log2_print('B is a full-rank matrix.')
             if (forest_check(B)) {
-              log2_print('B has a forest like structure')
+              # - log2_print('B has a forest like structure')
 
                 if (nrow(B)>ncol(B)) {
-                  log2_print('B is not a square matrix. B has not enough mutations.')
+                  # - log2_print('B is not a square matrix. B has not enough mutations.')
                                         #print('B is not a full rank matrix. B has not enough mutations.')
                     if (nrow(B)==ncol(B)+1) {
                                         #check if there is a root
@@ -202,7 +202,7 @@ lace_interface <- function (B_mat,
                         }
                     }
                 } else if (nrow(B)<ncol(B)) {
-                  log2_print('B is not a square matrix. B has not enough clones.')
+                  # - log2_print('B is not a square matrix. B has not enough clones.')
                     if (nrow(B)+1==ncol(B)) {
                         lower_tri_column_index=sort(colSums(B),decreasing = TRUE)
                                         #number of clones with such mutation
@@ -225,7 +225,7 @@ lace_interface <- function (B_mat,
         B_rank=rankMatrix(B)[1]
         B_rank
         if (!(B_rank==ncol(B) && B_rank==nrow(B))) {
-          log2_print('Adding a root does not resolve the problem, B is till not a full rank matrix')
+          # - log2_print('Adding a root does not resolve the problem, B is till not a full rank matrix')
         }
 
         return(B)
@@ -317,14 +317,15 @@ lace_interface <- function (B_mat,
     is_full_rank = rankMatrix(B)[1]==nrow(B)
     is_forest = forest_check(B)
     has_single_root = length(find_roots(B))==1
-    if (is_binary) {print('B is a binary matrix')}
-    if (is_square_mat) {print('B is a square matrix')}
-    if (is_full_rank) {print('B is a full rank matrix')}
-    if (is_forest) {print('B is a forest ')}
-    if (has_single_root) {print('B has single root')}
+    if (is_binary) {log2_print('B is a binary matrix')}
+    if (is_square_mat) {log2_print('B is a square matrix')}
+    if (is_full_rank) {log2_print('B is a full rank matrix')}
+    if (is_forest) {log2_print('B is a forest ')}
+    #browser()
+    if (has_single_root) {log2_print('B has single root')}
     if (is_binary && is_square_mat && is_full_rank && is_forest && has_single_root) {
-      log2_print('all checks done!')
-      log2_print('continue...')
+      # - log2_print('all checks done!')
+      # - log2_print('continue...')
     }
 
 
@@ -364,8 +365,8 @@ lace_interface <- function (B_mat,
         }
     }
 
-    log2_print('clonal tree:')
-    log2_print(adj_matrix)
+    # - log2_print('clonal tree:')
+    # - log2_print(adj_matrix)
 
     adj_to_B <- function( adj_matrix, clone_labels ) {
         B=matrix(0, nrow=nrow(adj_matrix), ncol=ncol(adj_matrix))
@@ -383,7 +384,7 @@ lace_interface <- function (B_mat,
         rownames(B)=names(clone_labels)
         return(B)
     }
-    log2_print(adj_to_B(adj_matrix, clone_labels))
+    # - log2_print(adj_to_B(adj_matrix, clone_labels))
 
 
                                         #adjMatrix_base <- adj_matrix
@@ -410,7 +411,7 @@ lace_interface <- function (B_mat,
         for(target in 1: length(rownames(prevalence))) {
             source=sources[target]
             if (times[target] < times[source]) {
-              log2_print(times[target],times[source])
+              # - log2_print(times[target],times[source])
                 times[source]=times[target]
             }
         }
@@ -422,25 +423,25 @@ lace_interface <- function (B_mat,
 
 
         if (all(times==times_pre)) {
-          log2_print('No incongruences found due to the chronological order')
+          # - log2_print('No incongruences found due to the chronological order')
 
-          log2_print('first time mutation occurrences based the chronological order of samples:')
-          log2_print(times)
-          log2_print('adjacent matrix with first time occurrences:')
-          log2_print(adj_matrix_t)
+          # - log2_print('first time mutation occurrences based the chronological order of samples:')
+          # - log2_print(times)
+          # - log2_print('adjacent matrix with first time occurrences:')
+          # - log2_print(adj_matrix_t)
 
         } else {
-          log2_print('The longitudinal clonal tree has been corrected')
+          # - log2_print('The longitudinal clonal tree has been corrected')
 
-          log2_print('pre-computation of first time mutation occurrences based only on prevalence values different from zero:')
-          log2_print(times_pre)
-          log2_print('adjacent matrix with pre-computed first time occurrences:')
-          log2_print(adj_matrix_t_pre)
+          # - log2_print('pre-computation of first time mutation occurrences based only on prevalence values different from zero:')
+          # - log2_print(times_pre)
+          # - log2_print('adjacent matrix with pre-computed first time occurrences:')
+          # - log2_print(adj_matrix_t_pre)
 
-          log2_print('first time mutation occurrences based the chronological order of samples:')
-          log2_print(times)
-          log2_print('adjacent matrix with first time occurrences:')
-          log2_print(adj_matrix_t)
+          # - log2_print('first time mutation occurrences based the chronological order of samples:')
+          # - log2_print(times)
+          # - log2_print('adjacent matrix with first time occurrences:')
+          # - log2_print(adj_matrix_t)
         }
 
         return(times)
@@ -483,7 +484,7 @@ lace_interface <- function (B_mat,
 
     ## setting links of clones in following times after first occurrence
   for (t_1 in times_n[1:(length(times_n)-1)]) {
-    log2_print(c('time=',t_1))
+    # - log2_print(c('time=',t_1))
     for (source in 1:nrow(adj_matrix)) {
       for (target in 1:ncol(adj_matrix)) {
         for (t_2 in times_n[t_1:(length(times_n)-1)]) { # r fa cacare
@@ -502,22 +503,22 @@ lace_interface <- function (B_mat,
             if (target==source && prevalence[target,t_2]==0){
               value=3 #for dashed in case undetected clones
 
-              log2_print(paste0(source_t1, "->", target_t2,"=", adj_matrix_t[source_t1,target_t2], ", prev_",target_t2, "=", prevalence[target,t_2], ": ", source_t1, "->", target_t2, "=", value))
+              # - log2_print(paste0(source_t1, "->", target_t2,"=", adj_matrix_t[source_t1,target_t2], ", prev_",target_t2, "=", prevalence[target,t_2], ": ", source_t1, "->", target_t2, "=", value))
               adj_matrix_t[source_t1, target_t2]<-value # we set the link before t2
-              log2_print(paste0(source_t1, "->", target_t2,"=", adj_matrix_t[source_t1,target_t2], ", prev_",target_t2, "=", prevalence[target,t_2], ": ", source_t2, "->", target_t2_next, "=", value))
+              # - log2_print(paste0(source_t1, "->", target_t2,"=", adj_matrix_t[source_t1,target_t2], ", prev_",target_t2, "=", prevalence[target,t_2], ": ", source_t2, "->", target_t2_next, "=", value))
               adj_matrix_t[source_t2, target_t2_next]<-value # we set the link after t2
 
             }
             else {
               value=2 #for time persistence
 
-              log2_print(paste0("1st ",source_t1, "->", target_t2,"=", adj_matrix_t[source_t1,target_t2], ", prev_",target_t2, "=", prevalence[target,t_2], ": ", source_t2, "->", target_t2_next, "=", value))
+              # - log2_print(paste0("1st ",source_t1, "->", target_t2,"=", adj_matrix_t[source_t1,target_t2], ", prev_",target_t2, "=", prevalence[target,t_2], ": ", source_t2, "->", target_t2_next, "=", value))
               adj_matrix_t[source_t2,target_t2_next]<-value
             }
 
             if (target==source && t_2+1==length(times_n) && prevalence[target,t_2+1]==0){
               value=3 #for dashed in case undetected clones
-              log2_print(paste0(source_t1, "->", target_t2,"=", adj_matrix_t[source_t1,target_t2], ", prev_",target_t2, "=", prevalence[target,t_2], ": ", source_t2, "->", target_t2_next, "=", value))
+              # - log2_print(paste0(source_t1, "->", target_t2,"=", adj_matrix_t[source_t1,target_t2], ", prev_",target_t2, "=", prevalence[target,t_2], ": ", source_t2, "->", target_t2_next, "=", value))
               adj_matrix_t[source_t2, target_t2_next]<-value # we set the link after t2
             }
           }
@@ -544,7 +545,7 @@ lace_interface <- function (B_mat,
                                         #in time reversal
                                         #prevalence=prevalence
     for (t_1 in times_n[(length(times_n)):1]) { # instead of 2 as smaller point
-      log2_print(c('time=',t_1))
+      # - log2_print(c('time=',t_1))
         for (source in 1:nrow(adj_matrix)) {
             target=source # correlation only at distance 0
 
@@ -556,7 +557,7 @@ lace_interface <- function (B_mat,
 
             if (t_1==times_n[(length(times_n))]  && prevalence[target,t_1]==0 ){ #&& prevalence[source,t_1-1]==0) {
                 value=0 #for dead breaches
-                log2_print(c(source_t1, target_t1, source_t1_prev, target_t1, value))
+                # - log2_print(c(source_t1, target_t1, source_t1_prev, target_t1, value))
                 adj_matrix_t[source_t1_prev,target_t1]<-value # we set the link after t2
 
                                         #prevalence[prevalence[,t_1]==0,t_1]=-1
@@ -565,12 +566,12 @@ lace_interface <- function (B_mat,
             } else if (prevalence[source,t_1]==0  && adj_matrix_t[source_t1,target_t1_next]==0) {
                                         #target mut_time+1
                 value=0 #for dead breaches
-                log2_print(c('removed', target_t1))
-                log2_print(c(source_t1, target_t1, source_t1, target_t1_next, value))
+                # - log2_print(c('removed', target_t1))
+                # - log2_print(c(source_t1, target_t1, source_t1, target_t1_next, value))
                 adj_matrix_t[source_t1,target_t1_next]<-value # we set the link after t2
 
                 if (t_1!=1){
-                  log2_print(c(source_t1, target_t1, source_t1_prev, target_t1, value))
+                  # - log2_print(c(source_t1, target_t1, source_t1_prev, target_t1, value))
                     adj_matrix_t[source_t1_prev,target_t1]<-value # we set the link after t2
                 }
                                         #prevalence[prevalence[,t_1]==0,t_1]=-1
@@ -599,7 +600,7 @@ lace_interface <- function (B_mat,
                 clone_=stri_reverse(str_split(
                     stri_reverse(colnames(adj_matrix_t)[col]),pattern='_', n=2)[[1]][2])
                 clone_idx=match(clone_,rownames(B))
-                log2_print(c('idx',clone_))
+                # - log2_print(c('idx',clone_))
 
                 data$data$source = sprintf("%s", rownames(adj_matrix_t)[row])
                 data$data$target = sprintf("%s", colnames(adj_matrix_t)[col])
@@ -719,7 +720,7 @@ lace_interface <- function (B_mat,
     fishplot_colour=data.frame(clone_id=rownames(fishplot_colour), colour=fishplot_colour[,1])
 
 
-    log2_print(getwd())
+    # - log2_print(getwd())
                                         #source(timescape.R)
                                         #source(paste0(basedir,"/peter/LACEView/R/timescape.R"))
     x=timescape(clonal_prev = fishplot_clonal_prev,
@@ -771,8 +772,8 @@ lace_interface <- function (B_mat,
 
 
 
-    log2_print("info")
-    log2_print(info)
+    # - log2_print("info")
+    # - log2_print(info)
     jsdata = list(elements = elements, data = toJSON(stream_df),
                   columns = toJSON(names(stream_df)),
                   colors = toJSON(stream_df_colors),
