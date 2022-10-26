@@ -91,6 +91,9 @@ jsCode <- "shinyBS.addTooltip = function(id, type, opts) {
   }
 }"
 
+#log2_print <- function(x, pre = "") {log_print(paste(pre,x), console = FALSE)}
+#log2_print <- function(x, pre = "") {print(paste(pre,x), console = FALSE)}
+log2_print <- function(x, msg = "") {}
 
 ### compare_named_lists --
 ###
@@ -218,9 +221,10 @@ ui <- fluidPage(
   ## extendShinyjs(text = jsCode, functions = c("addTooltip")),
   ## extendShinyjs(text = jsCode, functions = c("bsPopover")),
 
-  use_bs_popover(),
+  
 
-  tags$head(tags$style(HTML(".bucket-list-container {min-height: 290px; max-height: 300px;}")),
+  tags$head(tags$style("@import url(https://use.fontawesome.com/releases/v5.7.2/css/all.css);"),
+            tags$style(HTML(".bucket-list-container {min-height: 290px; max-height: 300px;}")),
             tags$style(HTML(".rank-list {min-height: 100px; max-height: 240px; overflow-y: scroll;}")),
             #tags$style(HTML(".shinyDirectories, .shinyFiles { width: 100%; direction: rtl; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}")),
             tags$style(HTML(".shinyDirectories, .shinyFiles { width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;}")),
@@ -228,6 +232,8 @@ ui <- fluidPage(
             tags$style(HTML(".content-wrapper, .right-side {background-color: #ffffff;}"))
   ),
 
+  use_bs_popover(),
+  
   dashboardPage(
     dashboardHeader(
       title = "LACE 2.0",
@@ -1151,12 +1157,12 @@ server <- function(input, output, session) {
                icon = icon("history"))
 
     output$recent_projects <- renderMenu({recent_projects})
-    print(recent_projects)
+    log2_print(recent_projects, msg = "LACEview: recent projects =")
 
   }, once = TRUE )
 
   observeEvent( input[["sidemenu"]],{
-    print(input[["sidemenu"]])
+    log2_print(input[["sidemenu"]], msg = "LACEview:")
     #browser()
     if (input[["sidemenu"]] == "Small dataset") {
       inputs[["demo"]]("Small_dataset")
@@ -2199,8 +2205,8 @@ server <- function(input, output, session) {
     if(length(av_vcf_out_dir_())==0)
       return()
 
-    print('av_exec')
-    print(paste("av_vcf_out_dir_()", av_vcf_out_dir_()))
+    log2_print('av_exec', msg = "LACEview:")
+    log2_print(paste("av_vcf_out_dir_()", av_vcf_out_dir_()), msg = "LACEview:")
 
     Opt = list()
     Opt$StoredFile <- file.path(config_path,".config_02_av.yml")

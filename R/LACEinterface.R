@@ -40,7 +40,7 @@ utils::globalVariables(".my_actual_wd",
 
 #' @md
 #' @title LACE Processing and Analysis Interface
-#' @description `LACE2` displays a Shiny user interface to
+#' @description `LACEview` displays a Shiny user interface to
 #'     handle the VCF and BAM files processing that is needed to
 #'     construct the input for the LACE inference algorithms.
 #'     The function generates also the maximum likelihood longitudinal 
@@ -75,7 +75,7 @@ utils::globalVariables(".my_actual_wd",
 
 #' 
 #' @usage 
-#' LACE2()
+#' LACEview()
 #' 
 #' @return The GUI
 #' 
@@ -83,7 +83,7 @@ utils::globalVariables(".my_actual_wd",
 #' The function `LACE` is still available for retrocompatibility.
 #' 
 #' @export
-LACE2 <- function() {
+LACEview <- function() {
     appDir <- system.file("shinyapp", package = "LACE")
     if (appDir == "") {
         stop("LACE: Could not find package directory.",

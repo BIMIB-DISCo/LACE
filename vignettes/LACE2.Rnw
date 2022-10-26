@@ -129,7 +129,7 @@ To start LACE 2.0 user interface run:
 \begin{verb}
 library(LACE)
 
-LACE2()
+LACEview()
 \end{verb}
 
 
