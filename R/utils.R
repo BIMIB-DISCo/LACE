@@ -543,3 +543,8 @@ as.B.trait <- function( adj_matrix, D ) {
     return(B)
     
 }
+
+#print to log
+log2_print <- function(x, msg = "") {}
+#log2_print <- function(x, msg = "") {print(paste(pre,x))}
+#log2_print <- function(x, msg = "") {log_print(paste(pre,x), console = FALSE)}

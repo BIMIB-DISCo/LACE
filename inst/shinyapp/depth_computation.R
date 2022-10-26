@@ -21,7 +21,7 @@
                              ", cannot be created"),
                        duration = 10,
                        type = "warning")
-    print(data_dir)
+    log2_print(data_dir)
     # load data
     snpMut_filt_freq <-
       readRDS(file = paste0(file.path(data_dir, 'snpMut_filt_freq.rds')))
@@ -39,20 +39,20 @@
     BAMlist_list <-
       dir(path = bam_dir, pattern = pattern, full.names = TRUE)
 
-    print(InFilesToDo)
+    log2_print(InFilesToDo)
     if (!is.null(InFilesToDo)) {
-      print('In')
-      print(BAMlist_list)
+      log2_print('In')
+      log2_print(BAMlist_list)
       BAMlist_list <- BAMlist_list[BAMlist_list %in% InFilesToDo]
-      print(BAMlist_list)
+      log2_print(BAMlist_list)
     }
 
     if (!is.null(OutFilesToRm)) {
-      print('Out')
+      log2_print('Out')
       ## OutFilesToRm <- file.path(thr_out_dir, OutFilesToRm)
-      print(OutFilesToRm)
+      log2_print(OutFilesToRm)
       ## file.remove(OutFilesToRm)
-      print(list.files(path = out_dir))
+      log2_print(list.files(path = out_dir))
     }
 
     if (length(BAMlist_list)==0)

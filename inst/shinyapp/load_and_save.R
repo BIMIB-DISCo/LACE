@@ -61,7 +61,7 @@ inf_doLoad_b <- function(i) {
   if( i %in% names(loaded_input)) {
     if(!is.null(loaded_input[[i]])) {
       #if(!is.integer(loaded_input[[i]])) {
-      print(loaded_input[[i]])
+      log2_print(loaded_input[[i]])
       #if (dir.exists(parseDirPath(roots=roots_dir, loaded_input[[i]])))
       inputs[[i]](loaded_input[[i]])
       #}
@@ -78,7 +78,7 @@ inf_doLoad_c <- function() {
   for(i in c("inf_alpha", "inf_beta")) {
     if( i %in% names(loaded_input)) {
       if(!is.null(loaded_input[[i]])) {
-        print(loaded_input[[i]])
+        log2_print(loaded_input[[i]])
         inputs[[i]](loaded_input[[i]])
         proxy<-dataTableProxy(i)
         replaceData(proxy, (do.call(cbind, inputs[[i]]())) %>% {as.data.frame((.)[,-1], row.names = (.)[,1])})
@@ -108,7 +108,7 @@ va_doLoad_b <- function(i) {
   if( i %in% names(loaded_input)) {
     if(!is.null(loaded_input[[i]])) {
       #if(!is.integer(loaded_input[[i]])) {
-      print(loaded_input[[i]])
+      log2_print(loaded_input[[i]])
       #if (dir.exists(parseDirPath(roots=roots_dir, loaded_input[[i]])))
       inputs[[i]](loaded_input[[i]])
       #}
@@ -126,7 +126,7 @@ va_doLoad_c <- function() {
   if( 'va_verified_genes' %in% names(loaded_input)) {
     if(!is.null(loaded_input[['va_verified_genes']])) {
       #if(!is.integer(loaded_input[[i]])) {
-      print(loaded_input[['va_verified_genes']])
+      # - log2_print(loaded_input[['va_verified_genes']])
       #if (dir.exists(parseDirPath(roots=roots_dir, loaded_input[[i]])))
       inputs[['va_verified_genes']](loaded_input[['va_verified_genes']])
       inputs[['va_list_genes']](loaded_input[['va_list_genes']])
@@ -383,7 +383,7 @@ observeEvent(inputs[["load_all_configs"]](),{
         colnames(x)[1]=""
         session$userData[["ed_table_react_list_obj"]]$obj[[i]]$x$data <- x
         session$userData[["ed_table_react_list"]][[i]]$x$data <- x
-        print(session$userData[["ed_table_react_list"]][[i]]$x$data)
+        # - log2_print(session$userData[["ed_table_react_list"]][[i]]$x$data)
       }
     }
   }

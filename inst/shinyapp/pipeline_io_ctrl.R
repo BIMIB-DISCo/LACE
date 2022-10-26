@@ -24,9 +24,9 @@ compare_named_lists <- function(l1,l2) {
       st<-TRUE
       for (i in unique(c(names(l1), names(l2)))) {
         if (i %in% names(l1) && i %in% names(l2)) { #if the same name is present in both
-          #print('----')
-          #print(l1[[i]])
-          #print(l2[[i]])
+          #log2_print('----')
+          #log2_print(l1[[i]])
+          #log2_print(l2[[i]])
           if (is.list(l1[[i]]))
             st <- st && compare_named_lists(l1[[i]],l2[[i]])
           else
@@ -61,9 +61,9 @@ OneInOneOut <- function(InDir, InFilesMask, OutDir, OutExt, Opt) {
     StoredFileContent <- read.config(file = Opt$StoredFile)
 
     OutFiles <- paste0(file_path_sans_ext(InFiles),'.',OutExt)
-    print('out')
-    print(OutFiles)
-    print(file.exists(file.path(OutDir,OutFiles)))
+    log2_print('out')
+    log2_print(OutFiles)
+    log2_print(file.exists(file.path(OutDir,OutFiles)))
     ResidualOutFiles <- AllOutFiles[!AllOutFiles %in% OutFiles]
 
     EqFiles <- compare_named_lists(ActFileContent, StoredFileContent)
@@ -93,7 +93,7 @@ OneInOneOut <- function(InDir, InFilesMask, OutDir, OutExt, Opt) {
 			ToRep=!replace_na( ANDx( RightOutFilesTime, RightInFilesTime), TRUE)
 
 			#----------
-			print('InFiles -> OptStored -> OutFiles')
+			log2_print('InFiles -> OptStored -> OutFiles')
 			dout <- data.frame(
 			  list(
 			    "InFiles"=InFiles,
@@ -110,7 +110,7 @@ OneInOneOut <- function(InDir, InFilesMask, OutDir, OutExt, Opt) {
 			    "ToRep"=ToRep
 			  )
 			)
-			print(head(dout))
+			log2_print(head(dout))
 			#----------
 
 			InFilesToDo <- InFiles[ToDo]
@@ -118,9 +118,9 @@ OneInOneOut <- function(InDir, InFilesMask, OutDir, OutExt, Opt) {
 			OutFilesToRep <- OutFiles[ToRep]
 		}
 	}
-	print(c('DO',InFilesToDo))
-	print(c('REP',OutFilesToRep))
-	print(c('RM',OutFilesToRm))
+	log2_print(c('DO',InFilesToDo))
+	log2_print(c('REP',OutFilesToRep))
+	log2_print(c('RM',OutFilesToRm))
 
 	return(list('InFilesToDo'=InFilesToDo, 'OutFilesToRm'=OutFilesToRm, 'OutFilesToRep'=OutFilesToRep))
 }
@@ -148,9 +148,9 @@ ManyInSomeOut <- function(InDir, InFilesMask, OutDir, OutFiles, Opt) {
 
     OutFiles <- file.path(OutDir,OutFiles)
 
-    print('out')
-    print(OutFiles)
-    print(file.exists(OutFiles))
+    log2_print('out')
+    log2_print(OutFiles)
+    log2_print(file.exists(OutFiles))
     ResidualOutFiles <- AllOutFiles[!AllOutFiles %in% OutFiles]
 
     EqFiles <- compare_named_lists(ActFileContent, StoredFileContent)
@@ -177,7 +177,7 @@ ManyInSomeOut <- function(InDir, InFilesMask, OutDir, OutFiles, Opt) {
       #ToRep=!replace_na( ANDx( RightOutFilesTime, RightInFilesTime), T)
 
       #----------
-      # print('InFiles -> OptStored -> OutFiles')
+      # log2_print('InFiles -> OptStored -> OutFiles')
       # dout <- data.frame(
       #   list(
       #     "InFiles"=InFiles,
@@ -194,7 +194,7 @@ ManyInSomeOut <- function(InDir, InFilesMask, OutDir, OutFiles, Opt) {
       #     "ToRep"=ToRep
       #   )
       # )
-      # print(head(dout))
+      # log2_print(head(dout))
       #----------
       if (ToDo) {
         InFilesToDo <- InFiles
@@ -203,9 +203,9 @@ ManyInSomeOut <- function(InDir, InFilesMask, OutDir, OutFiles, Opt) {
       }
     }
   }
-  print(c('DO',InFilesToDo))
-  print(c('REP',OutFilesToRep))
-  print(c('RM',OutFilesToRm))
+  log2_print(c('DO',InFilesToDo))
+  log2_print(c('REP',OutFilesToRep))
+  log2_print(c('RM',OutFilesToRm))
 
   return(list('InFilesToDo'=InFilesToDo, 'OutFilesToRm'=OutFilesToRm, 'OutFilesToRep'=OutFilesToRep))
 }
@@ -247,7 +247,7 @@ SomeInSomeOut <- function(InFiles, OutFiles, Opt) {
       ToRm=!replace_na( ANDx( RightOutFilesTime, RightInFilesTime), TRUE)
 
       #----------
-      print('InFiles -> OptStored -> OutFiles')
+      log2_print('InFiles -> OptStored -> OutFiles')
       dout <- data.frame(
         list(
           "InFiles"=InFiles,
@@ -264,14 +264,14 @@ SomeInSomeOut <- function(InFiles, OutFiles, Opt) {
           "ToRm"=ToRm
         )
       )
-      print(head(dout))
+      log2_print(head(dout))
       #----------
 
       InFilesToDo <- InFiles
       OutFilesToRm <- c(OutFiles[ToRm], ResidualOutFiles)
     }
   }
-  print(paste('DO',InFilesToDo))
-  print(paste('remove',OutFilesToRm))
+  log2_print(paste('DO',InFilesToDo))
+  log2_print(paste('remove',OutFilesToRm))
   return(list(InFilesToDo,OutFilesToRm))
 }

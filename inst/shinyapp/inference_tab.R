@@ -143,22 +143,22 @@ inf_exec <- function() {
           if (left_rows>nrow(tab))
             left_rows <- nrow(tab)-1
           keep_row <- seq((nrow(tab)- left_rows):nrow(tab))
-          print("keep_row")
-          print(keep_row)
+          log2_print("keep_row")
+          log2_print(keep_row)
         }
         if ((nrow(tab) - left_rows)>0)
           range <-seq(1:(nrow(tab) - left_rows))
         else
           range <- NULL
-        print("range")
-        print(range)
+        log2_print("range")
+        log2_print(range)
         for (i in range) {
           canc <-0
           for (j in seq(1, ncol(tab))) {
             if (is.na(tab[i,j])) {
               canc <- canc+1
             }
-            print(canc)
+            log2_print(canc)
           }
           if(canc < ncol(tab))
             keep_row <- c(keep_row, i)
@@ -171,7 +171,7 @@ inf_exec <- function() {
           }
         }
 
-        print(keep_row)
+        log2_print(keep_row)
 
         tab_tmp <- tab[keep_row, ,drop = FALSE]
         if (nrow(tab_tmp)<=row_min)
@@ -377,13 +377,13 @@ show_result <- function (rs, show = TRUE) {
 
         adr <- reactive({
           Sys.sleep(stime())
-          print(paste0("http://127.0.0.1:", port()))
+          log2_print(paste0("http://127.0.0.1:", port()))
           paste0("http://127.0.0.1:", port())
         })
 
 
         stime(12)
-        print(adr)
+        log2_print(adr)
         output$res <- renderUI({
           tags$iframe(src=adr(),  height=1000, width=1000, frameborder = "no")
         })
@@ -569,7 +569,7 @@ observeEvent(inputs[['m_time_points']](), {
                  mm,
                  paste0(str_split(id,pattern = '_')[[1]][2], '_'),
                  session)
-      print(id)
+      log2_print(id)
     }
     id <- 'inf_alpha'
     ## output[['inf_alpha']] <-render_dt(ed_tables[['inf_alpha']])
