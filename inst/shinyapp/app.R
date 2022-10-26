@@ -93,9 +93,12 @@ jsCode <- "shinyBS.addTooltip = function(id, type, opts) {
   }
 }"
 
-#log2_print <- function(x, msg = "") {log_print(print(paste(pre,x)), console = FALSE)}
-#log2_print <- function(x, msg = "") {print(paste(pre,x), console = FALSE)}
-log2_print <- function(x, msg = "") {}
+log2_print <- function(x, msg = "") {
+  if (str_length(msg)>0)
+    log_print(msg, console = FALSE, blank_after = FALSE, hide_notes =TRUE)
+  log_print(x, console = FALSE, blank_after = FALSE, hide_notes =FALSE)
+}
+#log2_print <- function(x, msg = "") {}
 
 ### compare_named_lists --
 ###
@@ -311,7 +314,20 @@ ui <- fluidPage(
             icon = icon("th"),
             inline(actionButton("save_tab", "save")),
             inline(actionButton("load_tab", "load"))
-          )#,
+          ),#,
+          menuItem(
+            "Application",
+            tabName = "dashboard",
+            icon = icon("cog"),
+            #inline(actionButton("quit_all", "quit")),
+            tags$button(
+              id = 'close',
+              type = "button",
+              class = "btn action-button",
+              onclick = "setTimeout(function(){window.close();},500);",  # close browser
+              "Quit"
+            )
+          )
           # menuItem(
           #   "Save and Load All Tabs",
           #   tabName = "dashboard",
@@ -973,6 +989,9 @@ server <- function(input, output, session) {
   ## js$addTooltip("av_anovar_db_dir", "IL BOTTONE", "")
   ## addPopover(session, "av_anovar_db_dir", "IL BOTTONE2", "e il polpettone", placement = "right")
 
+  observe({
+    if (input$close > 0) stopApp()                             # stop shiny
+  })
 
   m_loaded_input_ <- reactiveVal()
   av_loaded_input_ <- reactiveVal()

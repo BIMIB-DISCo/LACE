@@ -545,6 +545,9 @@ as.B.trait <- function( adj_matrix, D ) {
 }
 
 #print to log
-log2_print <- function(x, msg = "") {}
-#log2_print <- function(x, msg = "") {print(paste(pre,x))}
-#log2_print <- function(x, msg = "") {log_print(paste(pre,x), console = FALSE)}
+#log2_print <- function(x, msg = "") {}
+log2_print <- function(x, msg = "") {
+  if (str_length(msg)>0)
+    log_print(msg, console = FALSE, blank_after = FALSE, hide_notes =TRUE)
+  log_print(x, console = FALSE, blank_after = FALSE, hide_notes =FALSE)
+}

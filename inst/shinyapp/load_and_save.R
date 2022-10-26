@@ -126,7 +126,7 @@ va_doLoad_c <- function() {
   if( 'va_verified_genes' %in% names(loaded_input)) {
     if(!is.null(loaded_input[['va_verified_genes']])) {
       #if(!is.integer(loaded_input[[i]])) {
-      # - log2_print(loaded_input[['va_verified_genes']])
+      log2_print(loaded_input[['va_verified_genes']])
       #if (dir.exists(parseDirPath(roots=roots_dir, loaded_input[[i]])))
       inputs[['va_verified_genes']](loaded_input[['va_verified_genes']])
       inputs[['va_list_genes']](loaded_input[['va_list_genes']])
@@ -383,7 +383,7 @@ observeEvent(inputs[["load_all_configs"]](),{
         colnames(x)[1]=""
         session$userData[["ed_table_react_list_obj"]]$obj[[i]]$x$data <- x
         session$userData[["ed_table_react_list"]][[i]]$x$data <- x
-        # - log2_print(session$userData[["ed_table_react_list"]][[i]]$x$data)
+        log2_print(session$userData[["ed_table_react_list"]][[i]]$x$data)
       }
     }
   }
