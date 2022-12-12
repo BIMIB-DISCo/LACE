@@ -84,7 +84,7 @@
 <div class="section level1">
 <div class="page-header"><h1 id="lace-20-an-interactive-r-tool-for-the-inference-and-visualization-of-longitudinal-cancer-evolution">LACE 2.0: an interactive R tool for the inference and visualization of longitudinal cancer evolution<a class="anchor" aria-label="anchor" href="#lace-20-an-interactive-r-tool-for-the-inference-and-visualization-of-longitudinal-cancer-evolution"></a>
 </h1></div>
-
+<p><a href="https://github.com/BIMIB-DISCo/LACE/actions?query=workflow%3Acheck-master" class="external-link"><img src="https://github.com/BIMIB-DISCo/LACE/workflows/check-master/badge.svg" alt="Actions Status"></a> <a href="https://github.com/BIMIB-DISCo/LACE/actions?query=workflow%3Acheck-development" class="external-link"><img src="https://github.com/BIMIB-DISCo/LACE/workflows/check-development/badge.svg" alt="Actions Status"></a></p>
 <p>LACE 2.0 is a new release of the LACE R Bioconductor package. LACE 2.0 is capable of performing clonal evolution analyses for single-cell sequencing data including longitudinal experiments. LACE 2.0 allows to annotate variants and retrieve the relevant mutations interactively based on user-defined filtering criteria; it infers the maximum likelihood clonal tree, cell matrix attachment and false positive/negative rates using boolean matrix factorization. Furthermore, it generates the longitudinal clonal tree. Finally, LACE 2.0 allows to investigate cancer clonal evolution under different experimental conditions and the occurrence of single mutations which can be queried via <em>ensembl</em> database.</p>
 <p>A detailed vignette on LACE 2.0 is provided here: <a href="https://bimib-disco.github.io/LACE/articles/3_LACE_interface.html" class="external-link uri">https://bimib-disco.github.io/LACE/articles/3_LACE_interface.html</a></p>
 <div class="section level2">
@@ -113,6 +113,21 @@
 <p><em>Annovar</em> is a widely used variant calling software freely available upon registration to their website at <a href="https://annovar.openbioinformatics.org/en/latest/" class="external-link uri">https://annovar.openbioinformatics.org/en/latest/</a>. The package contains <em>Perl</em> scripts and variant calling annotation reference databases for the human species. For other databases, please refer to their website. If the scripts are installed in binary search path, then LACE 2.0 will detect them automatically.</p>
 <p><em>Perl</em> (<a href="https://www.perl.org/" class="external-link uri">https://www.perl.org/</a>) is required to run <em>Annovar</em>.</p>
 <p><em>Samtools suite</em> is a standard set of tools and libraries to handle SAM/BAM/BED file format and perform a variety of common operations on sequencing data. It is freely available at <a href="http://www.htslib.org/" class="external-link uri">http://www.htslib.org/</a> and <a href="https://github.com/samtools/htslib" class="external-link uri">https://github.com/samtools/htslib</a>. To install <em>Samtools</em> follow the instructions in their website.</p>
+<div class="section level4">
+<h4 id="for-windows-users-we-suggest-the-following-guidelines">For <em>Windows</em> users, we suggest the following guidelines:<a class="anchor" aria-label="anchor" href="#for-windows-users-we-suggest-the-following-guidelines"></a>
+</h4>
+<ul>
+<li><p>Download <em>MSYS2</em> or <em>WSL</em></p></li>
+<li><p>Download the <em>Samtools</em> source files from <a href="http://www.htslib.org/" class="external-link uri">http://www.htslib.org/</a></p></li>
+<li><p>The field <code>db_home</code>, in the <em>Samtools</em> source file <code>etc/nsswitch.conf</code>, should be changed to <code>windows</code> such that: <code>db_home: windows</code></p></li>
+<li><p>Install <em>MSYS2</em>/<em>WSL</em> (it is preferably to have <em>MSYS2</em> in the “C:” path), and install the packages required by Samtools as stated in the INSTALL documentation file within the Samtool source folder</p></li>
+<li><p>Inside a <em>MSYS2</em>/<em>WSL</em> shell, add the following directories to the variable PATH using the command: <code>export PATH="/mingw64/bin/:/mingw64/:$PATH"</code></p></li>
+<li><p>From the above <em>MSYS2</em>/<em>WSL</em> shell, follow the Samtools documentation to build and install the software</p></li>
+<li><p>Change the Windows <code>PATH</code> variable in the System variables and add the following paths: <code>C:\msys64\usr\bin          C:\msys64\usr          C:\msys64\mingw64\bin          C:\msys64\mingw64</code></p></li>
+<li><p>We remind that <em>Annovar</em> is a <em>Perl</em> script, and <code>.pl</code> files need be associated to <em>Perl</em> executable.<br>
+At the end, from the <em>Windows</em> command prompt, users should be able to start <em>Samtools</em> using the command <code>samtools</code> and directly execute <em>Perl</em> scripts by calling their filenames.</p></li>
+</ul>
+</div>
 </div>
 <div class="section level2">
 <h2 id="run-lace-20">Run LACE 2.0<a class="anchor" aria-label="anchor" href="#run-lace-20"></a>
@@ -165,13 +180,7 @@
 </ul>
 </div>
 
-<div class="dev-status">
-<h2 data-toc-skip>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://github.com/BIMIB-DISCo/LACE/actions?query=workflow%3Acheck-master" class="external-link"><img src="https://github.com/BIMIB-DISCo/LACE/workflows/check-master/badge.svg" alt="Actions Status"></a></li>
-<li><a href="https://github.com/BIMIB-DISCo/LACE/actions?query=workflow%3Acheck-development" class="external-link"><img src="https://github.com/BIMIB-DISCo/LACE/workflows/check-development/badge.svg" alt="Actions Status"></a></li>
-</ul>
-</div>
+
 
   </div>
 </div>
