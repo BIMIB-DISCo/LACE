@@ -85,17 +85,16 @@ package}\label{installation-of-lace-2.0-r-package}
 The package is available on GitHub and Bioconductor. LACE 2.0 requires R
 \textgreater{} 4.1.0 and Bioconductor. To install Bioconductor run:
 
-\begin{verb}
-if (!require("BiocManager", quietly = TRUE))
-
+\begin{verbatim}
+  if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-\end{verb}
+\end{verbatim}
 
 To install LACE 2.0 run:
 
-\begin{verb}
+\begin{verbatim}
 remotes::install_github("https://github.com/BIMIB-DISCo/LACE", dependencies = TRUE)
-\end{verb}
+\end{verbatim}
 
 LACE 2.0 uses \emph{Annovar} and \emph{Samtools suite} as back-ends for
 variant calling annotation and depth computation, respectively. Please
@@ -120,6 +119,57 @@ SAM/BAM/BED file format and perform a variety of common operations on
 sequencing data. It is freely available at http://www.htslib.org/ and
 https://github.com/samtools/htslib. To install \emph{Samtools} follow
 the instructions in their website.
+
+
+For Windows users, we suggest the following guidelines:
+
+\begin{itemize}
+\item Download \emph{MSYS2} or \emph{WSL}
+\item Download the \emph{Samtools} source files from http://www.htslib.org/
+\item The field 
+\begin{verb} 
+"db_home" 
+\end{verb}, 
+in the \emph{Samtools} source file 
+\begin{verb} 
+"etc/nsswitch.conf" 
+\end{verb},
+should be changed to 
+\begin{verb} 
+windows 
+\end{verb} such that: 
+\begin{verbatim} 
+  db_home: windows 
+\end{verbatim}
+\item Install \emph{MSYS2}/\emph{WSL} (it is preferably to have \emph{MSYS2} in the "C:" path), and install the packages required by \emph{Samtools} as stated in the INSTALL documentation file within the \emph{Samtool} source folder
+
+\item Inside a \emph{MSYS2}/\emph{WSL} shell, add the following directories to the variable 
+\begin{verb}
+PATH 
+\end{verb}
+using the command: 
+\begin{verbatim}
+  export PATH="/mingw64/bin/:/mingw64/:$PATH"
+\end{verbatim}
+
+\item From the above \emph{MSYS2}/\emph{WSL} shell, follow the \emph{Samtools} documentation to build and install the software
+
+\item Change the Windows 
+\begin{verb}
+PATH
+\end{verb} 
+variable in the System variables and add the following paths:
+\begin{verbatim}
+  C:\msys64\usr\bin
+  C:\msys64\usr
+  C:\msys64\mingw64\bin 
+  C:\msys64\mingw64
+\end{verbatim}
+
+\item We remind that \emph{Annovar} is a set of \emph{Perl} scripts, and `.pl` files need be associated to \emph{Perl} executable.
+\end{itemize}
+Eventually, from the Windows command prompt, users should be able to start \emph{Samtools} using the command `samtools` and directly execute \emph{Perl} scripts by calling their filenames.
+
 
 
 \section{Running LACE 2.0}\label{run-lace-2.0}
