@@ -132,6 +132,38 @@ handle SAM/BAM/BED file format and perform a variety of common
 operations on sequencing data. It is freely available at <a href="http://www.htslib.org/" class="external-link uri">http://www.htslib.org/</a> and
 <a href="https://github.com/samtools/htslib" class="external-link uri">https://github.com/samtools/htslib</a>. To install
 <em>Samtools</em> follow the instructions in their website.</p>
+<div class="section level4">
+<h4 id="for-windows-users-we-suggest-the-following-guidelines">For <em>Windows</em> users, we suggest the following
+guidelines:<a class="anchor" aria-label="anchor" href="#for-windows-users-we-suggest-the-following-guidelines"></a>
+</h4>
+<ul>
+<li><p>Download <em>MSYS2</em> or <em>WSL</em></p></li>
+<li><p>Download the <em>Samtools</em> source files from <a href="http://www.htslib.org/" class="external-link uri">http://www.htslib.org/</a></p></li>
+<li><p>The field <code>db_home</code>, in the <em>Samtools</em> source
+file <code>etc/nsswitch.conf</code>, should be changed to
+<code>windows</code> such that: <code>db_home: windows</code></p></li>
+<li><p>Install <em>MSYS2</em>/<em>WSL</em> (it is preferably to have
+<em>MSYS2</em> in the “C:” path), and install the packages required by
+Samtools as stated in the INSTALL documentation file within the Samtool
+source folder</p></li>
+<li><p>Inside a <em>MSYS2</em>/<em>WSL</em> shell, add the following
+directories to the variable PATH using the command:
+<code>export PATH="/mingw64/bin/:/mingw64/:$PATH"</code></p></li>
+<li><p>From the above <em>MSYS2</em>/<em>WSL</em> shell, follow the
+Samtools documentation to build and install the software</p></li>
+<li><p>Change the Windows <code>PATH</code> variable in the System
+variables and add the following paths: <code>C:\msys64\usr\bin</code>,
+<code>C:\msys64\usr</code>, <code>C:\msys64\mingw64\bin</code>,
+<code>C:\msys64\mingw64</code></p></li>
+<li><p>We remind that <em>Annovar</em> is a <em>Perl</em> script, and
+<code>.pl</code> files need be associated to <em>Perl</em>
+executable.<br>
+Eventually, from the <em>Windows</em> command prompt, users should be
+able to start <em>Samtools</em> using the command <code>samtools</code>
+and directly execute <em>Perl</em> scripts by calling their
+filenames.</p></li>
+</ul>
+</div>
 </div>
 <div class="section level2">
 <h2 id="running-lace-2-0">Running LACE 2.0<a class="anchor" aria-label="anchor" href="#running-lace-2-0"></a>
@@ -280,8 +312,8 @@ condition. All possible variant functions and their explanations are
 resumed in the following table:</p>
 <table class="table">
 <colgroup>
-<col width="16%">
-<col width="83%">
+<col width="30%">
+<col width="69%">
 </colgroup>
 <thead><tr class="header">
 <th>Annotation (+)</th>
