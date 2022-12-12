@@ -69,7 +69,8 @@ If the scripts are installed in binary search path, then LACE 2.0 will detect th
         C:\msys64\mingw64
     ```
 * We remind that *Annovar* is a *Perl* script, and `.pl` files need be associated to *Perl* executable.   
-At the end, from the *Windows* command prompt, users should be able to start *Samtools* using the command  `samtools` and directly execute *Perl* scripts by calling their filenames.
+
+Eventually, from the *Windows* command prompt, users should be able to start *Samtools* using the command  `samtools` and directly execute *Perl* scripts by calling their filenames.
 
 ## Run LACE 2.0
 
