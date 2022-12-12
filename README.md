@@ -44,6 +44,32 @@ If the scripts are installed in binary search path, then LACE 2.0 will detect th
 
 *Samtools suite* is a standard set of tools and libraries to handle SAM/BAM/BED file format and perform a variety of common operations on sequencing data. It is freely available at http://www.htslib.org/ and https://github.com/samtools/htslib. To install *Samtools* follow the instructions in their website. 
 
+
+#### For *Windows* users, we suggest the following guidelines:
+
+* Download *MSYS2* or *WSL*
+* Download the *Samtools* source files from http://www.htslib.org/
+* The field `db_home`, in the *Samtools* source file `etc/nsswitch.conf`, should be changed to `windows` such that:
+    ```
+        db_home: windows
+    ```
+        
+* Install *MSYS2*/*WSL* (it is preferably to have *MSYS2* in the "C:" path), and install the packages required by Samtools as stated in the INSTALL documentation file within the Samtool source folder
+* Inside a *MSYS2*/*WSL* shell, add the following directories to the variable PATH using the command: 
+	```
+        export PATH="/mingw64/bin/:/mingw64/:$PATH"
+    ```
+* From the above *MSYS2*/*WSL* shell, follow the Samtools documentation to build and install the software 
+* Change the Windows `PATH` variable in the System variables and add the following paths:
+	```
+        C:\msys64\usr\bin 
+        C:\msys64\usr 
+        C:\msys64\mingw64\bin 
+        C:\msys64\mingw64
+    ```
+* We remind that *Annovar* is a *Perl* script, and `.pl` files need be associated to *Perl* executable.   
+At the end, from the *Windows* command prompt, users should be able to start *Samtools* using the command  `samtools` and directly execute *Perl* scripts by calling their filenames.
+
 ## Run LACE 2.0
 
 To start LACE 2.0 user interface run: 
