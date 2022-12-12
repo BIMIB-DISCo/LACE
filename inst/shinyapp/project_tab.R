@@ -200,8 +200,12 @@ observeEvent(inputs[["pr_path"]](), {
         updateTextInput(session,"pr_name", value=inputs[["pr_name_std"]]())
         updateActionButton(session,"pr_next", label="Load project")
         ## }
-      } else
+      } else {
+        #browser()
         updateActionButton(session,"pr_next", label="Create project")
+        print("go to proj")
+        updateTabsetPanel(session, "main_tabset", selected = "Project")
+      }
     }
   #browser()
   if (!is.null(inputs[["demo"]]())) {

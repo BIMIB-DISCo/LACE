@@ -96,19 +96,104 @@ LACEview <- function() {
     }
 
     ## Did you remember to set:  options(browser = 'firefox')  ?
-
+    
     .GlobalEnv$.my_actual_wd <- getwd()
     .GlobalEnv$.my_pkg_dir <- appDir
     .GlobalEnv$.my_tmp_file <- file.path(tempdir(), "test.log")
     .GlobalEnv$.my_lf <- logr::log_open(.GlobalEnv$.my_tmp_file)
     
-    print(.GlobalEnv$.my_actual_wd)
-    print(.GlobalEnv$.my_tmp_file)
-
+    #print(.GlobalEnv$.my_actual_wd)
+    #print(.GlobalEnv$.my_tmp_file)
+    
+    
+    
+        
+        library(stringr)
+        
+        
+        exec_bool <- TRUE
+        myOS <- .Platform$OS.type
+        
+        myAnnovar_script1 <- "convert2annovar.pl"
+        myAnnovar_script2 <- "annotate_variation.pl"
+        
+        if (myOS == "windows") {
+            mySamtools <- "samtools.exe"
+            myPerl <- "perl.exe"
+        }
+        else {
+            mySamtools <- "samtools"
+            myPerl <- "perl"
+        }
+        
+        myAnnovar_script1_path <- Sys.which(myAnnovar_script1)
+        myAnnovar_script2_path <- Sys.which(myAnnovar_script2)
+        samtools_path <- Sys.which(mySamtools)
+        perl_path <- Sys.which(myPerl)
+        
+        if (str_length(samtools_path) == 0) {
+            exec_bool <- FALSE
+            print(paste("[warning] LACE:", mySamtools, "not found."))
+            print(paste("[info] LACE:", mySamtools, "can be set using the UI."))
+        }
+        
+        if (str_length(perl_path) == 0) {
+            exec_bool <- FALSE
+            print(paste("[warning] LACE:", myPerl, "not found."))
+        }	
+        
+        if (str_length(myAnnovar_script1_path) == 0) {
+            #exec_bool <- FALSE
+            print(paste("[warning] LACE:", myAnnovar_script1, "not found."))
+            print(paste("[info] LACE:", myAnnovar_script1, "folder can be set using the UI."))
+        }
+        
+        if (str_length(myAnnovar_script2_path) == 0) {
+            #exec_bool <- FALSE 
+            print(paste("[warning] LACE:", myAnnovar_script2, "not found."))
+            print(paste("[info] LACE:", myAnnovar_script2, "folder can be set using the UI."))
+        }
+        
+        if (myOS == "windows") {
+            exit_status <- system2("assoc", args = ".pl", 
+                                   stdout = TRUE,
+                                   stderr = TRUE,
+                                   wait = TRUE)
+            if (str_starts(exit_status, ".pl")) {
+                exec_bool <- FALSE
+                print("[warning] LACE:",".pl file extension is not associated to perl.")
+            }
+        }
+        
+        answer <- "y"
+        #answer <- 1
+        #answer <- TRUE
+        
+        if (!exec_bool) {
+            print("Required software is not installed or cannot be found.")
+            answer <- readline(prompt = "Do you wish to continue and start LACE UI? [Y,n]")
+            #answer <- menu(c("Yes", "No"), title="Do you wish to continue and start LACE UI?")
+        }
+        #
+        #if (answer == FALSE) {
+        #    return()
+        #}
+        if (!(answer %in% c("y", "Y", "yes", "Yes", "ni", ""))) {
+            return("")
+        }
+    
+        
+    
+    
+    
+    
+    
+    
     on.exit({
         setwd(.my_actual_wd)
         rm(list = c(".my_actual_wd"), pos = .GlobalEnv)
         logr::log_close()
+        print("LACEview closed")
     })
 
     shiny::runApp(file.path(appDir, 'app.R'), display.mode = "normal")
