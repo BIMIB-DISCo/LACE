@@ -27,9 +27,10 @@ av_compute <- function(anovar_convert,
     dir.create(vcf_annot_dir, showWarnings = FALSE)
     stdout_log <- file.path(vcf_annot_dir, 'stdout.log') 
     stderr_log <- file.path(vcf_annot_dir, 'stderr.log') 
-    log_bash <- paste0(' >> ', stdout_log, ' 2>> ', stderr_log) # UN*X! E Windows?
-    stdout_log_tmp <- file.path("/tmp/av_stdout.log")           # UN*X! E Windows?
-    stderr_log_tmp <- file.path("/tmp/av_stderr.log")           # UN*X! E Windows?
+    #log_bash <- paste0(' >> ', stdout_log, ' 2>> ', stderr_log) # UN*X! E Windows?
+    tmp_dir <- tempdir()
+    stdout_log_tmp <- file.path(tmp_dir, "av_stdout.log")           # UN*X! E Windows?
+    stderr_log_tmp <- file.path(tmp_dir, "av_stderr.log")           # UN*X! E Windows?
     
     cat("", file = stdout_log, append=FALSE) # comment to not erase log
     cat("", file = stderr_log, append=FALSE) # comment to not erase log

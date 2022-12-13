@@ -251,6 +251,16 @@ ui <- fluidPage(
     dashboardSidebar(
 
       sidebarMenu( id = "sidemenu",
+        hidden(menuItem("hidden_menu31", tabName = "hidden_menu31")),
+        menuItem(
+          "Application",
+          tabName = "applicaion",
+          icon = icon("braille"), #icon("window-maximize"),
+          hidden(menuItem("hidden_menu3", tabName = "hidden_menu3")),
+          menuSubItem("New Project", tabName = "new_proj", icon = icon("layer-group") ),
+          menuSubItem("Quit", tabName = "quit_app", icon = icon("power-off") )#,
+          #actionButton("quit_app", "Quit")
+        ),
         hidden(menuItem("hidden_menu", tabName = "hidden_menu")),
         menuItem(
           "Projects",
@@ -308,26 +318,19 @@ ui <- fluidPage(
           tabName = "dashboard",
           icon = icon("cube"),
           hidden(menuItem("hidden_menu2", tabName = "hidden_menu2")),
+          #menuSubItem("Close Project", tabName = "close_proj", icon = icon("times-circle") ),
+          #actionButton("close_proj", "Close Project"),
           menuItem(
             "Save and Load Current Tab",
-            tabName = "dashboard",
+            tabName = "dashboard_save",
             icon = icon("th"),
-            inline(actionButton("save_tab", "save")),
-            inline(actionButton("load_tab", "load"))
-          ),#,
-          menuItem(
-            "Application",
-            tabName = "dashboard",
-            icon = icon("cog"),
-            #inline(actionButton("quit_all", "quit")),
-            tags$button(
-              id = 'close',
-              type = "button",
-              class = "btn action-button",
-              onclick = "setTimeout(function(){window.close();},500);",  # close browser
-              "Quit"
-            )
+            menuSubItem("Save", tabName = "save_tab", icon = icon("download") ),
+            menuSubItem("Load", tabName = "load_tab", icon = icon("upload") )#,
+            #inline(actionButton("save_tab", "Save")),
+            #inline(actionButton("load_tab", "Load"))
           )
+        )#,
+        #,
           # menuItem(
           #   "Save and Load All Tabs",
           #   tabName = "dashboard",
@@ -341,7 +344,7 @@ ui <- fluidPage(
           #   icon = icon("th"),
           #   inline(actionButton("save_tab", "Clean and restore "))
           # )
-        )
+        
       ),
       collapsed = FALSE
     ),
@@ -943,6 +946,9 @@ server <- function(input, output, session) {
   inputs <- list()
   types_ <- reactiveVal()
 
+  session$onSessionEnded(function() {
+    stopApp()
+  })
 
   ## Source?
 
@@ -1197,7 +1203,31 @@ server <- function(input, output, session) {
 
       inputs[["reload_project"]](proj_dir)
     }
-
+    
+    if (input[["sidemenu"]] == "quit_app")
+      stopApp()
+    if (input[["sidemenu"]] == "new_proj"){
+      #inputs[["pr_path"]]("")
+      print("NEW project!!")
+      inputs[["pr_folder"]]("")
+      inputs[["pr_folder_std"]](.my_actual_wd)
+      inputs[["pr_name"]]("")
+      inputs[["pr_name_std"]]("")
+      
+      inputs[["project_folder_std"]](.my_actual_wd)
+      project_folder <- list( "path"="", "root"="")
+      project_folder$path[[1]]<-""
+      project_folder$path <-
+        c(project_folder$path,
+          as.list(path_split(path_rel(inputs[["project_folder_std"]](),
+                                      start = roots_dir[[".."]]))[[1]]))
+      project_folder$root=".."
+      inputs[["project_folder"]](project_folder)
+      
+      updateActionButton(session,"pr_folder", label=inputs[["pr_folder_std"]]())
+      updateTextInput(session,"pr_name", value=inputs[["pr_name_std"]]())
+      #inputs[["pr_path"]](.my_actual_wd) #not necessary
+    }
   }, ignoreInit = TRUE)
 
   # observe({
