@@ -102,13 +102,13 @@ LACEview <- function() {
     .GlobalEnv$.my_tmp_file <- file.path(tempdir(), "test.log")
     .GlobalEnv$.my_lf <- logr::log_open(.GlobalEnv$.my_tmp_file)
     
-    #print(.GlobalEnv$.my_actual_wd)
-    #print(.GlobalEnv$.my_tmp_file)
+    print(paste("[info] LACE: active folder =", .GlobalEnv$.my_actual_wd))
+    print(paste("[info] LACE: log file =", .GlobalEnv$.my_tmp_file))
     
     
     
         
-        library(stringr)
+        #library(stringr)
         
         
         exec_bool <- TRUE

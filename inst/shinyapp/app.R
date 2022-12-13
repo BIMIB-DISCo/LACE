@@ -996,8 +996,11 @@ server <- function(input, output, session) {
   ## addPopover(session, "av_anovar_db_dir", "IL BOTTONE2", "e il polpettone", placement = "right")
 
   observe({
-    if (input$close > 0) stopApp()                             # stop shiny
-  })
+    #browser()
+    if (!is.null(input$close)) {
+      if (input$close > 0) stopApp()                             # stop shiny
+    }
+  }, )
 
   m_loaded_input_ <- reactiveVal()
   av_loaded_input_ <- reactiveVal()
@@ -1154,14 +1157,17 @@ server <- function(input, output, session) {
 
   createmenuitem <- function(x, projs) {
     #browser()
-    menuSubItem(
-      text = names(projs)[x],
-      tabName = str_replace_all(
-        normalizePath(projs[[x]]),
-        pattern = .Platform$file.sep,
-        replacement = ","
+    if (dir.exists(projs[[x]]))
+      menuSubItem(
+        text = names(projs)[x],
+        tabName = str_replace_all(
+          normalizePath(projs[[x]]),
+          pattern = .Platform$file.sep,
+          replacement = ","
+        )
       )
-    )
+    else
+      NULL
   }
 
   observeEvent(input[["sidemenu"]], {
