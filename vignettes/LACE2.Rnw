@@ -93,7 +93,9 @@ The package is available on GitHub and Bioconductor. LACE 2.0 requires R
 To install LACE 2.0 run:
 
 \begin{verbatim}
-remotes::install_github("https://github.com/BIMIB-DISCo/LACE", dependencies = TRUE)
+  if (!require("devtools")) install.packages("devtools")
+    library("devtools")
+  install_github("BIMIB-DISCo/LACE", ref = "development", dependencies = TRUE)
 \end{verbatim}
 
 LACE 2.0 uses \emph{Annovar} and \emph{Samtools suite} as back-ends for
