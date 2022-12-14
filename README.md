@@ -30,7 +30,7 @@ To install LACE 2.0 from GitHub run:
 ```
 if (!require("devtools")) install.packages("devtools")
 library("devtools")
-install_github("BIMIB-DISCo/LACE", ref = "master", dependencies = TRUE)
+install_github("BIMIB-DISCo/LACE", ref = "development", dependencies = TRUE)
 ```
 
 LACE 2.0 uses *Annovar* and *Samtools suite* as back-ends for variant calling annotation and depth computation, respectively. Please refer to the next section to install them. 
