@@ -29,7 +29,7 @@ BiocManager::install("LACE")
 To install LACE 2.0 from GitHub run:
 ```
 if (!require("devtools")) install.packages("devtools")
-library("devtools")
+    library("devtools")
 install_github("BIMIB-DISCo/LACE", ref = "development", dependencies = TRUE)
 ```
 
