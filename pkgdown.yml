@@ -1,9 +1,9 @@
 pandoc: 2.19.2
-pkgdown: 2.0.6.9000
-pkgdown_sha: 03f912fc18522c6e41a66c0094acc68845b0147a
+pkgdown: 2.0.7.9000
+pkgdown_sha: c354aa7e5ea1f9936692494c28c89e5bdd31fc68
 articles:
   1_introduction: 1_introduction.html
   2_running_LACE: 2_running_LACE.html
   3_LACE_interface: 3_LACE_interface.html
-last_built: 2022-12-14T14:58Z
+last_built: 2023-01-08T04:55Z
 
