@@ -158,6 +158,7 @@ jobs:
         run: |
           install.packages('data.tree')
           install.packages('Rfast')
+          install.packages('rcmdcheck')
         shell: Rscript {0}
 
       - name: Query dependencies
