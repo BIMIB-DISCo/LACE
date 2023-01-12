@@ -156,9 +156,11 @@ jobs:
 
       - name: Install R packages
         run: |
+          install.packages('curl')
           install.packages('rcmdcheck')
           install.packages('data.tree')
-          install.packages('Rfast',dependencies=TRUE)
+          install.packages('RcppZiggurat')
+          install.packages('Rfast')
         shell: Rscript {0}
 
       - name: Query dependencies
