@@ -154,6 +154,14 @@ jobs:
           'pdfcrop', 'everysel', 'beramono', 'amscls'))
         shell: Rscript {0}
 
+      - name: install libcurl-devel on linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y libcurl4-openssl-dev
+
+      - name: install libgsl-dev on macOS
+        if: runner.os == 'macOS'
+        run: brew install gsl
+
       - name: Install R packages
         run: |
           install.packages('curl')
