@@ -51,7 +51,9 @@ Imports:
     shinydashboard,
     biomaRt,
     callr,
-    logr
+    logr,
+    ggplot2,
+    svglite
 Suggests:
     BiocGenerics,
     BiocStyle,

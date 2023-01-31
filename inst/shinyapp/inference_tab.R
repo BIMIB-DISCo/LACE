@@ -72,6 +72,7 @@ inputs[[paste0('inf_beta','_cell_edit')]] <- reactiveVal(empty_cell)
 ### Inference functions ####
 
 hide_tab <- function() {
+  #browser()
   shinyjs::show(id="computation_idCol_div")
   hideTab(inputId = "main_tabset", target = "Project")
   hideTab(inputId = "main_tabset", target = "SC metadata")
@@ -103,6 +104,7 @@ show_tab <- function(disp = FALSE) {
 
 
 inf_exec <- function() {
+  #browser()
   if (length(va_out_dir_()) == 0)
     return()
   if (dir.exists(va_out_dir_()))
@@ -323,13 +325,44 @@ show_result <- function (rs, show = TRUE) {
     if (!is.null(B) && !is.null(C) && !is.null(clones_prevalence) && !is.null(error_rates))
       if (show) {
         #browser()
-        x <- LACE:::lace_interface(
+        x <- lace_interface(
           B_mat = B,
           clones_prevalence = clones_prevalence,
           C_mat = C,
           error_rates = error_rates
         )
-
+        
+        #browser()
+        prev_graph <- x$prevalence %>% as.data.frame() %>%  select(-Total) %>% t() %>% as.data.frame()
+        prev_graph <- prev_graph %>% 
+          as_tibble(rownames = "time") %>% 
+          pivot_longer(cols = -time, names_to = "clone", values_to = "prevalence") %>% 
+          mutate(clone=factor(clone, levels=unique(clone)))
+        #prev_graph
+        colours = brewer.pal(n = ncol(prev_graph), name = "Paired")
+        
+        pl1 <- ggplot(prev_graph, aes(x=time, y=prevalence, color=clone, group=clone, label=round(prevalence, digits=2))) +
+          geom_line() + geom_point(size=3) + scale_color_manual(values=colours)
+        #+
+        #geom_text_repel(box.padding   = 0.7, point.padding = 0.0, segment.color = 'black')
+        
+        pl2 <- ggplot(prev_graph, aes(x=time, y=prevalence, group=clone, color=clone, fill=clone)) + 
+          geom_area(alpha=0.8 , size=0.5, colour="black") + 
+          geom_point(size=1, colour="black",  position = "stack") +
+          scale_fill_manual(values=colours) + 
+          theme(
+            #panel.background = element_rect(fill = "NA", color = "black"), 
+            panel.grid= element_line(colour="grey50", size=0.2)#,
+            #panel.ontop = TRUE
+            #plot.background = element_rect(fill = "grey50")
+          )
+        
+        
+        ggsave(file=file.path(inputs[["project_folder_std"]](),"prevalences.svg"), plot=pl1, width=10, height=10)
+        ggsave(file=file.path(inputs[["project_folder_std"]](),"stream.svg"), plot=pl2, width=10, height=10)
+        
+        
+        x <- x[["html"]]
         #browser()
 
 
@@ -414,6 +447,8 @@ show_result <- function (rs, show = TRUE) {
     returned_vals$rs <- rs
 
     showNotification("Inference results not available. Run LACE first.", duration = 10, type = "warning")
+    
+    inputs[["long_job"]](inputs[["long_job"]]()+1)
 
   }
 
@@ -440,6 +475,7 @@ inf_go <- function() {
     inf_exec()
   } else
   {
+    #browser()
     av_exec()
     thr_exec()
     dp_exec()
@@ -622,7 +658,7 @@ observeEvent(input[["inf_next"]], {
   # hideTab(inputId = "main_tabset", target = "Variants")
   # hideTab(inputId = "main_tabset", target = "Inference")
   # shinyjs::show(id="computation_idCol_div")
-
+  #browser()
   hide_tab()
 
   delay(2000, inf_go())

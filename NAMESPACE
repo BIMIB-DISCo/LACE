@@ -52,3 +52,6 @@ importFrom(stats,hclust)
 importFrom(stats,rnorm)
 importFrom(stats,runif)
 importFrom(tidyr,gather)
+import(ggplot2)
+import(svglite)
+

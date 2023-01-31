@@ -782,8 +782,10 @@ lace_interface <- function (B_mat,
                   info=toJSON(list(info=info)),
                   tab=toJSON(tab))
 
-
-    htmlwidgets::createWidget(name = "LACE", jsdata, width = width,
+    results<-list()
+    results[["prevalence"]] <- prevalence
+    results[["colours"]] <- colours
+    results[["html"]] <- htmlwidgets::createWidget(name = "LACE", jsdata, width = width,
                               height = height, package = "LACE",
                               elementId = elementId,
                               sizingPolicy = htmlwidgets::sizingPolicy(
@@ -794,6 +796,7 @@ lace_interface <- function (B_mat,
                                                               knitr.defaultWidth = 300,
                                                               knitr.defaultHeight = 600)
                               )
+    results
 }
 
 

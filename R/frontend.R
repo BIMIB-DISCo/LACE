@@ -445,6 +445,7 @@ lacedata <- function( D,
       C_mat = C,
       error_rates = error_rates
     )
+    x <- x[["html"]]
     return(x)
   }
   else
