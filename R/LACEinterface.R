@@ -105,13 +105,11 @@ LACEview <- function() {
     print(paste("[info] LACE: active folder =", .GlobalEnv$.my_actual_wd))
     print(paste("[info] LACE: log file =", .GlobalEnv$.my_tmp_file))
     
+    answer <- "y"
     
     
-        
-        #library(stringr)
-        
-        
-        exec_bool <- TRUE
+    server_pp <- function(input, output) {    
+        exec_bool <- reactiveVal(TRUE)
         myOS <- .Platform$OS.type
         
         myAnnovar_script1 <- "convert2annovar.pl"
@@ -132,13 +130,13 @@ LACEview <- function() {
         perl_path <- Sys.which(myPerl)
         
         if (str_length(samtools_path) == 0) {
-            exec_bool <- FALSE
+            exec_bool(FALSE)
             print(paste("[warning] LACE:", mySamtools, "not found."))
             print(paste("[info] LACE:", mySamtools, "can be set using the UI."))
         }
         
         if (str_length(perl_path) == 0) {
-            exec_bool <- FALSE
+            exec_bool(FALSE)
             print(paste("[warning] LACE:", myPerl, "not found."))
         }	
         
@@ -160,33 +158,62 @@ LACEview <- function() {
                                    stderr = TRUE,
                                    wait = TRUE)
             if (str_starts(exit_status, ".pl")) {
-                exec_bool <- FALSE
+                exec_bool(FALSE)
                 print("[warning] LACE:",".pl file extension is not associated to perl.")
             }
         }
         
-        answer <- "y"
+        #answer <- "y"
         #answer <- 1
         #answer <- TRUE
         
-        if (!exec_bool) {
-            print("Required software is not installed or cannot be found.")
-            answer <- readline(prompt = "Do you wish to continue and start LACE UI? [Y,n]")
-            #answer <- menu(c("Yes", "No"), title="Do you wish to continue and start LACE UI?")
-        }
-        #
-        #if (answer == FALSE) {
-        #    return()
+        #if (!exec_bool) {
+        #    print("Required software is not installed or cannot be found.")
+        #    answer <- readline(prompt = "Do you wish to continue and start LACE UI? [Y,n]")
+        #    #answer <- menu(c("Yes", "No"), title="Do you wish to continue and start LACE UI?")
         #}
-        if (!(answer %in% c("y", "Y", "yes", "Yes", "ni", ""))) {
-            return("")
-        }
-    
         
+        
+        
+        
+        ml_txt <- paste("Required software is not installed or cannot be found.",
+                        "Do you wish to continue and start LACE UI?",
+                        sep = "\n")
+          
+        mod_dlg <- modalDialog(
+          title = "LACE 2.0",
+          ml_txt,
+          easyClose = FALSE,
+          footer = tagList(
+            actionButton("No", "No"),
+            actionButton("Yes", "Yes")
+          ))
+        
+        showModal(mod_dlg)
+        
+        observeEvent(input$No, {
+            answer <<- "n"
+            stopApp()
+        })
+        
+        observeEvent(input$Yes, {
+            answer <<- "y"
+            stopApp()
+        })
+    }        
+        
+    ui_pp <- basicPage(
+        #print("test"),
+        #actionButton("show", "Show modal dialog")
+    )
     
     
+    shiny::runApp(list(ui = ui_pp, server = server_pp))
     
     
+    if (!(answer %in% c("y", "Y", "yes", "Yes", "ni", ""))) {
+        return(NULL)
+    }
     
     
     on.exit({
@@ -196,7 +223,7 @@ LACEview <- function() {
         print("LACEview closed")
     })
 
-    shiny::runApp(file.path(appDir, 'app.R'), display.mode = "normal")
+    shiny::runApp(file.path(appDir, 'app.R'), display.mode = "normal", launch.browser = TRUE)
 }
 
 
