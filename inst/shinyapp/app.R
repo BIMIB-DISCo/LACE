@@ -41,6 +41,8 @@ suppressMessages(library(bsplus))
 suppressMessages(library(shinydashboard))
 suppressMessages(library(shinyvalidate))
 suppressMessages(library(logr))
+suppressMessages(library(ggplot2))
+suppressMessages(library(svglite))
 #library(widgetframe)
 
 ### Code
@@ -254,7 +256,7 @@ ui <- fluidPage(
         hidden(menuItem("hidden_menu31", tabName = "hidden_menu31")),
         menuItem(
           "Application",
-          tabName = "applicaion",
+          tabName = "application",
           icon = icon("braille"), #icon("window-maximize"),
           hidden(menuItem("hidden_menu3", tabName = "hidden_menu3")),
           menuSubItem("New Project", tabName = "new_proj", icon = icon("layer-group") ),
@@ -324,8 +326,11 @@ ui <- fluidPage(
             "Save and Load Current Tab",
             tabName = "dashboard_save",
             icon = icon("th"),
+            hidden(menuItem("hidden_menu_SLpre", tabName = "hidden_menu_SLpre")),
             menuSubItem("Save", tabName = "save_tab", icon = icon("download") ),
-            menuSubItem("Load", tabName = "load_tab", icon = icon("upload") )#,
+            menuSubItem("Load", tabName = "load_tab", icon = icon("upload") ),
+            menuSubItem("Reset project", tabName = "load_tabs"),
+            hidden(menuSubItem("hidden_menu_SL", tabName = "hidden_menu_SL"))
             #inline(actionButton("save_tab", "Save")),
             #inline(actionButton("load_tab", "Load"))
           )
@@ -1082,6 +1087,7 @@ server <- function(input, output, session) {
     if (inputs[["reload_project"]]() != 1 && inputs[["reload_project"]]() != 0)
     {
       if (dir.exists(proj_dir)) {
+        #browser()
         hide_tab()
         inputs[["reload_project"]](1)
         inputs[["pr_path"]](proj_dir)
@@ -1118,6 +1124,7 @@ server <- function(input, output, session) {
         if (dir.exists(tmp_path) && dir.exists(demo_dir))
         {
           #delay(100, {
+            #browser()
             hide_tab()
           #})
   
@@ -1210,6 +1217,13 @@ server <- function(input, output, session) {
       inputs[["reload_project"]](proj_dir)
     }
     
+    if (input[["sidemenu"]] == "save_tab")
+      save_tab()
+    if (input[["sidemenu"]] == "load_tab")
+      load_tab()
+    if (input[["sidemenu"]] == "load_tabs")
+      load_tabs()
+    
     if (input[["sidemenu"]] == "quit_app")
       stopApp()
     if (input[["sidemenu"]] == "new_proj"){
@@ -1245,7 +1259,7 @@ server <- function(input, output, session) {
   #   }
   # })
 
-  observeEvent(input[["save_tab"]], {
+  save_tab <- function () {
 
     if(!inputs[["project_loaded"]]()) {
       showNotification("No porject created or loaded.", duration = 10, type = "warning")
@@ -1255,6 +1269,7 @@ server <- function(input, output, session) {
     config_path <- file.path(inputs[["project_folder_std"]](), os_conf_subdir)
 
     grep_str <- NULL
+    #browser()
     if (input[["main_tabset"]] == "SC metadata") {
       grep_str <- m_grep_str
       config_file <- ".config_01_m.yml"
@@ -1281,12 +1296,13 @@ server <- function(input, output, session) {
       showNotification(paste(input[["main_tabset"]], "configuration tab saved"),
                        duration = 10)
     }
-  })
+    updateTabItems(session, "sidemenu", "hidden_menu")
+  }
 
 
 
 
-  observeEvent(input[["load_tab"]], {
+  load_tab <- function() {
 
     if(!inputs[["project_loaded"]]()) {
       showNotification("No porject created or loaded.", duration = 10, type = "warning")
@@ -1339,8 +1355,57 @@ server <- function(input, output, session) {
     }
 
     showNotification(paste(input[["main_tabset"]], "configuration tab loaded"), duration = 10)
-  })
+    
+    updateTabItems(session, "sidemenu", "hidden_menu")
+  }
 
+  load_tabs <- function() {
+    
+    if(!inputs[["project_loaded"]]()) {
+      showNotification("No porject created or loaded.", duration = 10, type = "warning")
+      return(NULL)
+    }
+    
+    config_path <- file.path(inputs[["project_folder_std"]](), os_conf_subdir)
+    m_doLoad_a(config_path)
+    m_doLoad_b()
+      
+    av_doLoad_a(config_path)
+    uis <- av_dir_uis
+    for (i in av_dir_uis) {
+      av_doLoad_b(i)
+    }
+    
+    thr_doLoad_a(config_path)
+    uis <- thr_uis
+    for(i in thr_uis) {
+      thr_doLoad_b(i)
+    }
+    
+    dp_doLoad_a(config_path)
+    uis <- dp_uis
+    for(i in dp_uis) {
+      dp_doLoad_b(i)
+    }
+      
+    va_doLoad_a(config_path) #
+    uis <- va_uis
+    for(i in va_uis) {
+      va_doLoad_b(i)
+    }
+    va_doLoad_c()
+    
+    inf_doLoad_a(config_path)
+    uis <- inf_uis
+    for(i in uis) {
+      inf_doLoad_b(i)
+    }
+    inf_doLoad_c()
+    
+    showNotification(paste("project", "configuration reset to saved state"), duration = 10)
+    
+    updateTabItems(session, "sidemenu", "hidden_menu")
+  }
 
 
   catch_ui_files_priority = 1
@@ -1680,7 +1745,7 @@ server <- function(input, output, session) {
 
   ###
   for (dir_ui in dp_uis) {
-    # defaultPath <- ""
+    defaultPath <- ""
     # if(dir_ui == "dp_samtools_exec_dir")
     #   defaultPath <- path_rel(dirname(Sys.which("samtools")), start = "..")
 
@@ -2345,7 +2410,7 @@ server <- function(input, output, session) {
   ### Annotation observers ####
 
   for (dir_ui in av_dir_uis) { #av_rvs$buttons???
-    # defaultPath <- ""
+    defaultPath <- ""
     # if(dir_ui == "av_anovar_exec_dir")
     #   defaultPath <- path_rel(Sys.which("annotate_variation.pl"), start = "..")
     shinyDirChoose(input,
