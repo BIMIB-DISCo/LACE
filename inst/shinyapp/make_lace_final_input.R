@@ -161,6 +161,81 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   D = mycellsdata
   save(D,file=file.path(out_dir,"D.RData"))
 
+  
+  ####
+  t_order <- names(D)
+  t_order <- str_replace_all(t_order, pattern = "_", replacement = " ")
+  names(D) <- t_order
+  
+  wD <- lapply(seq_along(D), function(i){as_tibble(D[[i]], rownames = "cell") %>% as.data.frame() %>% mutate( time = t_order[i]) %>% pivot_longer( col = -c(time, cell), names_to = "mutation", values_to = "value")})
+  wD <- bind_rows(wD)
+  #wD$value <- as.factor(as.integer(wD$value))
+  
+  wD_ <- lapply(seq_along(D), function(i){as_tibble(D[[i]], rownames = "cell") %>% as.data.frame() %>% mutate( time = t_order[i])})
+  wD_ <- bind_rows(wD_)
+  #wD_$time <- as.factor(wD_$time)
+  #levels(wD_$time)
+  
+  s <- wD_ %>% group_by(time) %>% summarise(across(where(is.numeric), ~sum(.,na.rm = TRUE)))
+  s <- s %>% pivot_longer(-1) %>% pivot_wider(names_from = 1, values_from = value)
+  s <- s %>% arrange(across(everything())) 
+  s$name
+  
+  #wD__ <- wD_ %>% group_by(c(time, mutation)) %>% arrange(value, .by_group = TRUE)
+  #wD__
+  
+  lD <- wD_ %>% pivot_longer( col = -c(time, cell), names_to = "mutation", values_to = "value")
+  
+  lD <- lD  %>% group_by(time, mutation) %>% arrange(-value, .by_group = TRUE)
+  
+  #wD_ %>% mutate(sumVar = rowSums(select(., !c(cell,time)),na.rm = TRUE))
+  
+  lD$value <- factor(as.integer(lD$value), levels=c(0,1), exclude = "", ordered=T)
+  lD$mutation <- factor(lD$mutation, levels=s$name, ordered=TRUE)
+  
+  per_mut_site <- as.data.frame(lD) %>% group_by(mutation)
+  n_na <- (per_mut_site %>% mutate(cnt=sum(is.na(value))) )$cnt
+  n_one <- (per_mut_site %>% mutate(cnt=sum(value==1, na.rm = TRUE)) )$cnt
+  n_zero <- (per_mut_site %>% mutate(cnt=sum(value==0, na.rm = TRUE)) )$cnt
+  str__na <- paste0("# \"NA\" = [",paste(range(n_na), collapse = ", "),"]")
+  str__zero <- paste0("# \"0\" = [",paste(range(n_zero), collapse = ", "),"]")
+  str__one <- paste0("# \"1\" = [",paste(range(n_one), collapse = ", "),"]")
+  
+  
+  g <- 
+    ggplot(lD, aes(mutation, y=cell, fill= value)) +
+    #ggplot(lD, aes(mutation, y=reorder(cell, ifelse(mutation == "ARPC2_2_218249894_C_T", value, 1) ), fill= value)) + 
+    geom_tile()+ 
+    
+    scale_fill_manual(values = c("black", "white", "orange"), na.value="gray50",
+                      aesthetics = c("colour", "fill"))+ #orange=2
+    
+    
+    # facet_grid(
+    #   rows = vars(time),
+    #   scales = "free", 
+    #   space = "free",
+    #   labeller = label_wrap_gen(width=15)
+    #   ) + 
+    scale_x_discrete(expand = c(0,0))+
+    theme(axis.text.x = element_text(angle=90),
+          axis.text.y = element_blank(),
+          axis.ticks.y= element_blank()
+    )+
+    theme(
+      strip.background = element_rect(
+        color="black", fill="#FC4E07", size=1.5, linetype="solid"
+      )
+    ) +
+    theme(legend.key=element_rect(colour="black")) +
+    theme(panel.spacing = unit(1, "pt"))+
+    labs(y = "cells")+
+    labs(title = paste("Pre-inference input matrix {",str__na, ";", str__one, ";", str__zero,"}"))
+  g
+  
+  ####
+  
+  
   # make Oncoprint
   n_rows=0
   for (t in seq(1, length(time_points)))
