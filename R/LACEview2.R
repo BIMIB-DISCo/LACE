@@ -343,7 +343,7 @@ lace_interface <- function (B_mat,
     clone_labels
 
                                         #library("RColorBrewer")
-    colours = as.list(brewer.pal(n = nrow(prevalence), name = "Paired"))
+    #colours = as.list(brewer.pal(n = nrow(prevalence), name = "Paired"))
     colours =  as.list(colorRampPalette(brewer.pal(12, "Paired"))(nrow(prevalence)))
     names(colours)<-rownames(B)
     colours

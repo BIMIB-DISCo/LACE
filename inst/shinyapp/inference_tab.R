@@ -334,19 +334,20 @@ show_result <- function (rs, show = TRUE) {
         
         #browser()
         prev_graph <- x$prevalence %>% as.data.frame() %>%  select(-Total) %>% t() %>% as.data.frame()
-        prev_graph <- prev_graph %>% 
+        prev_graph_w <- prev_graph %>% 
           as_tibble(rownames = "time") %>% 
           pivot_longer(cols = -time, names_to = "clone", values_to = "prevalence") %>% 
           mutate(clone=factor(clone, levels=unique(clone)))
         #prev_graph
-        colours = brewer.pal(n = ncol(prev_graph), name = "Paired")
+        #colours = brewer.pal(n = ncol(prev_graph), name = "Paired")
+        colours =  colorRampPalette(brewer.pal(12, "Paired"))(ncol(prev_graph))
         
-        pl1 <- ggplot(prev_graph, aes(x=time, y=prevalence, color=clone, group=clone, label=round(prevalence, digits=2))) +
+        pl1 <- ggplot(prev_graph_w, aes(x=time, y=prevalence, color=clone, group=clone, label=round(prevalence, digits=2))) +
           geom_line() + geom_point(size=3) + scale_color_manual(values=colours)
         #+
         #geom_text_repel(box.padding   = 0.7, point.padding = 0.0, segment.color = 'black')
         
-        pl2 <- ggplot(prev_graph, aes(x=time, y=prevalence, group=clone, color=clone, fill=clone)) + 
+        pl2 <- ggplot(prev_graph_w, aes(x=time, y=prevalence, group=clone, color=clone, fill=clone)) + 
           geom_area(alpha=0.8 , size=0.5, colour="black") + 
           geom_point(size=1, colour="black",  position = "stack") +
           scale_fill_manual(values=colours) + 
