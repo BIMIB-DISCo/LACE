@@ -14,7 +14,7 @@ av_compute <- function(anovar_convert,
                        anovar_db,
                        vcf_in_dir,
                        vcf_annot_dir,
-                       pattern = '.*.filtered.vcf$',
+                       pattern = '.*.vcf$',
                        v_ref = 'hg38',
                        InFilesToDo = NULL,
                        OutFilesToRm = NULL) {

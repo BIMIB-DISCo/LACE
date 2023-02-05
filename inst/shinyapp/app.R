@@ -633,6 +633,7 @@ ui <- fluidPage(
                            ## Variants tab
                            tabPanel(
                              "Variants",
+                             fluidRow(column(2,
                              br(),
                              tags$h3("Variant filters"),
                              br(),
@@ -730,6 +731,12 @@ ui <- fluidPage(
                              br(),
                              ## tags$b("Result"),
                              ## verbatimTextOutput("va_filters")
+                             ),
+                             column(2,
+                                    #plot
+                                    plotOutput('va_filtered_bin_hmap')
+                                    )
+                             )
                            ),
 
 
@@ -949,6 +956,12 @@ server <- function(input, output, session) {
   setwd(.my_pkg_dir) # per non disperdersi
 
   inputs <- list()
+  inputs[["null_reactiveVal"]] <- reactiveVal("")
+  
+  observe({
+    input$null_reactiveVal > 0
+  }, )
+  
   types_ <- reactiveVal()
 
   session$onSessionEnded(function() {
@@ -1509,6 +1522,7 @@ server <- function(input, output, session) {
   ### Variational functions ####
 
   va_exec <- function () {
+    #browser()
 
     if (length(va_out_dir_()) == 0)
       return()
@@ -1517,12 +1531,13 @@ server <- function(input, output, session) {
         !is.integer(inputs[['dp_out_dir']]())) {
       if (dir.exists(thr_out_dir_()) &&
           dir.exists(dp_out_dir_())) {
-        # NA_compute(va_depth_minimum_(),
-        #            va_missing_values_max_(),
-        #            thr_out_dir_(),
-        #            dp_out_dir_(),
-        #            va_out_dir_(),
-        #            inputs[['m_time_points']]())
+        snpMut_filt_freq_reduced <-
+          NA_compute(va_depth_minimum_(),
+                   va_missing_values_max_(),
+                   thr_out_dir_(),
+                   dp_out_dir_(),
+                   va_out_dir_(),
+                   inputs[['m_time_points']]())
         files <- NA_compute2_load(thr_out_dir_(),
                                   dp_out_dir_(),
                                   va_out_dir_())
@@ -1547,7 +1562,7 @@ server <- function(input, output, session) {
           dir.exists(dp_out_dir_()))
 
         if (any(!sapply(files_(), is.null))){ # files not found
-          cells_aggregate_info <-
+          NA_c2 <-
             NA_compute2(va_depth_minimum_(),
                         va_minumum_median_total_(),
                         va_minumum_median_mutation_(),
@@ -1557,8 +1572,13 @@ server <- function(input, output, session) {
                         inputs[['m_time_points']](),
                         verified_genes_(),
                         files_())
-          va_compute_output_(cells_aggregate_info)
-
+          va_compute_output_(NA_c2$distinct_mutations)
+          
+          ggsave(file=file.path(inputs[["project_folder_std"]](),"D.svg"), plot=NA_c2$g, width=10, height=10)
+          
+          output$va_filtered_bin_hmap <- renderPlot({
+            NA_c2$g
+          })
 
 
         } else {
@@ -1692,6 +1712,7 @@ server <- function(input, output, session) {
 
   observeEvent(input$va_exec,{
     req(va_iv$is_valid())
+    #browser()
     va_exec()
   })
 
@@ -1700,8 +1721,15 @@ server <- function(input, output, session) {
                    va_depth_minimum_(),
                    va_missing_values_max_(),
                    va_minumum_median_total_(),
-                   va_minumum_median_mutation_(), verified_genes_())
-  }, { va_exec2() },
+                   va_minumum_median_mutation_(),
+                   # va_missing_values_max_(), #
+                   verified_genes_()
+                   )
+  }, 
+  { 
+    # va_exec() #
+    va_exec2() 
+  },
   ignoreNULL = FALSE,
   ignoreInit = TRUE)
 
@@ -2336,7 +2364,7 @@ server <- function(input, output, session) {
     Opt$ExtraFiles = NULL
 
     chk_files <- OneInOneOut(av_vcf_in_dir_(),
-                             InFilesMask = ".*filtered.vcf$",
+                             InFilesMask = ".*vcf$",
                              av_vcf_out_dir_(),
                              OutExt =
                                "anninput.exonic_variant_function",

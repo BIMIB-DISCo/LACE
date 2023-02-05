@@ -94,7 +94,15 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
 
 
   for(i in 1:nrow(distinct_mutations)) {
-    curr = snpMut_filt_freq[which(snpMut_filt_freq$Gene%in%distinct_mutations[i,"Gene"]&snpMut_filt_freq$Chr%in%distinct_mutations[i,"Chr"]&snpMut_filt_freq$PosStart%in%distinct_mutations[i,"PosStart"]&snpMut_filt_freq$PosEnd%in%distinct_mutations[i,"PosEnd"]&snpMut_filt_freq$REF%in%distinct_mutations[i,"REF"]&snpMut_filt_freq$ALT%in%distinct_mutations[i,"ALT"]),]
+    curr = snpMut_filt_freq[
+      which(
+        snpMut_filt_freq$Gene%in%distinct_mutations[i,"Gene"] &
+          snpMut_filt_freq$Chr%in%distinct_mutations[i,"Chr"] & 
+          snpMut_filt_freq$PosStart%in%distinct_mutations[i,"PosStart"] & 
+          snpMut_filt_freq$PosEnd%in%distinct_mutations[i,"PosEnd"] & 
+          snpMut_filt_freq$REF%in%distinct_mutations[i,"REF"] & 
+          snpMut_filt_freq$ALT%in%distinct_mutations[i,"ALT"]),]
+    
     for (t in seq(1,length(time_points)) )
       distinct_mutations[i,paste0('FreqT',t)] = as.numeric(table(curr$Time)[time_points[[t]]]) / times[[t]]
 
@@ -110,12 +118,30 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
     distinct_mutations[i,"MedianDepthMut"] = as.numeric(median(curr$Allele_Ratio))
   }
   #distinct_mutations = distinct_mutations[-c(3,5,6,8),]
-  if (length(sort(unique(c(which(distinct_mutations$MedianDepth<minumum_median_total),which(distinct_mutations$MedianDepthMut<minumum_median_mutation)))))>0)
-    distinct_mutations = distinct_mutations[-sort(unique(c(which(distinct_mutations$MedianDepth<minumum_median_total),which(distinct_mutations$MedianDepthMut<minumum_median_mutation)))),]
+  if (
+    length(
+      sort(
+        unique(
+          c(
+            which(distinct_mutations$MedianDepth<minumum_median_total),
+            which(distinct_mutations$MedianDepthMut<minumum_median_mutation)
+            )
+          )
+        )
+      )>0)
+    distinct_mutations = distinct_mutations[
+      -sort(
+        unique(c(
+          which(distinct_mutations$MedianDepth<minumum_median_total),
+          which(distinct_mutations$MedianDepthMut<minumum_median_mutation)
+          ))
+        ),]
+  
   if (nrow(distinct_mutations)==0)
     return(NULL)
+  
   rownames(distinct_mutations) = 1:nrow(distinct_mutations)
-  valid_distinct_mutations = distinct_mutations
+  valid_distinct_mutations = distinct_mutations #
   valid_distinct_mutations_values = NULL
   for(i in 1:nrow(valid_distinct_mutations)) {
     valid_distinct_mutations_values = c(valid_distinct_mutations_values,paste0(valid_distinct_mutations[i,c("Chr","PosStart")],collapse="_"))
@@ -139,7 +165,13 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
     curr_end = valid_distinct_mutations[i,"PosEnd"]
     curr_ref = valid_distinct_mutations[i,"REF"]
     curr_alt = valid_distinct_mutations[i,"ALT"]
-    curr_mutant_cells = which(cells_aggregate_info$Gene==curr_gene&cells_aggregate_info$Chr==curr_chr&cells_aggregate_info$PosStart==curr_start&cells_aggregate_info$PosEnd==curr_end&cells_aggregate_info$REF==curr_ref&cells_aggregate_info$ALT==curr_alt)
+    curr_mutant_cells = which(cells_aggregate_info$Gene==curr_gene & 
+                                cells_aggregate_info$Chr==curr_chr & 
+                                cells_aggregate_info$PosStart==curr_start & 
+                                cells_aggregate_info$PosEnd==curr_end & 
+                                cells_aggregate_info$REF==curr_ref & 
+                                cells_aggregate_info$ALT==curr_alt
+                              )
     curr_mutant_cells = cells_aggregate_info$scID[curr_mutant_cells]
     mutations[curr_mutant_cells[which(curr_mutant_cells%in%rownames(mutations))],i] = 1
   }
@@ -163,37 +195,63 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
 
   
   ####
+  browser()
+  
   t_order <- names(D)
   t_order <- str_replace_all(t_order, pattern = "_", replacement = " ")
+  #if each does not start with Tnumber then paste
   names(D) <- t_order
   
-  wD <- lapply(seq_along(D), function(i){as_tibble(D[[i]], rownames = "cell") %>% as.data.frame() %>% mutate( time = t_order[i]) %>% pivot_longer( col = -c(time, cell), names_to = "mutation", values_to = "value")})
-  wD <- bind_rows(wD)
-  #wD$value <- as.factor(as.integer(wD$value))
   
-  wD_ <- lapply(seq_along(D), function(i){as_tibble(D[[i]], rownames = "cell") %>% as.data.frame() %>% mutate( time = t_order[i])})
-  wD_ <- bind_rows(wD_)
-  #wD_$time <- as.factor(wD_$time)
-  #levels(wD_$time)
+  D1 <- lapply(D, FUN=function(x){as_tibble(x,rownames = "cell")}) %>%
+    bind_rows(.id = "time")  %>%
+    mutate(time=factor(time, levels=t_order, ordered=T)) %>%
+    {bind_cols(.[,1], .[,3:dim(.) [2]], .[,2])}
   
-  s <- wD_ %>% group_by(time) %>% summarise(across(where(is.numeric), ~sum(.,na.rm = TRUE)))
-  s <- s %>% pivot_longer(-1) %>% pivot_wider(names_from = 1, values_from = value)
-  s <- s %>% arrange(across(everything())) 
+  
+  
+  D1 <- D1 %>%
+    mutate(ordered=cell) %>%
+    arrange(across(everything(),
+                   #function(x){
+                   #  apply(x,FUN=
+                   #                    function(y){
+                   #                      if(is.na(y))
+                   #                        return(0)
+                   #                      else
+                   #                        return(y)
+                   #                    }
+                   #                    )
+                   #!is.na(x)
+                   #                    }
+                   
+    )) %>%
+    mutate(ordered=factor(ordered, levels = unique(ordered, fromLast=T), ordered = T))
+  
+  
+  
+  
+  
+  
+  s <- D1 %>% group_by(time) %>% 
+    summarise(across(where(is.numeric), ~sum(.,na.rm = TRUE))) %>% 
+    pivot_longer(-1) %>% 
+    pivot_wider(names_from = 1, values_from = value) %>% 
+    arrange(across(everything()))
   s$name
   
-  #wD__ <- wD_ %>% group_by(c(time, mutation)) %>% arrange(value, .by_group = TRUE)
-  #wD__
   
-  lD <- wD_ %>% pivot_longer( col = -c(time, cell), names_to = "mutation", values_to = "value")
+  #Dn <- D1 %>% mutate(across(where(is.numeric), ~ scale(.x)))
   
-  lD <- lD  %>% group_by(time, mutation) %>% arrange(-value, .by_group = TRUE)
+  Dw <- D1 %>%
+    pivot_longer( col = -c(time, cell,ordered), names_to = "mutation", values_to = "value") %>%
+    mutate(value = factor(as.integer(value), levels=c(0,1,"NA"), exclude = NULL, ordered = T)) %>%
+    mutate(mutation = factor(mutation, levels=s$name, ordered=TRUE))
   
-  #wD_ %>% mutate(sumVar = rowSums(select(., !c(cell,time)),na.rm = TRUE))
   
-  lD$value <- factor(as.integer(lD$value), levels=c(0,1), exclude = "", ordered=T)
-  lD$mutation <- factor(lD$mutation, levels=s$name, ordered=TRUE)
   
-  per_mut_site <- as.data.frame(lD) %>% group_by(mutation)
+  
+  per_mut_site <- as.data.frame(Dw) %>% group_by(mutation)
   n_na <- (per_mut_site %>% mutate(cnt=sum(is.na(value))) )$cnt
   n_one <- (per_mut_site %>% mutate(cnt=sum(value==1, na.rm = TRUE)) )$cnt
   n_zero <- (per_mut_site %>% mutate(cnt=sum(value==0, na.rm = TRUE)) )$cnt
@@ -202,21 +260,18 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   str__one <- paste0("# \"1\" = [",paste(range(n_one), collapse = ", "),"]")
   
   
-  g <- 
-    ggplot(lD, aes(mutation, y=cell, fill= value)) +
-    #ggplot(lD, aes(mutation, y=reorder(cell, ifelse(mutation == "ARPC2_2_218249894_C_T", value, 1) ), fill= value)) + 
-    geom_tile()+ 
+  g <- ggplot(Dw, aes(mutation, y=ordered, fill= value)) +
+    geom_tile()+
     
     scale_fill_manual(values = c("black", "white", "orange"), na.value="gray50",
                       aesthetics = c("colour", "fill"))+ #orange=2
     
-    
-    # facet_grid(
-    #   rows = vars(time),
-    #   scales = "free", 
-    #   space = "free",
-    #   labeller = label_wrap_gen(width=15)
-    #   ) + 
+    facet_grid(
+      rows = vars(time),
+      scales = "free",
+      space = "free",
+      labeller = label_wrap_gen(width=15)
+    ) +
     scale_x_discrete(expand = c(0,0))+
     theme(axis.text.x = element_text(angle=90),
           axis.text.y = element_blank(),
@@ -231,7 +286,9 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
     theme(panel.spacing = unit(1, "pt"))+
     labs(y = "cells")+
     labs(title = paste("Pre-inference input matrix {",str__na, ";", str__one, ";", str__zero,"}"))
-  g
+  #g
+  #browser()
+  #ggsave(file=file.path(inputs[["project_folder_std"]](),"D.svg"), plot=g, width=10, height=10)
   
   ####
   
@@ -272,5 +329,5 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   distinct_mutations[['ResultantVarDepth']]<-apply(depth,2,var)
   num_columns <- sapply(distinct_mutations, is.numeric)
   distinct_mutations[num_columns] <- lapply(distinct_mutations[num_columns], round, 3)
-  return(distinct_mutations)
+  return(list("distinct_mutations"=distinct_mutations, "g"=g))
 }
