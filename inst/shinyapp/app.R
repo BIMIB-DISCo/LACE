@@ -633,7 +633,7 @@ ui <- fluidPage(
                            ## Variants tab
                            tabPanel(
                              "Variants",
-                             fluidRow(column(2,
+                             fluidRow(column(4,
                              br(),
                              tags$h3("Variant filters"),
                              br(),
@@ -718,25 +718,27 @@ ui <- fluidPage(
                                  "Variant gene selection",
                                  text[["va_verified_genes"]]
                                ),
-                             br(),
-                             br(),
-
-                             DTOutput("va_out"),
-
-                             br(), br(),
-                             tags$b("Run"),
-                             br(),
-                             actionButton("va_exec", "Select variants"),
-                             br(),
-                             br(),
-                             ## tags$b("Result"),
-                             ## verbatimTextOutput("va_filters")
                              ),
-                             column(2,
+                             column(8,
                                     #plot
-                                    plotOutput('va_filtered_bin_hmap')
-                                    )
+                                    plotOutput('va_filtered_bin_hmap', height = 800)
                              )
+                           ),
+                           br(),
+                           br(),
+
+                           DTOutput("va_out"),
+
+                           br(), br(),
+                           tags$b("Run"),
+                           br(),
+                           actionButton("va_exec", "Select variants"),
+                           br(),
+                           br(),
+                           ## tags$b("Result"),
+                           ## verbatimTextOutput("va_filters")
+                             
+                             
                            ),
 
 
@@ -1506,6 +1508,8 @@ server <- function(input, output, session) {
     reactive(inputs[['va_minumum_median_mutation']]())
   va_out_dir_ <-
     reactive(parseDirPath(roots=roots_dir, inputs[['va_out_dir']]()))
+  
+  va_non_NA_genes_ <- reactiveVal(NULL)
   va_compute_output_ <- reactiveVal(NULL)
 
   files_ <- reactiveVal(NULL)
@@ -1531,13 +1535,17 @@ server <- function(input, output, session) {
         !is.integer(inputs[['dp_out_dir']]())) {
       if (dir.exists(thr_out_dir_()) &&
           dir.exists(dp_out_dir_())) {
-        snpMut_filt_freq_reduced <-
+        valid_genes_names <-
           NA_compute(va_depth_minimum_(),
                    va_missing_values_max_(),
                    thr_out_dir_(),
                    dp_out_dir_(),
                    va_out_dir_(),
                    inputs[['m_time_points']]())
+        
+        #browser()
+        va_non_NA_genes_(valid_genes_names)
+        
         files <- NA_compute2_load(thr_out_dir_(),
                                   dp_out_dir_(),
                                   va_out_dir_())
@@ -1571,14 +1579,15 @@ server <- function(input, output, session) {
                         va_out_dir_(),
                         inputs[['m_time_points']](),
                         verified_genes_(),
+                        va_non_NA_genes_(),
                         files_())
           va_compute_output_(NA_c2$distinct_mutations)
           
-          ggsave(file=file.path(inputs[["project_folder_std"]](),"D.svg"), plot=NA_c2$g, width=10, height=10)
+          #ggsave(file=file.path(inputs[["project_folder_std"]](),"D.svg"), plot=NA_c2$g, width=10, height=10)
           
           output$va_filtered_bin_hmap <- renderPlot({
             NA_c2$g
-          })
+          }, height = 800)
 
 
         } else {
@@ -1722,12 +1731,11 @@ server <- function(input, output, session) {
                    va_missing_values_max_(),
                    va_minumum_median_total_(),
                    va_minumum_median_mutation_(),
-                   # va_missing_values_max_(), #
                    verified_genes_()
                    )
   }, 
   { 
-    # va_exec() #
+    va_exec()
     va_exec2() 
   },
   ignoreNULL = FALSE,

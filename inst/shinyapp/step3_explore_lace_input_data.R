@@ -46,19 +46,27 @@ NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, o
   for (t in time_points)
     time_points_NA[[t]] = NULL
 
+  #browser()
   for(i in 1:ncol(mycellsdata[[1]]))
     for (t in time_points)
       time_points_NA[[t]] = c(time_points_NA[[t]],length(which(is.na(mycellsdata[[t]][,i])))/nrow(mycellsdata[[t]]))
 
-  #valid_genes = sort(unique(colnames(mycellsdata[[1]])[which(all(time_points_NA<=missing_values_max))]))
-  valid_genes = colSums(do.call(rbind, lapply(time_points_NA, function(x){x<=missing_values_max})))
+  ##valid_genes = sort(unique(colnames(mycellsdata[[1]])[which(all(time_points_NA<=missing_values_max))]))
+  #valid_genes = colSums(do.call(rbind, lapply(time_points_NA, function(x){x<=missing_values_max})))
+  
+  #valid_genes <- colnames(mycellsdata[[1]])[apply(do.call(rbind, lapply(time_points_NA, function(x){x<=missing_values_max})), FUN = all, MARGIN = 2)]
+  # browser()
+  valid_genes <- colnames(mycellsdata[[1]])[apply(bind_rows(lapply(time_points_NA, function(x){x<=missing_values_max})), FUN = all, MARGIN = 1)]
+  #valid_genes <- colnames(mycellsdata[[1]])[(data.frame(bind_rows(time_points_NA)<=missing_values_max) %>% rowwise() %>% mutate(y=all(c_across(everything())) ))$y]
   valid = NULL
 
-  for(i in valid_genes) {
-    valid = c(valid,unique(snpMut_filt_freq$Gene[grep(i,snpMut_filt_freq$UIDsnp)]))
-  }
-  valid = paste0(valid,"_",valid_genes)
-
+  #browser()
+  #for(i in valid_genes) {
+  #  valid = c(valid,unique(snpMut_filt_freq$Gene[grep(i,snpMut_filt_freq$UIDsnp)]))
+  #}
+  
+  #valid = paste0(valid,"_",valid_genes)
+  valid = unique(grep(paste0(valid_genes, collapse = "|"), unique(snpMut_filt_freq$UIDsnp), value = T ))
 
   # get names of valid genes
   valid_genes_names = NULL
@@ -78,7 +86,7 @@ NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, o
 
   write.table(snpMut_filt_freq_reduced,file=file.path(out_dir,"snpMut_filt_freq_reduced.txt"),append=FALSE,quote=FALSE,sep="\t",row.names=FALSE,col.names=TRUE)
   
-  return(snpMut_filt_freq_reduced)
+  return(valid_genes_names)
 
 }
 

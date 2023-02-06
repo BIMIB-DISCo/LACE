@@ -23,9 +23,9 @@ NA_compute2_load <- function(data_dir, depth_dir, out_dir) {
   return( list(cells_aggregate_info=cells_aggregate_info, snpMut_filt_freq=snpMut_filt_freq, depth=depth))
 }
 
-NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_mutation, data_dir, depth_dir, out_dir, time_points, verified_genes, files) {
+NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_mutation, data_dir, depth_dir, out_dir, time_points, verified_genes, non_NA_genes, files) {
 
-  #browser()
+  browser()
 
   cells_aggregate_info <- files$cells_aggregate_info
   snpMut_filt_freq <- files$snpMut_filt_freq
@@ -63,12 +63,23 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
       c("scID","Time","Gene","Chr","PosStart","PosEnd","REF",
         "ALT","MutType","depth","Allele_Ratio")
       ]
+  
+  if (!is.null(non_NA_genes))
+    snpMut_filt_freq = snpMut_filt_freq[
+      which(snpMut_filt_freq$Gene %in% non_NA_genes),
+      c("scID","Time","Gene","Chr","PosStart","PosEnd","REF",
+        "ALT","MutType","depth","Allele_Ratio")
+    ]
 
   snpMut_filt_freq = snpMut_filt_freq[order(snpMut_filt_freq[,3],snpMut_filt_freq[,4],snpMut_filt_freq[,5],snpMut_filt_freq[,6],snpMut_filt_freq[,7],snpMut_filt_freq[,8],snpMut_filt_freq[,9],snpMut_filt_freq[,1],snpMut_filt_freq[,2],snpMut_filt_freq[,10],snpMut_filt_freq[,11]),]
 
   # compute frequency of each mutation
   #distinct_mutations = unique(snpMut_filt_freq[,c("Gene","Chr","PosStart","PosEnd","REF","ALT","ALT","ALT","ALT","ALT","ALT","ALT")])
   distinct_mutations = unique(snpMut_filt_freq[,c("Gene","Chr","PosStart","PosEnd","REF","ALT")])
+  
+  if (nrow(distinct_mutations)==0)
+    return(list("distinct_mutations"=distinct_mutations, "g"=NULL))
+  
   #time_points=c("before treatment", "4d on treatment", "28d on treatment", "57d on treatment")
   for (t in seq(1,length(time_points)) )
     distinct_mutations[[paste0('FreqT',t)]] = NA
@@ -138,7 +149,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
         ),]
   
   if (nrow(distinct_mutations)==0)
-    return(NULL)
+    return(list("distinct_mutations"=distinct_mutations, "g"=NULL))
   
   rownames(distinct_mutations) = 1:nrow(distinct_mutations)
   valid_distinct_mutations = distinct_mutations #
@@ -195,18 +206,27 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
 
   
   ####
-  browser()
+  #browser()
   
-  t_order <- names(D)
-  t_order <- str_replace_all(t_order, pattern = "_", replacement = " ")
+  t_order <- 
+    D %>% 
+    names() %>% 
+    str_replace_all(pattern = "_", replacement = " ") %>% 
+    data.frame("times"=.) %>% 
+    mutate(
+      times=ifelse(str_starts(times, pattern = "T[0-9] ", negate = TRUE), 
+                   paste0('T', row_number(), " ",times), times)
+    )
+  
   #if each does not start with Tnumber then paste
-  names(D) <- t_order
+  names(D) <- t_order$times
   
   
   D1 <- lapply(D, FUN=function(x){as_tibble(x,rownames = "cell")}) %>%
     bind_rows(.id = "time")  %>%
-    mutate(time=factor(time, levels=t_order, ordered=T)) %>%
-    {bind_cols(.[,1], .[,3:dim(.) [2]], .[,2])}
+    mutate(time=factor(time, levels=t_order$times, ordered=T)) %>%
+    relocate(cell, .after = last_col())
+    #{bind_cols(.[,1], .[,3:dim(.) [2]], .[,2])} # do better
   
   
   
@@ -238,7 +258,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
     pivot_longer(-1) %>% 
     pivot_wider(names_from = 1, values_from = value) %>% 
     arrange(across(everything()))
-  s$name
+  #s$name
   
   
   #Dn <- D1 %>% mutate(across(where(is.numeric), ~ scale(.x)))
@@ -255,9 +275,9 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   n_na <- (per_mut_site %>% mutate(cnt=sum(is.na(value))) )$cnt
   n_one <- (per_mut_site %>% mutate(cnt=sum(value==1, na.rm = TRUE)) )$cnt
   n_zero <- (per_mut_site %>% mutate(cnt=sum(value==0, na.rm = TRUE)) )$cnt
-  str__na <- paste0("# \"NA\" = [",paste(range(n_na), collapse = ", "),"]")
-  str__zero <- paste0("# \"0\" = [",paste(range(n_zero), collapse = ", "),"]")
-  str__one <- paste0("# \"1\" = [",paste(range(n_one), collapse = ", "),"]")
+  str__na <- paste0("# \"NA\" = [", paste(range(n_na), collapse = ", "),"]")
+  str__zero <- paste0("# \"0\" = [", paste(range(n_zero), collapse = ", "),"]")
+  str__one <- paste0("# \"1\" = [", paste(range(n_one), collapse = ", "),"]")
   
   
   g <- ggplot(Dw, aes(mutation, y=ordered, fill= value)) +
@@ -273,7 +293,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
       labeller = label_wrap_gen(width=15)
     ) +
     scale_x_discrete(expand = c(0,0))+
-    theme(axis.text.x = element_text(angle=90),
+    theme(axis.text.x = element_text(angle=90), ##it is shifted why?
           axis.text.y = element_blank(),
           axis.ticks.y= element_blank()
     )+
@@ -285,7 +305,8 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
     theme(legend.key=element_rect(colour="black")) +
     theme(panel.spacing = unit(1, "pt"))+
     labs(y = "cells")+
-    labs(title = paste("Pre-inference input matrix {",str__na, ";", str__one, ";", str__zero,"}"))
+    labs(title = paste("Pre-inference input matrix {",str__na, ";", str__one, ";", str__zero,"}"))+
+    theme(text = element_text(size = 14))  
   #g
   #browser()
   #ggsave(file=file.path(inputs[["project_folder_std"]](),"D.svg"), plot=g, width=10, height=10)
