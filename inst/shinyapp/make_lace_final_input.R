@@ -64,12 +64,6 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
         "ALT","MutType","depth","Allele_Ratio")
       ]
   
-  if (!is.null(non_NA_genes))
-    snpMut_filt_freq = snpMut_filt_freq[
-      which(snpMut_filt_freq$Gene %in% non_NA_genes),
-      c("scID","Time","Gene","Chr","PosStart","PosEnd","REF",
-        "ALT","MutType","depth","Allele_Ratio")
-    ]
 
   snpMut_filt_freq = snpMut_filt_freq[order(snpMut_filt_freq[,3],snpMut_filt_freq[,4],snpMut_filt_freq[,5],snpMut_filt_freq[,6],snpMut_filt_freq[,7],snpMut_filt_freq[,8],snpMut_filt_freq[,9],snpMut_filt_freq[,1],snpMut_filt_freq[,2],snpMut_filt_freq[,10],snpMut_filt_freq[,11]),]
 
@@ -107,12 +101,12 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   for(i in 1:nrow(distinct_mutations)) {
     curr = snpMut_filt_freq[
       which(
-        snpMut_filt_freq$Gene%in%distinct_mutations[i,"Gene"] &
-          snpMut_filt_freq$Chr%in%distinct_mutations[i,"Chr"] & 
-          snpMut_filt_freq$PosStart%in%distinct_mutations[i,"PosStart"] & 
-          snpMut_filt_freq$PosEnd%in%distinct_mutations[i,"PosEnd"] & 
-          snpMut_filt_freq$REF%in%distinct_mutations[i,"REF"] & 
-          snpMut_filt_freq$ALT%in%distinct_mutations[i,"ALT"]),]
+        snpMut_filt_freq$Gene %in% distinct_mutations[i,"Gene"] &
+          snpMut_filt_freq$Chr %in% distinct_mutations[i,"Chr"] & 
+          snpMut_filt_freq$PosStart %in% distinct_mutations[i,"PosStart"] & 
+          snpMut_filt_freq$PosEnd %in% distinct_mutations[i,"PosEnd"] & 
+          snpMut_filt_freq$REF %in% distinct_mutations[i,"REF"] & 
+          snpMut_filt_freq$ALT %in% distinct_mutations[i,"ALT"]),]
     
     for (t in seq(1,length(time_points)) )
       distinct_mutations[i,paste0('FreqT',t)] = as.numeric(table(curr$Time)[time_points[[t]]]) / times[[t]]
@@ -128,6 +122,21 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
     distinct_mutations[i,"MedianDepth"] = as.numeric(median(curr$depth))
     distinct_mutations[i,"MedianDepthMut"] = as.numeric(median(curr$Allele_Ratio))
   }
+  
+  
+#   distinct_mutations %>% add_count(Time, name= tot_per_time) %>%
+#     arrange(name) %>%
+#     group_by(Gene,Chr,PosStart,PosEnd,REF,ALT,Time) %>% 
+#     pivot_wider(names_from = wool, values_from = Time, 
+#                 
+#                 mutate( )%>%
+#                   
+#                   group_by(Gene,Chr,PosStart,PosEnd,REF,ALT) %>%
+#                   mutate(MedianDepth"] = median(depth)) %>%
+# mutate(MedianDepth"] = median(Allele_Ratio))
+#                 
+  
+  
   #distinct_mutations = distinct_mutations[-c(3,5,6,8),]
   if (
     length(
@@ -147,12 +156,19 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
           which(distinct_mutations$MedianDepthMut<minumum_median_mutation)
           ))
         ),]
+  #distinct_mutations <- distinct_mutations %>% filter(MedianDepth>minumum_median_total & MedianDepthMut>minumum_median_mutation)
   
   if (nrow(distinct_mutations)==0)
     return(list("distinct_mutations"=distinct_mutations, "g"=NULL))
   
   rownames(distinct_mutations) = 1:nrow(distinct_mutations)
-  valid_distinct_mutations = distinct_mutations #
+  
+
+  valid_distinct_mutations = subset(distinct_mutations,distinct_mutations$Gene %in% non_NA_genes)
+  if (nrow(valid_distinct_mutations)==0)
+    return(list("distinct_mutations"=distinct_mutations, "g"=NULL))
+  
+  
   valid_distinct_mutations_values = NULL
   for(i in 1:nrow(valid_distinct_mutations)) {
     valid_distinct_mutations_values = c(valid_distinct_mutations_values,paste0(valid_distinct_mutations[i,c("Chr","PosStart")],collapse="_"))
