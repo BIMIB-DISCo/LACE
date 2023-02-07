@@ -55,7 +55,7 @@
 # #' @import SummarizedExperiment
 #' @import data.tree
 #' @importFrom Rfast rowMaxs
-#' @importFrom stats runif rnorm
+#' @importFrom stats runif rnorm setNames
 #'
 LACE <- function( D,
                   lik_w = NULL,

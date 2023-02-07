@@ -242,7 +242,8 @@
 
     scMutInfo <-
       scMutInfo[((!is.na(scMutInfo$Allele_Ratio)) &
-                   (scMutInfo$Allele_Ratio >= thr_alleles_ratio)),]
+                   (scMutInfo$Allele_Ratio >= thr_alleles_ratio#*scMutInfo$depth
+                    )),]
 
     mutWOrs <- scMutInfo[scMutInfo$rs_ID == ".", ]
     mutWrs <- scMutInfo[scMutInfo$rs_ID != ".", ]
@@ -344,6 +345,8 @@
     saveRDS(snpMut_filt_freq,
             file = paste0(file.path(thr_out_dir,
                                     'snpMut_filt_freq.rds')))
+    
+    return(snpMut_filt_freq)
   }
 
 ### end of file -- filters_computation.R

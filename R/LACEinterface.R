@@ -14,6 +14,7 @@
 #' @rawNamespace import(shiny, except = c("runExample", "dataTableOutput", "renderDataTable","validate"))
 #' @import shinythemes
 #' @import dplyr
+#' @import forcats
 #' @import tidyr
 #' @import readr
 #' @import shinyFiles
@@ -102,6 +103,8 @@ LACEview <- function() {
     .GlobalEnv$.my_tmp_file <- file.path(tempdir(), "test.log")
     .GlobalEnv$.my_lf <- logr::log_open(.GlobalEnv$.my_tmp_file)
     
+    msg <- ""
+    
     print(paste("[info] LACE: active folder =", .GlobalEnv$.my_actual_wd))
     print(paste("[info] LACE: log file =", .GlobalEnv$.my_tmp_file))
     
@@ -131,25 +134,25 @@ LACEview <- function() {
         
         if (str_length(samtools_path) == 0) {
             exec_bool(FALSE)
-            print(paste("[warning] LACE:", mySamtools, "not found."))
-            print(paste("[info] LACE:", mySamtools, "can be set using the UI."))
+            msg <- paste(msg, paste("[warning] LACE:", mySamtools, "not found."), sep = "\n")
+            msg <- paste(msg, paste("[info] LACE:", mySamtools, "can be set using the UI."), sep = "\n")
         }
         
         if (str_length(perl_path) == 0) {
             exec_bool(FALSE)
-            print(paste("[warning] LACE:", myPerl, "not found."))
+            msg <- paste(msg, paste("[warning] LACE:", myPerl, "not found."), sep = "\n")
         }	
         
         if (str_length(myAnnovar_script1_path) == 0) {
             #exec_bool <- FALSE
-            print(paste("[warning] LACE:", myAnnovar_script1, "not found."))
-            print(paste("[info] LACE:", myAnnovar_script1, "folder can be set using the UI."))
+            msg <- paste(msg, paste("[warning] LACE:", myAnnovar_script1, "not found."), sep = "\n")
+            msg <- paste(msg, paste("[info] LACE:", myAnnovar_script1, "folder can be set using the UI."), sep = "\n")
         }
         
         if (str_length(myAnnovar_script2_path) == 0) {
             #exec_bool <- FALSE 
-            print(paste("[warning] LACE:", myAnnovar_script2, "not found."))
-            print(paste("[info] LACE:", myAnnovar_script2, "folder can be set using the UI."))
+            msg <- paste(msg, paste("[warning] LACE:", myAnnovar_script2, "not found."), sep = "\n")
+            msg <- paste(msg, paste("[info] LACE:", myAnnovar_script2, "folder can be set using the UI."), sep = "\n")
         }
         
         if (myOS == "windows") {
@@ -159,7 +162,7 @@ LACEview <- function() {
                                    wait = TRUE)
             if (str_starts(exit_status, ".pl")) {
                 exec_bool(FALSE)
-                print("[warning] LACE:",".pl file extension is not associated to perl.")
+                msg <- paste(msg, "[warning] LACE:",".pl file extension is not associated to perl.", sep = "\n")
             }
         }
         
@@ -174,11 +177,16 @@ LACEview <- function() {
         #}
         
         
+        cat(msg)
         
+        ml_txt <- str_replace_all(
+          paste(msg, "\n", 
+                "Required software is not installed or cannot be found.",
+                "Do you wish to continue and start LACE UI?",
+                sep = "\n"), 
+          pattern = "\n", replacement = "<br>")
         
-        ml_txt <- paste("Required software is not installed or cannot be found.",
-                        "Do you wish to continue and start LACE UI?",
-                        sep = "\n")
+        ml_txt <- HTML(ml_txt)
           
         mod_dlg <- modalDialog(
           title = "LACE 2.0",

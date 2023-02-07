@@ -18,6 +18,7 @@ Imports:
     doParallel,
     sortable,
     dplyr,
+    forcats,
     data.tree, 
     graphics, 
     grDevices, 

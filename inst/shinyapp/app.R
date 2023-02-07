@@ -22,6 +22,7 @@ suppressMessages(library(shiny,
                     "show")))
 suppressMessages(library(shinythemes))
 suppressMessages(library(dplyr))
+suppressMessages(library(forcats))
 suppressMessages(library(tidyr))
 suppressMessages(library(readr))
 suppressMessages(library(shinyFiles))
@@ -1543,13 +1544,23 @@ server <- function(input, output, session) {
                    va_out_dir_(),
                    inputs[['m_time_points']]())
         
-        #browser()
+        browser()
         va_non_NA_genes_(valid_genes_names)
         
         files <- NA_compute2_load(thr_out_dir_(),
                                   dp_out_dir_(),
                                   va_out_dir_())
         files_(files)
+        
+        
+        inputs[['va_list_genes']](sort(unique(files$snpMut_filt_freq$Gene)))
+        
+        updateSelectizeInput(session,
+                             'va_verified_genes',
+                             choices = inputs[['va_list_genes']](),
+                             selected = inputs[['va_verified_genes']](),
+                             server = TRUE)
+        
       } else
         showNotification(paste("Annotated VCF folder does not exist"),
                          duration = 10,
@@ -1681,11 +1692,12 @@ server <- function(input, output, session) {
                          sep = '\t',
                          stringsAsFactors = FALSE)
             list_gene_symbols <- ref_info[, 13] 
-            inputs[['va_list_genes']](list_gene_symbols)
-            updateSelectizeInput(session,
-                                 'va_verified_genes',
-                                 choices = inputs[['va_list_genes']](),
-                                 server = TRUE)
+            #inputs[['va_list_genes']](list_gene_symbols)
+            #updateSelectizeInput(session,
+            #                     'va_verified_genes',
+            #                     choices = inputs[['va_list_genes']](),
+            #                     server = TRUE)
+            
             ## if (file.exists(file.path( av_anovar_db_dir_(), "snpMut_filt_freq.rds"))){
             ##  print('LOAD FILE2')
             ##  snpMut_filt_freq <- readRDS(file=paste0(file.path( thr_out_dir_(), "snpMut_filt_freq.rds")))
@@ -1722,6 +1734,17 @@ server <- function(input, output, session) {
   observeEvent(input$va_exec,{
     req(va_iv$is_valid())
     #browser()
+    
+    #inputs[['va_list_genes']](sort(unique(files$snpMut_filt_freq$Gene)))
+    #the update of inputs[['va_list_genes']] goes somewhere else
+    #
+    updateSelectizeInput(session,
+                         'va_verified_genes',
+                         choices = inputs[['va_list_genes']](),
+                         selected = inputs[['va_verified_genes']](),
+                         server = TRUE)
+    
+    
     va_exec()
   })
 
@@ -2125,7 +2148,8 @@ server <- function(input, output, session) {
                         InFilesToDo,
                         OutFilesToRm)
 
-        filter3_compute(thr_vcf_in_dir_(),
+        snpMut_filt_freq <- filter3_compute(
+                        thr_vcf_in_dir_(),
                         sc_metadata_(),
                         thr_alleles_ratio_(),
                         thr_maf_(),
@@ -2136,7 +2160,14 @@ server <- function(input, output, session) {
                         inputs[['m_time_points']](),
                         InFilesToDo,
                         OutFilesToRm)
-
+        
+        inputs[['va_list_genes']](sort(unique(snpMut_filt_freq$Gene)))
+        
+        updateSelectizeInput(session,
+                             'va_verified_genes',
+                             choices = inputs[['va_list_genes']](),
+                             server = TRUE)
+        
         return(read_file(file.path(thr_vcf_in_dir_(),
                                    'stdout.log')))
       } else
