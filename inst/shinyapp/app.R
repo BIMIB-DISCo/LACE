@@ -634,12 +634,11 @@ ui <- fluidPage(
                            ## Variants tab
                            tabPanel(
                              "Variants",
-                             fluidRow(column(4,
                              br(),
                              tags$h3("Variant filters"),
                              br(),
                              helpText(text[["va_tab_help"]]),
-
+                             fluidRow(column(4,
                              br(), br(),
 
                              numericInput(
@@ -697,7 +696,9 @@ ui <- fluidPage(
                                  text[["va_minumum_median_mutation"]]
                                ),
                              br(),
-
+                             br(),
+                             br(),
+                             
                              selectizeInput(
                                'va_verified_genes',
                                'Select variant genes',
@@ -721,13 +722,17 @@ ui <- fluidPage(
                                ),
                              ),
                              column(8,
+                                    br(),
+                                    br(),
                                     #plot
-                                    plotOutput('va_filtered_bin_hmap', height = 800)
+                                    plotOutput('va_filtered_bin_hmap', height = 600)
                              )
                            ),
                            br(),
                            br(),
-
+                           tags$b("Overview of post-filtered mutations"),
+                           br(),
+                           br(),
                            DTOutput("va_out"),
 
                            br(), br(),
@@ -1536,6 +1541,9 @@ server <- function(input, output, session) {
         !is.integer(inputs[['dp_out_dir']]())) {
       if (dir.exists(thr_out_dir_()) &&
           dir.exists(dp_out_dir_())) {
+        
+        browser()
+        
         valid_genes_names <-
           NA_compute(va_depth_minimum_(),
                    va_missing_values_max_(),
@@ -1544,22 +1552,12 @@ server <- function(input, output, session) {
                    va_out_dir_(),
                    inputs[['m_time_points']]())
         
-        browser()
         va_non_NA_genes_(valid_genes_names)
         
         files <- NA_compute2_load(thr_out_dir_(),
                                   dp_out_dir_(),
                                   va_out_dir_())
         files_(files)
-        
-        
-        inputs[['va_list_genes']](sort(unique(files$snpMut_filt_freq$Gene)))
-        
-        updateSelectizeInput(session,
-                             'va_verified_genes',
-                             choices = inputs[['va_list_genes']](),
-                             selected = inputs[['va_verified_genes']](),
-                             server = TRUE)
         
       } else
         showNotification(paste("Annotated VCF folder does not exist"),
@@ -1592,13 +1590,14 @@ server <- function(input, output, session) {
                         verified_genes_(),
                         va_non_NA_genes_(),
                         files_())
+          browser()
           va_compute_output_(NA_c2$distinct_mutations)
           
           #ggsave(file=file.path(inputs[["project_folder_std"]](),"D.svg"), plot=NA_c2$g, width=10, height=10)
           
           output$va_filtered_bin_hmap <- renderPlot({
             NA_c2$g
-          }, height = 800)
+          }, height = 600)
 
 
         } else {
@@ -1684,6 +1683,8 @@ server <- function(input, output, session) {
           ref_files2[which.min(str_length(ref_files2))]
         ref_files2 <-
           file.path(av_anovar_db_dir_(), ref_files2)
+        
+        
         if (length(file.exists(ref_files2))>0) {
           if (file.exists(ref_files2)) {
             ref_info <-
@@ -1692,11 +1693,7 @@ server <- function(input, output, session) {
                          sep = '\t',
                          stringsAsFactors = FALSE)
             list_gene_symbols <- ref_info[, 13] 
-            #inputs[['va_list_genes']](list_gene_symbols)
-            #updateSelectizeInput(session,
-            #                     'va_verified_genes',
-            #                     choices = inputs[['va_list_genes']](),
-            #                     server = TRUE)
+            
             
             ## if (file.exists(file.path( av_anovar_db_dir_(), "snpMut_filt_freq.rds"))){
             ##  print('LOAD FILE2')
@@ -1710,6 +1707,19 @@ server <- function(input, output, session) {
                              type = "warning")
           }
         }
+        
+        #not necessary
+        if (file.exists(file.path( va_out_dir_(), "snpMut_filt_freq_reduced.rds"))) {
+          snpMut_filt_freq <- readRDS(file=paste0(file.path( va_out_dir_(), "snpMut_filt_freq_reduced.rds")))
+          inputs[['va_list_genes']](sort(unique(snpMut_filt_freq$Gene)))
+        } else
+          inputs[['va_list_genes']](list_gene_symbols)
+        
+        updateSelectizeInput(session,
+                             'va_verified_genes',
+                             choices = inputs[['va_list_genes']](),
+                             selected = inputs[['va_verified_genes']](),
+                             server = TRUE)
 
       }
     }
@@ -1718,8 +1728,9 @@ server <- function(input, output, session) {
 
   observeEvent(input[['va_verified_genes']], {
     ## req(input)
+    browser()
     inputs[['va_verified_genes']](input[['va_verified_genes']])
-  })
+  }, ignoreNULL = FALSE)
 
   
   
@@ -1733,19 +1744,25 @@ server <- function(input, output, session) {
 
   observeEvent(input$va_exec,{
     req(va_iv$is_valid())
-    #browser()
+    browser()
     
-    #inputs[['va_list_genes']](sort(unique(files$snpMut_filt_freq$Gene)))
-    #the update of inputs[['va_list_genes']] goes somewhere else
-    #
+    va_exec() 
+    
+    
+    if (file.exists(file.path( va_out_dir_(), "snpMut_filt_freq_reduced.rds"))) {
+      snpMut_filt_freq <- readRDS(file=paste0(file.path( va_out_dir_(), "snpMut_filt_freq_reduced.rds")))
+      inputs[['va_list_genes']](sort(unique(snpMut_filt_freq$Gene)))
+    }
+    
     updateSelectizeInput(session,
                          'va_verified_genes',
                          choices = inputs[['va_list_genes']](),
                          selected = inputs[['va_verified_genes']](),
                          server = TRUE)
     
-    
-    va_exec()
+    va_exec2()
+    browser()
+    print("a")
   })
 
 
@@ -1771,13 +1788,13 @@ server <- function(input, output, session) {
 
   output$va_out <-
     DT::renderDT(va_compute_output_(), server = TRUE)
-  output[['va_verified_genes']] <-
-    renderText(inputs[['va_verified_genes']]())
-  output[['va_list_genes']] <-
-    renderPrint(inputs[['va_list_genes']]())
-  output[['va_out_dir']] <-
-    renderText(parseDirPath(roots = roots_dir,
-                            inputs[['va_out_dir']]()))
+  #output[['va_verified_genes']] <-
+  #  renderText(inputs[['va_verified_genes']]())
+  #output[['va_list_genes']] <-
+  #  renderPrint(inputs[['va_list_genes']]())
+  #output[['va_out_dir']] <-
+  #  renderText(parseDirPath(roots = roots_dir,
+  #                          inputs[['va_out_dir']]()))
 
   output[['va_filters']] <-
     renderPrint({
@@ -2166,6 +2183,7 @@ server <- function(input, output, session) {
         updateSelectizeInput(session,
                              'va_verified_genes',
                              choices = inputs[['va_list_genes']](),
+                             selected = inputs[['va_verified_genes']](),
                              server = TRUE)
         
         return(read_file(file.path(thr_vcf_in_dir_(),

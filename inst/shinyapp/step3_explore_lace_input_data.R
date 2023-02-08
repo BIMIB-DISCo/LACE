@@ -3,7 +3,7 @@
 #################################################
 NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, out_dir, time_points) {
   # set working directory
-
+  browser()
   #library(stringr)
 
   #depth_minimum = 3 # minimum depth to set values to NA
@@ -84,7 +84,8 @@ NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, o
   snpMut_filt_freq_reduced = unique(snpMut_filt_freq[which(snpMut_filt_freq$Gene%in%valid_genes_names),c("Gene","Chr","PosStart","PosEnd","REF","ALT")])
   snpMut_filt_freq_reduced = snpMut_filt_freq_reduced[order(snpMut_filt_freq_reduced[,1],snpMut_filt_freq_reduced[,2],snpMut_filt_freq_reduced[,3],snpMut_filt_freq_reduced[,4],snpMut_filt_freq_reduced[,5],snpMut_filt_freq_reduced[,6]),]
 
-  write.table(snpMut_filt_freq_reduced,file=file.path(out_dir,"snpMut_filt_freq_reduced.txt"),append=FALSE,quote=FALSE,sep="\t",row.names=FALSE,col.names=TRUE)
+  saveRDS(snpMut_filt_freq_reduced, file=file.path(out_dir,"snpMut_filt_freq_reduced.rds"))
+  #write.table(snpMut_filt_freq_reduced,file=file.path(out_dir,"snpMut_filt_freq_reduced.txt"),append=FALSE,quote=FALSE,sep="\t",row.names=FALSE,col.names=TRUE)
   
   return(valid_genes_names)
 

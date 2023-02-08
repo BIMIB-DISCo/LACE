@@ -131,7 +131,10 @@ va_doLoad_c <- function() {
       inputs[['va_verified_genes']](loaded_input[['va_verified_genes']])
       inputs[['va_list_genes']](loaded_input[['va_list_genes']])
 
-      updateSelectizeInput(session, 'va_verified_genes', selected = inputs[['va_verified_genes']](), choices = inputs[['va_list_genes']](), server = TRUE)
+      updateSelectizeInput(session, 'va_verified_genes', 
+                           selected = inputs[['va_verified_genes']](), 
+                           choices = inputs[['va_list_genes']](), 
+                           server = TRUE)
       #}
     }
   }
@@ -471,16 +474,13 @@ load_all_configs2 <- function(project_folder,
                 check <- FALSE
                 updateSelectizeInput(session,
                                      'va_verified_genes',
-                                     choices =
-                                       inputs[['va_list_genes']](),
+                                     choices = inputs[['va_list_genes']](),
                                      server = TRUE)
               }
               if (id=="va_verified_genes") {
                 check <- FALSE
-                updateSelectizeInput(session,
-                                     'va_verified_genes',
-                                     selected =
-                                       inputs[['va_verified_genes']](),
+                updateSelectizeInput(session, 'va_verified_genes',
+                                     selected = inputs[['va_verified_genes']](),
                                      server = TRUE)
               }
 
