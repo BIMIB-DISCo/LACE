@@ -186,7 +186,7 @@ LACEview <- function() {
                 sep = "\n"), 
           pattern = "\n", replacement = "<br>")
         
-        ml_txt <- HTML(ml_txt)
+        ml_txt <- helpText(HTML(ml_txt))
           
         mod_dlg <- modalDialog(
           title = "LACE 2.0",
