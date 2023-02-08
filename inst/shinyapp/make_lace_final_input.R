@@ -71,8 +71,14 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   #distinct_mutations = unique(snpMut_filt_freq[,c("Gene","Chr","PosStart","PosEnd","REF","ALT","ALT","ALT","ALT","ALT","ALT","ALT")])
   distinct_mutations = unique(snpMut_filt_freq[,c("Gene","Chr","PosStart","PosEnd","REF","ALT")])
   
-  if (nrow(distinct_mutations)==0)
+  if (nrow(distinct_mutations)==0){
+    num_columns <- sapply(distinct_mutations, is.numeric)
+    distinct_mutations[num_columns] <- lapply(distinct_mutations[num_columns], round, 3)
+    if (file.exists(file.path( out_dir, "D.RData")))
+      file.remove(file.path(out_dir,"D.RData"))
     return(list("distinct_mutations"=distinct_mutations, "g"=NULL))
+  }
+    
   
   #time_points=c("before treatment", "4d on treatment", "28d on treatment", "57d on treatment")
   #for (t in seq(1,length(time_points)) )
@@ -136,7 +142,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
     mutate(Time= as.integer(factor(Time, levels = time_points, ordered = TRUE))) %>%
     distinct() %>%
     #summarise() %>%  #arrange(Time) %>%
-    pivot_wider(names_from = Time, values_from = fr, names_prefix = "Freq_T") 
+    pivot_wider(names_from = Time, values_from = fr, names_prefix = "FreqT") 
   
   
   
@@ -176,16 +182,27 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
     filter(MedianDepth>=minumum_median_total & MedianDepthMut>=minumum_median_mutation) %>%
     ungroup()
   
-  if (nrow(distinct_mutations)==0)
+  if (nrow(distinct_mutations)==0){
+    num_columns <- sapply(distinct_mutations, is.numeric)
+    distinct_mutations[num_columns] <- lapply(distinct_mutations[num_columns], round, 3)
+    if (file.exists(file.path( out_dir, "D.RData")))
+      file.remove(file.path(out_dir,"D.RData"))
     return(list("distinct_mutations"=distinct_mutations, "g"=NULL))
+  }
   
   #rownames(distinct_mutations) = 1:nrow(distinct_mutations)
   
   valid_distinct_mutations = distinct_mutations
   if (!is.null(verified_genes))
     valid_distinct_mutations = subset(distinct_mutations,distinct_mutations$Gene %in% verified_genes) #
-  if (nrow(valid_distinct_mutations)==0)
+  
+  if (nrow(valid_distinct_mutations)==0){
+    num_columns <- sapply(distinct_mutations, is.numeric)
+    distinct_mutations[num_columns] <- lapply(distinct_mutations[num_columns], round, 3)
+    if (file.exists(file.path( out_dir, "D.RData")))
+      file.remove(file.path(out_dir,"D.RData"))
     return(list("distinct_mutations"=distinct_mutations, "g"=NULL))
+  }
   
   
   valid_distinct_mutations_values = NULL
@@ -249,8 +266,56 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
 
   
   ####
-  browser()
+  #browser()
+  g <- plot_D(D)
   
+  
+  
+  ####
+  
+  
+  # make Oncoprint
+  n_rows=0
+  for (t in seq(1, length(time_points)))
+    n_rows=n_rows+nrow(D[[t]])
+  clusters = array(NA,c(n_rows,1))
+
+  init_i=1
+  end_i=0
+  r_names= NULL
+  data = NULL
+  for (t in seq(1, length(time_points))) {
+    if(nrow(D[[t]])>0) {
+      end_i <- end_i+nrow(D[[t]])
+      r_names=c(r_names, rownames(D[[t]]))
+      clusters[init_i:end_i,1] = time_points[[t]]
+      init_i <- end_i+1
+      data <- rbind(data, D[[t]])
+    }
+  }
+  rownames(clusters) <- r_names
+  #clusters[1:nrow(D[[1]]),1] = "T1_before_treatment"
+  #clusters[(nrow(D[[1]])+1):(nrow(D[[1]])+nrow(D[[2]])),1] = "T2_4_days_treatment"
+  #clusters[(nrow(D[[1]])+nrow(D[[2]])+1):(nrow(D[[1]])+nrow(D[[2]])+nrow(D[[3]])),1] = "T3_28_days_treatment"
+  #clusters[(nrow(D[[1]])+nrow(D[[2]])+nrow(D[[3]])+1):(nrow(D[[1]])+nrow(D[[2]])+nrow(D[[3]])+nrow(D[[4]])),1] = "T4_57_days_treatment"
+  #rownames(clusters) = c(rownames(D[[1]]),rownames(D[[2]]),rownames(D[[3]]),rownames(D[[4]]))
+  #data = rbind(D[[1]],D[[2]],D[[3]],D[[4]])
+  data[which(is.na(data))] = 0
+  #data = import.genotypes(data)
+  # data = annotate.stages(data,clusters)
+  ## if (ncol(data$genotypes)>1 || length(unique(data$genotypes[,1]))>1) #errore generico
+  ##  oncoprint(data,excl.sort=FALSE,group.by.stage=TRUE)
+
+  #distinct_mutations[['ResultantMeanDepth']]<-apply(depth,2,mean)
+  #distinct_mutations[['ResultantVarDepth']]<-apply(depth,2,var)
+  browser()
+  num_columns <- sapply(distinct_mutations, is.numeric)
+  distinct_mutations[num_columns] <- lapply(distinct_mutations[num_columns], round, 3)
+  return(list("distinct_mutations"=distinct_mutations, "g"=g))
+}
+
+
+plot_D <-function(D) {
   D %>% 
     setNames({names(.) %>% 
         str_replace_all(pattern = "_", replacement = " ") %>% 
@@ -306,7 +371,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
     scale_fill_manual(values = c("black", "white", "orange"), na.value="gray50",
                       aesthetics = c("colour", "fill")#, 
                       #labels = c("passing filter(s)", "filtered out", "NA")
-                    )+ #orange=2
+    )+ #orange=2
     
     facet_grid(
       rows = vars(time),
@@ -315,61 +380,23 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
       labeller = label_wrap_gen(width=15)
     ) +
     scale_x_discrete(expand = c(0,0))+
-    theme(axis.text.x = element_text(angle=90), ##it is shifted why?
+    theme(axis.text.x = element_text(angle=45, hjust=1), ##it is shifted why?
           axis.text.y = element_blank(),
           axis.ticks.y= element_blank()
     )+
     theme(
       strip.background = element_rect(
         color="black", fill="#FC4E07", size=1.5, linetype="solid"
-      )
+      ),
+      panel.border = element_rect(color = "blue", fill = NA, size = 1)
     ) +
     theme(legend.key=element_rect(colour="black")) +
     theme(panel.spacing = unit(1, "pt"))+
     labs(y = "cells")+
+    labs(x = "selected mutations")+
     #labs(title = paste("Pre-inference input matrix {",str__na, ";", str__one, ";", str__zero,"}"))+
-    labs(title = paste("Binary data matrix"))+
+    labs(title = paste("Filtered binary data matrix"))+
     theme(text = element_text(size = 14))  
   
-  
-  ####
-  
-  
-  # make Oncoprint
-  n_rows=0
-  for (t in seq(1, length(time_points)))
-    n_rows=n_rows+nrow(D[[t]])
-  clusters = array(NA,c(n_rows,1))
-
-  init_i=1
-  end_i=0
-  r_names= NULL
-  data = NULL
-  for (t in seq(1, length(time_points))) {
-    if(nrow(D[[t]])>0) {
-      end_i <- end_i+nrow(D[[t]])
-      r_names=c(r_names, rownames(D[[t]]))
-      clusters[init_i:end_i,1] = time_points[[t]]
-      init_i <- end_i+1
-      data <- rbind(data, D[[t]])
-    }
-  }
-  rownames(clusters) <- r_names
-  #clusters[1:nrow(D[[1]]),1] = "T1_before_treatment"
-  #clusters[(nrow(D[[1]])+1):(nrow(D[[1]])+nrow(D[[2]])),1] = "T2_4_days_treatment"
-  #clusters[(nrow(D[[1]])+nrow(D[[2]])+1):(nrow(D[[1]])+nrow(D[[2]])+nrow(D[[3]])),1] = "T3_28_days_treatment"
-  #clusters[(nrow(D[[1]])+nrow(D[[2]])+nrow(D[[3]])+1):(nrow(D[[1]])+nrow(D[[2]])+nrow(D[[3]])+nrow(D[[4]])),1] = "T4_57_days_treatment"
-  #rownames(clusters) = c(rownames(D[[1]]),rownames(D[[2]]),rownames(D[[3]]),rownames(D[[4]]))
-  #data = rbind(D[[1]],D[[2]],D[[3]],D[[4]])
-  data[which(is.na(data))] = 0
-  #data = import.genotypes(data)
-  # data = annotate.stages(data,clusters)
-  ## if (ncol(data$genotypes)>1 || length(unique(data$genotypes[,1]))>1) #errore generico
-  ##  oncoprint(data,excl.sort=FALSE,group.by.stage=TRUE)
-
-  #distinct_mutations[['ResultantMeanDepth']]<-apply(depth,2,mean)
-  #distinct_mutations[['ResultantVarDepth']]<-apply(depth,2,var)
-  num_columns <- sapply(distinct_mutations, is.numeric)
-  distinct_mutations[num_columns] <- lapply(distinct_mutations[num_columns], round, 3)
-  return(list("distinct_mutations"=distinct_mutations, "g"=g))
+  return(g)
 }
