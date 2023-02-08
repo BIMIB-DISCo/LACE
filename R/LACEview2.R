@@ -725,7 +725,7 @@ lace_interface <- function (B_mat,
                                         #source(paste0(basedir,"/peter/LACEView/R/timescape.R"))
     x=timescape(clonal_prev = fishplot_clonal_prev,
                 tree_edges = fishplot_tree_edges,  height=height_fishplot,
-                width=width_fishplot, alpha=0, genotype_position="centre",
+                width=width_fishplot, alpha=0, genotype_position="stack",
                 clone_colours = fishplot_colour)
 
     tabula=data.frame(T=c(paste0('T',times_n)), alpha=error_rates$alpha,
