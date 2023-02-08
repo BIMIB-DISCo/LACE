@@ -481,6 +481,7 @@ inf_go <- function() {
     thr_exec()
     dp_exec()
     va_exec()
+    va_exec2()
     inf_exec()
   }
 
