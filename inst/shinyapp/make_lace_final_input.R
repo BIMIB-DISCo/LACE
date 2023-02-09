@@ -25,7 +25,7 @@ NA_compute2_load <- function(data_dir, depth_dir, out_dir) {
 
 NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_mutation, data_dir, depth_dir, out_dir, time_points, verified_genes, non_NA_genes, files) {
 
-  browser()
+  #browser()
 
   cells_aggregate_info <- files$cells_aggregate_info
   snpMut_filt_freq <- files$snpMut_filt_freq
@@ -308,7 +308,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
 
   #distinct_mutations[['ResultantMeanDepth']]<-apply(depth,2,mean)
   #distinct_mutations[['ResultantVarDepth']]<-apply(depth,2,var)
-  browser()
+  #browser()
   num_columns <- sapply(distinct_mutations, is.numeric)
   distinct_mutations[num_columns] <- lapply(distinct_mutations[num_columns], round, 3)
   return(list("distinct_mutations"=distinct_mutations, "g"=g))
@@ -316,7 +316,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
 
 
 plot_D <-function(D) {
-  D %>% 
+  D <- D %>% 
     setNames({names(.) %>% 
         str_replace_all(pattern = "_", replacement = " ") %>% 
         data.frame("times"=.) %>% 
@@ -386,12 +386,12 @@ plot_D <-function(D) {
     )+
     theme(
       strip.background = element_rect(
-        color="black", fill="#FC4E07", size=1.5, linetype="solid"
+        color="black", fill="#FC8207", size=1.5, linetype="solid"
       ),
-      panel.border = element_rect(color = "blue", fill = NA, size = 1)
+      panel.border = element_rect(color = "#FC8207", fill = NA, size = 2)
     ) +
     theme(legend.key=element_rect(colour="black")) +
-    theme(panel.spacing = unit(1, "pt"))+
+    theme(panel.spacing = unit(0, "pt"))+
     labs(y = "cells")+
     labs(x = "selected mutations")+
     #labs(title = paste("Pre-inference input matrix {",str__na, ";", str__one, ";", str__zero,"}"))+

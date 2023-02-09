@@ -3,7 +3,7 @@
 #################################################
 NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, out_dir, time_points) {
   # set working directory
-  browser()
+  #browser()
   #library(stringr)
 
   #depth_minimum = 3 # minimum depth to set values to NA
