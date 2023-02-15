@@ -130,7 +130,8 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   #   distinct_mutations[i,"MedianDepthMut"] = as.numeric(median(curr$Allele_Ratio))
   # }
   
-  distinct_mutations <- snpMut_filt_freq %>% group_by(Time) %>% 
+  distinct_mutations <- snpMut_filt_freq %>%
+    group_by(Time) %>% 
     mutate(tot_per_time=n_distinct(scID)) %>% #cells per time point
     group_by(Gene,Chr,PosStart,PosEnd,REF,ALT,tot_per_time) %>% 
     add_count(Time) %>% #cells per mutations

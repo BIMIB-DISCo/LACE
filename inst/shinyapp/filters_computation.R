@@ -268,9 +268,16 @@
       return(TRUE)
     }
 
-    mutWrs_filt <- mutWrs[apply(mutWrs,
-                                1,
-                                function(x) FilterMutations(x)), ]
+    #mutWrs_filt <- mutWrs[apply(mutWrs,
+    #                            1,
+    #                            function(x) FilterMutations(x)), ]
+    
+    mutWrs_filt <-  mutWrs[
+      (!(
+        (mutWrs$minor_allele == mutWrs$ALT) & (mutWrs$minor_allele_freq > thr_maf) |
+          (mutWrs$minor_allele == mutWrs$REF) & (mutWrs$minor_allele_freq < (1-thr_maf))
+      )) & (mutWrs$rs_ID=="."),]
+    
     snpMut_filt <- rbind(mutWOrs, mutWrs_filt)
     saveRDS(snpMut_filt,
             file = paste0(file.path(thr_out_dir, 'snpMut_filt.rds')))

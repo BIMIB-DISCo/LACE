@@ -535,10 +535,10 @@ ui <- fluidPage(
                              numericInput(
                                inputId = "thr_alleles_ratio",
                                label = "Alternate frequency",
-                               min = 0,
-                               max = 1,
-                               step = 0.05,
-                               value = 0.8
+                               min = 1,
+                               max = 500,
+                               step = 1,
+                               value = 2
                              ) %>%
                                make_shiny_help_popover(
                                  "Cell alternate allele frequency",
@@ -550,7 +550,7 @@ ui <- fluidPage(
                                label = "MAF",
                                min = 0.01,
                                max = 0.5,
-                               step = 0.05,
+                               step = 0.005,
                                value = 0.01
                              ) %>%
                                make_shiny_help_popover(
@@ -563,8 +563,8 @@ ui <- fluidPage(
                                label = "Variant frequency",
                                min = 0.,
                                max = 1,
-                               step = 0.1,
-                               value = 0.5
+                               step = 0.01,
+                               value = 0.01
                              ) %>%
                                make_shiny_help_popover(
                                  "Sample variant frequency",
@@ -644,8 +644,8 @@ ui <- fluidPage(
                              numericInput(
                                inputId = "va_depth_minimum",
                                label = "Minimum depth",
-                               min = 1,
-                               max = 10,
+                               min = 0,
+                               max = 500,
                                step = 1,
                                value = 3
                              ) %>%
@@ -660,7 +660,7 @@ ui <- fluidPage(
                                label = "Max missing value",
                                min = 0.0,
                                max = 1.0,
-                               step = 0.1,
+                               step = 0.05,
                                value = 0.4
                              ) %>%
                                make_shiny_help_popover(
@@ -673,9 +673,9 @@ ui <- fluidPage(
                                inputId = "va_minumum_median_total", # minimum median depth for total reads
                                label = "Site minumum median depth:",
                                min = 0,
-                               max = 50,
+                               max = 500,
                                step = 1,
-                               value = 10
+                               value = 8
                              ) %>%
                                make_shiny_help_popover(
                                  "Minumum median depth per site",
@@ -686,8 +686,8 @@ ui <- fluidPage(
                              numericInput(
                                inputId = "va_minumum_median_mutation", # minimum median depth for reads supporting mutations
                                label = "Mutation minimum median depth",
-                               min = 0.0,
-                               max = 50,
+                               min = 0,
+                               max = 500,
                                step = 1,
                                value = 4
                              ) %>%
@@ -2270,6 +2270,20 @@ server <- function(input, output, session) {
   },
   once = TRUE,
   priority = -1)
+  
+  #observeEvent(input[['thr_accepted_var']],
+  #             {
+                 #browser()
+                 #print(input[['thr_accepted_var']])
+                 #print(inputs[['thr_accepted_var']]())
+  #             })
+  
+  #observeEvent(inputs[['thr_accepted_var']](),
+  #             {
+                 #browser()
+                 #print(input[['thr_accepted_var']])
+                 #print(inputs[['thr_accepted_var']]())
+  #             })
 
   output$thr_bucket_var_list <-
     renderUI({

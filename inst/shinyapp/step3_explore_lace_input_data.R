@@ -43,14 +43,18 @@ NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, o
 
   # evaluate number of missing data per time point
   time_points_NA = list()
-  for (t in time_points)
-    time_points_NA[[t]] = NULL
+  #for (t in time_points)
+  #  time_points_NA[[t]] = NULL
+  #
+  ##browser()
+  #for (t in time_points)
+  #  for(i in 1:ncol(mycellsdata[[1]]))
+  #    time_points_NA[[t]] = c(time_points_NA[[t]],length(which(is.na(mycellsdata[[t]][,i])))/nrow(mycellsdata[[t]]))
 
-  #browser()
-  for(i in 1:ncol(mycellsdata[[1]]))
-    for (t in time_points)
-      time_points_NA[[t]] = c(time_points_NA[[t]],length(which(is.na(mycellsdata[[t]][,i])))/nrow(mycellsdata[[t]]))
-
+  time_points_NA = list()
+  for (t in time_points) 
+    time_points_NA[[t]] <- colSums(is.na(mycellsdata[[t]]))/nrow(mycellsdata[[t]])
+  
   ##valid_genes = sort(unique(colnames(mycellsdata[[1]])[which(all(time_points_NA<=missing_values_max))]))
   #valid_genes = colSums(do.call(rbind, lapply(time_points_NA, function(x){x<=missing_values_max})))
   
