@@ -64,7 +64,7 @@ NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, o
   #valid_genes <- colnames(mycellsdata[[1]])[(data.frame(bind_rows(time_points_NA)<=missing_values_max) %>% rowwise() %>% mutate(y=all(c_across(everything())) ))$y]
   valid = NULL
 
-  #browser()
+  browser()
   #for(i in valid_genes) {
   #  valid = c(valid,unique(snpMut_filt_freq$Gene[grep(i,snpMut_filt_freq$UIDsnp)]))
   #}
@@ -85,7 +85,8 @@ NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, o
   log2_print(sort(valid_genes_names[which(duplicated(valid_genes_names))]))
 
   # make final list of candidate selected variants
-  snpMut_filt_freq_reduced = unique(snpMut_filt_freq[which(snpMut_filt_freq$Gene%in%valid_genes_names),c("Gene","Chr","PosStart","PosEnd","REF","ALT")])
+  #snpMut_filt_freq_reduced = unique(snpMut_filt_freq[which(snpMut_filt_freq$Gene%in%valid_genes_names),c("Gene","Chr","PosStart","PosEnd","REF","ALT")])
+  snpMut_filt_freq_reduced = unique(snpMut_filt_freq[which(snpMut_filt_freq$Gene%in%valid_genes_names), ])
   snpMut_filt_freq_reduced = snpMut_filt_freq_reduced[order(snpMut_filt_freq_reduced[,1],snpMut_filt_freq_reduced[,2],snpMut_filt_freq_reduced[,3],snpMut_filt_freq_reduced[,4],snpMut_filt_freq_reduced[,5],snpMut_filt_freq_reduced[,6]),]
 
   saveRDS(snpMut_filt_freq_reduced, file=file.path(out_dir,"snpMut_filt_freq_reduced.rds"))

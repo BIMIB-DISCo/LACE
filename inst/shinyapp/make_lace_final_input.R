@@ -16,8 +16,8 @@ NA_compute2_load <- function(data_dir, depth_dir, out_dir) {
   depth <-NULL
   if (file.exists(file.path( data_dir, "cells_aggregate_info.rds")))
     cells_aggregate_info <- readRDS(file=paste0(file.path( data_dir, "cells_aggregate_info.rds")))
-  if (file.exists(file.path( data_dir, "snpMut_filt_freq.rds")))
-    snpMut_filt_freq <- readRDS(file=paste0(file.path( data_dir, "snpMut_filt_freq.rds")))
+  if (file.exists(file.path( out_dir, "snpMut_filt_freq_reduced.rds")))
+    snpMut_filt_freq <- readRDS(file=paste0(file.path( out_dir, "snpMut_filt_freq_reduced.rds")))
   if (file.exists(file.path( depth_dir, "final_data_depth.txt")))
     depth <- as.matrix(read.table( file.path(depth_dir, "final_data_depth.txt")))
   return( list(cells_aggregate_info=cells_aggregate_info, snpMut_filt_freq=snpMut_filt_freq, depth=depth))
@@ -195,7 +195,8 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   
   valid_distinct_mutations = distinct_mutations
   if (!is.null(verified_genes))
-    valid_distinct_mutations = subset(distinct_mutations,distinct_mutations$Gene %in% verified_genes) #
+    valid_distinct_mutations = subset(distinct_mutations,distinct_mutations$Gene %in% verified_genes) %>% ## mod
+    filter(REF!="-") ## mod
   
   if (nrow(valid_distinct_mutations)==0){
     num_columns <- sapply(distinct_mutations, is.numeric)
@@ -222,47 +223,48 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   colnames(mutations) = paste0(valid_distinct_mutations$Gene,"_",valid_distinct_mutations_values,"_",valid_distinct_mutations$REF,"_",valid_distinct_mutations$ALT)
 
 
-  # for(i in 1:nrow(valid_distinct_mutations)) {
-  #   curr_gene = valid_distinct_mutations[i,"Gene"]
-  #   curr_chr = valid_distinct_mutations[i,"Chr"]
-  #   curr_start = valid_distinct_mutations[i,"PosStart"]
-  #   curr_end = valid_distinct_mutations[i,"PosEnd"]
-  #   curr_ref = valid_distinct_mutations[i,"REF"]
-  #   curr_alt = valid_distinct_mutations[i,"ALT"]
-  #   curr_mutant_cells = which(cells_aggregate_info$Gene==curr_gene & 
-  #                               cells_aggregate_info$Chr==curr_chr & 
-  #                               cells_aggregate_info$PosStart==curr_start & 
-  #                               cells_aggregate_info$PosEnd==curr_end & 
-  #                               cells_aggregate_info$REF==curr_ref & 
-  #                               cells_aggregate_info$ALT==curr_alt
-  #                             )
-  #   curr_mutant_cells = cells_aggregate_info$scID[curr_mutant_cells]
-  #   mutations[curr_mutant_cells[which(curr_mutant_cells%in%rownames(mutations))],i] = 1
-  # }
-
-  #mutations[(inner_join(cells_aggregate_info %>% select(scID, Gene,Chr,PosStart,PosEnd, REF, ALT), valid_distinct_mutations %>% select(Gene,Chr,PosStart,PosEnd, REF, ALT)) %>% filter( scID %in% rownames(mutations)) ) [["scID"]],]=1
-  mutations[
-    (inner_join(cells_aggregate_info, valid_distinct_mutations) %>% filter( scID %in% rownames(mutations)) ) [["scID"]]
-    ,] = 1
   
+  #mutations = array(0,c(nrow(valid_distinct_mutations), length(unique(o_snpMut_filt_freq$scID))))
+  #colnames(mutations) = sort(unique(o_snpMut_filt_freq$scID))
+  #rownames(mutations) = valid_distinct_mutations_values
+  
+  #mutations = mutations[valid_distinct_mutations_values,]
+  #browser()
   # set NA values
   depth = t(depth)
-  depth = depth[,valid_distinct_mutations_values, drop=FALSE]
-  depth = depth[rownames(mutations),,drop=FALSE]
+  #dim(depth)
+  #depth = depth[colnames(mutations), rownames(mutations), drop=FALSE]
+  depth = depth[sort(unique(snpMut_filt_freq$scID)), valid_distinct_mutations_values, drop=FALSE]
+  
+  
+  mutations <- inner_join(cells_aggregate_info, valid_distinct_mutations) %>% 
+    filter( scID %in% rownames({{depth}}))%>% 
+    mutate(idx = paste(Gene,Chr,PosStart,REF,ALT,sep='_')) %>% 
+    mutate(val=1) %>%
+    #select(scID,idx,val) %>%
+    pivot_wider(id_cols=scID, names_from = idx, values_from=val, values_fill=0) %>%
+    full_join(data.frame(scID=rownames({{depth}})))
+  
+  mutations[is.na(mutations)] <- 0
+  mutations=data.frame(mutations,row.names = 1)
+  
+  
+  
+  
+  col_n <- 
+    apply(str_split(colnames(mutations), pattern = "_", simplify = TRUE)[,2:3], 1, paste, collapse="_")
+  
+  depth = depth[rownames(mutations), col_n, drop=FALSE]
   colnames(depth) = colnames(mutations)
   mutations[which(depth<=depth_minimum,arr.ind=TRUE)] = NA # missing values rate equals to 359/2850, that is approx 12.6%
   
-  #mutations[t(depth[valid_distinct_mutations_values,, drop=FALSE][,rownames(mutations),drop=FALSE]<=depth_minimum)] = NA
-  #mutations[t(depth[valid_distinct_mutations_values,rownames(mutations),drop=FALSE]<=depth_minimum)]=NA
   
-  # make final data
   cells_aggregate_info = cells_aggregate_info[which(cells_aggregate_info$scID%in%rownames(mutations)), , drop=FALSE]
-  log2_print('cells_aggregate_info')
-  log2_print(dim(cells_aggregate_info))
   mycellsdata = list()
   for ( t in time_points )
     mycellsdata[[t]] = mutations[sort(unique(cells_aggregate_info$scID[which(cells_aggregate_info$Time==t)])), , drop=FALSE]
   D = mycellsdata
+  
   save(D,file=file.path(out_dir,"D.RData"))
 
   
@@ -301,7 +303,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   #clusters[(nrow(D[[1]])+nrow(D[[2]])+nrow(D[[3]])+1):(nrow(D[[1]])+nrow(D[[2]])+nrow(D[[3]])+nrow(D[[4]])),1] = "T4_57_days_treatment"
   #rownames(clusters) = c(rownames(D[[1]]),rownames(D[[2]]),rownames(D[[3]]),rownames(D[[4]]))
   #data = rbind(D[[1]],D[[2]],D[[3]],D[[4]])
-  data[which(is.na(data))] = 0
+  #data[which(is.na(data))] = 0
   #data = import.genotypes(data)
   # data = annotate.stages(data,clusters)
   ## if (ncol(data$genotypes)>1 || length(unique(data$genotypes[,1]))>1) #errore generico
@@ -309,7 +311,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
 
   #distinct_mutations[['ResultantMeanDepth']]<-apply(depth,2,mean)
   #distinct_mutations[['ResultantVarDepth']]<-apply(depth,2,var)
-  #browser()
+  browser()
   num_columns <- sapply(distinct_mutations, is.numeric)
   distinct_mutations[num_columns] <- lapply(distinct_mutations[num_columns], round, 3)
   return(list("distinct_mutations"=distinct_mutations, "g"=g))
