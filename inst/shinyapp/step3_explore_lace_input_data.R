@@ -64,7 +64,7 @@ NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, o
   #valid_genes <- colnames(mycellsdata[[1]])[(data.frame(bind_rows(time_points_NA)<=missing_values_max) %>% rowwise() %>% mutate(y=all(c_across(everything())) ))$y]
   valid = NULL
 
-  browser()
+  
   #for(i in valid_genes) {
   #  valid = c(valid,unique(snpMut_filt_freq$Gene[grep(i,snpMut_filt_freq$UIDsnp)]))
   #}
@@ -91,6 +91,8 @@ NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, o
 
   saveRDS(snpMut_filt_freq_reduced, file=file.path(out_dir,"snpMut_filt_freq_reduced.rds"))
   #write.table(snpMut_filt_freq_reduced,file=file.path(out_dir,"snpMut_filt_freq_reduced.txt"),append=FALSE,quote=FALSE,sep="\t",row.names=FALSE,col.names=TRUE)
+  
+  #browser()
   
   return(valid_genes_names)
 

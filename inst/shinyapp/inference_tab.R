@@ -288,7 +288,7 @@ inf_exec <- function() {
       list_par[["show"]] <- FALSE
       inputs[['inf_params']](list_par)
 
-      #browser()
+      browser()
       #inference_res <- LACE::LACE(D, show = F)
       inference_res=do.call('LACE',inputs[['inf_params']]())
 

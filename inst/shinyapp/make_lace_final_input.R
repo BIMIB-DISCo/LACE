@@ -252,7 +252,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   
   
   col_n <- 
-    apply(str_split(colnames(mutations), pattern = "_", simplify = TRUE)[,2:3], 1, paste, collapse="_")
+    apply(str_split(colnames(mutations), pattern = "_", simplify = TRUE)[,2:3, drop=FALSE], 1, paste, collapse="_")
   
   depth = depth[rownames(mutations), col_n, drop=FALSE]
   colnames(depth) = colnames(mutations)
@@ -262,9 +262,9 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   cells_aggregate_info = cells_aggregate_info[which(cells_aggregate_info$scID%in%rownames(mutations)), , drop=FALSE]
   mycellsdata = list()
   for ( t in time_points )
-    mycellsdata[[t]] = mutations[sort(unique(cells_aggregate_info$scID[which(cells_aggregate_info$Time==t)])), , drop=FALSE]
+    mycellsdata[[t]] = as.matrix.data.frame(mutations[sort(unique(cells_aggregate_info$scID[which(cells_aggregate_info$Time==t)])), , drop=FALSE], rownames.force = TRUE)
   D = mycellsdata
-  
+  browser()
   save(D,file=file.path(out_dir,"D.RData"))
 
   
@@ -311,7 +311,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
 
   #distinct_mutations[['ResultantMeanDepth']]<-apply(depth,2,mean)
   #distinct_mutations[['ResultantVarDepth']]<-apply(depth,2,var)
-  browser()
+  #browser()
   num_columns <- sapply(distinct_mutations, is.numeric)
   distinct_mutations[num_columns] <- lapply(distinct_mutations[num_columns], round, 3)
   return(list("distinct_mutations"=distinct_mutations, "g"=g))

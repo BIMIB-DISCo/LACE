@@ -1542,7 +1542,7 @@ server <- function(input, output, session) {
       if (dir.exists(thr_out_dir_()) &&
           dir.exists(dp_out_dir_())) {
         
-        browser()
+        #browser()
         
         valid_genes_names <-
           NA_compute(va_depth_minimum_(),
@@ -1553,6 +1553,8 @@ server <- function(input, output, session) {
                    inputs[['m_time_points']]())
         
         va_non_NA_genes_(valid_genes_names)
+        
+        #browser()
         
         files <- NA_compute2_load(thr_out_dir_(),
                                   dp_out_dir_(),
@@ -1579,6 +1581,9 @@ server <- function(input, output, session) {
           dir.exists(dp_out_dir_()))
 
         if (any(!sapply(files_(), is.null))){ # files not found
+          
+          #browser()
+          
           NA_c2 <-
             NA_compute2(va_depth_minimum_(),
                         va_minumum_median_total_(),
@@ -1590,7 +1595,7 @@ server <- function(input, output, session) {
                         verified_genes_(),
                         va_non_NA_genes_(),
                         files_())
-          browser()
+          #browser()
           va_compute_output_(NA_c2$distinct_mutations)
           
           #ggsave(file=file.path(inputs[["project_folder_std"]](),"D.svg"), plot=NA_c2$g, width=10, height=10)
@@ -1727,7 +1732,7 @@ server <- function(input, output, session) {
 
 
   observeEvent(input[['va_verified_genes']], {
-    ## req(input)
+    #req(input[['va_verified_genes']])
     #browser()
     inputs[['va_verified_genes']](input[['va_verified_genes']])
   }, ignoreNULL = FALSE)
@@ -1766,7 +1771,7 @@ server <- function(input, output, session) {
   })
 
 
-  observeEvent({ c(files_(),
+  observeEvent({ c(#files_(),
                    va_depth_minimum_(),
                    va_missing_values_max_(),
                    va_minumum_median_total_(),
