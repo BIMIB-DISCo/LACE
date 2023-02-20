@@ -16,7 +16,7 @@ When using our tool, please cite: Ramazzotti, Daniele, et al. "LACE: Inference o
 ## Installation of LACE 2.0 R package
 
 The package is available on GitHub and Bioconductor.
-LACE 2.0 requires R > 4.2.0.
+LACE 2.0 requires R >= 4.2.0.
 
 To install from Bioconductor, please run:
 ```
