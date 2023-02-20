@@ -83,7 +83,7 @@ of single mutations which can be queried via \emph{ensembl} database.
 package}\label{installation-of-lace-2.0-r-package}
 
 The package is available on GitHub and Bioconductor. LACE 2.0 requires R
-\textgreater{} 4.1.0 and Bioconductor. To install Bioconductor run:
+\textgreater{}= 4.2.0 and Bioconductor. To install Bioconductor run:
 
 \begin{verbatim}
   if (!require("BiocManager", quietly = TRUE))
@@ -290,19 +290,19 @@ information about the experiment such as the cell IDs which are used to
 retrieve the VCF/BAM files and the sample name each cell belongs to.
 These metadata are generally included with the experimental sequencing
 data as part of the library preparation. LACE 2.0 accepts tsv/csv
-tabular formats with headers and rds standard data R format. Metadata
+tabular formats with headers and rds file format containing a data.frame (field 2.1). Metadata
 file can include more information relative to the experimental setup and
 the platform used.
 
-\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/SCmeta_tab.png}
+\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/figure2c.png}
 
-The user should identify and select the ID and sampling columns. The
-user can also reorder the sampling names
-
-\includegraphics[width=0.6\textwidth,height=\textheight]{./resources/samples_order.png}
-
+The user should identify and select the ID  (field 2.2) and sampling columns  (field 2.3).
+The user can also reorder the sampling names
+%
+%\includegraphics[width=0.6\textwidth,height=\textheight]{./resources/samples_order.png}
+%
 so to recreate the chronological order of longitudinal events of the
-experiment, or to explore different orders.
+experiment, or to explore different orders (field 2.4).
 
 
 \subsubsection{Annotations}\label{annotations}
@@ -340,18 +340,18 @@ The user can set the minimum values for:
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  the number of reads supporting the alternative alleles in a cell,
+  the number of reads supporting the alternative alleles in a cell (field 3.1),
 \item
   the frequency of the minor allele for each referenced SNP included in
-  a default global population,
+  a default global population (field 3.2),
 \item
-  the cell frequency per sample showing the mutation at the same site.
+  the cell frequency per sample showing the mutation at the same site (field 3.3).
 \end{enumerate}
 
-\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Filters_tab.png}
+\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/figure3c.png}
 
 Furthermore, the user can choose which functional exonic variation
-should be considered or neglected. For example, there are cases in which
+should be considered or neglected (field 3.4). For example, there are cases in which
 unknown and synonymous mutations in exonic regions are disregarded
 because their effect cannot be explicitly related to the experimental
 condition. All possible variant functions and their explanations are
@@ -360,7 +360,7 @@ resumed in the following table:
 \begin{longtable}[]{@{}ll@{}}
 \toprule
 \begin{minipage}[b]{0.16\columnwidth}\raggedright
-Annotation (+)\strut
+Annotation\strut
 \end{minipage} & \begin{minipage}[b]{0.78\columnwidth}\raggedright
 Explanation\strut
 \end{minipage}\tabularnewline
@@ -438,7 +438,6 @@ in the database file)\strut
 \bottomrule
 \end{longtable}
 
-(+) see \emph{Annovar}
 
 
 \subsubsection{Single cell sampling
@@ -467,18 +466,18 @@ as:
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  the minimum number of reads at given mutation site
+  the minimum number of reads at given mutation site (field 4.1)
 \item
-  the maximum number of missing data per gene
+  the maximum number of missing data per gene (field 4.2)
 \item
-  the minimum median depth per locus
+  the minimum median depth per locus (field 4.3)
 \item
-  the minimum median depth supporting the mutation
+  the minimum median depth supporting the mutation (field 4.4)
 \item
-  subset of known genes
+  subset of known genes (field 4.5)
 \end{enumerate}
 
-\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Variant_tab.png}
+\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/figure4c.png}
 
 Finding the parameters to select variants is not an easy task, and the
 user might not know in advance how to choose the best set of filters.
@@ -490,7 +489,7 @@ Afterward, the user is presented with a interactive live preview of
 variants passing the filters (including relevant parameters which can
 help in the selection) while values are changed.
 
-\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Interactive_Variant_tab.png}
+%\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Interactive_Variant_tab.png}
 
 
 \subsection{Inference}\label{inference}
@@ -505,48 +504,96 @@ Inferential step uses the following set of parameters:
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \item
-  Learning rate
+  Learning rate (field 5.1),
 \item
-  False positive rates for each sample
+  False positive rates for each sample (field 5.2),
 \item
-  False negative rates for each sample
+  False negative rates for each sample (field 5.3),
 \item
-  Number of iterations in each MCMC search
+  Number of iterations in each MCMC search (field 5.4),
 \item
-  Number of restart for the MCMC 5 Early stopping number of iterations
-  with no growing likelihood\\
+  Number of restart for the MCMC (field 5.5),  
 \item
-  Number of parallel processes
+  Early stopping number of iterations with no growing likelihood  (field 5.6),
 \item
-  Random seed to recreate simulations
+  Number of parallel processes (field 5.7), 
 \item
-  Initialize the clonal tree randomly
+  Random seed to recreate simulations (field 5.8), 
 \item
-  Marginalize the cell attachment matrix
+  Initialize the clonal tree randomly (field 5.9), 
 \item
-  Keep equivalent solutions and return all of them
+  Marginalize the cell attachment matrix (field 5.10), 
 \item
-  Check indistinguishable event and remove them
+  Keep equivalent solutions and return all of them (field 5.11), 
 \item
-  Estimate error rates of MCMC moves
+  Check indistinguishable event and remove them (field 5.12), 
 \item
-  Show results
+  Estimate error rates of MCMC moves (field 5.13), 
+\item
+  Show results (field 5.14).  
 \end{enumerate}
 
-\includegraphics[width=0.6\textwidth,height=\textheight]{./resources/Inference_tab2.png}
+\includegraphics[width=0.6\textwidth,height=\textheight]{./resources/figure5d.png}
 
-The user must insert at least one false positive rate and one false
-negative rate value for each sample. By double clicking on any cell
+The user must insert at least one false positive rate (field 5.2) and one false
+negative rate value (field 5.3) for each sample. By double clicking on any cell
 belonging to the row ``add row'', the user can insert a new set of false
 or positive rates for each sample. During the inferential step, the
 maximization of the likelihood for each set of rates is performed. The
 best results are returned.
 
-\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Inference_tab1.png}
+%\includegraphics[width=0.95\textwidth,height=\textheight]{./resources/Inference_tab1.png}
 
 Press ``Run LACE'' to perform all computation and estimation steps and
 visualize the results.
 
+
+\subsubsection{Parameter ranges}
+To analyze new datasets, users can start from default values and then 
+adjust them according to the indications reported in the following table:
+
+
+	\begin{tabular}{lrrl}
+		\hline
+		Field Name & Default & Range & Variation\\ \hline
+		Alternate counts (field 3.1) & 2  & $1 < x \ll C/2$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
+		Higher values select events with more supporting ALT reads and remove PCR errors, but bias the results toward high CN/expressed genes.
+		\end{minipage}\\
+		MAF (field 3.2) & 0.01 & $0 \leq x < 0.5$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
+		Smaller values imply more rare events compared to the reference population.
+		\end{minipage}\\
+		Variant Frequency (field 3.3) & 0.01 & $0 < x \leq 1$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
+		Smaller values include less common mutations among cells in the experiment.
+		\end{minipage}\\
+		Minimum depth (field 4.1) & 3 & $0 \leq x \ll C$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
+		Bigger values, implies more NA sites per time point.
+		\end{minipage}\\
+		Max missing value (field 4.2) & 0.4 & $0\leq x\leq 1$  & \begin{minipage}[t]{0.4\columnwidth}\raggedright
+		Higher values, keep mutational sites for which larger number of cells has NA value.
+		\end{minipage}\\
+		Minimum median depth (field 4.3) & 8 & $1\leq x < \sim C$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
+		Bigger values keep only locus with bigger median coverege among cells.
+		\end{minipage}\\
+		Minimum alt median depth (field 4.4) & 4 & $1\leq x < \sim C$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
+		Bigger values keep only mutations with more supporting read in the cell population.
+		\end{minipage}\\ 
+		%
+		Learning rate  (field 5.1)& 1 & & \begin{minipage}[t]{0.4\columnwidth}\raggedright
+		Higher values to avoid local minima, but less accurate.
+		\end{minipage}\\
+		False positive rates (field 5.2)& & $0<x<1$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
+		Lower values, for more constraining data values.
+		\end{minipage}\\
+		False negative rates (field 5.3)& & $0<x<1$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
+		Lower values, for more constraining data values.
+		\end{minipage}\\
+		MCMC iterations (field 4.4) & 10000 &$x>1$ &\\
+		Number of restart (field 5.5)& 50 & $x\geq 1$ &\\
+		Early stopping (field 5.6)& 500 & $x>1$ & \\
+		\hline
+	\end{tabular}
+
+Some of the  parameter validity ranges refer to the mean mapped read depth $C$ of the samples.
 
 \subsection{Longitudinal display and outputs
 interface}\label{longitudinal-display-and-outputs-interface}
