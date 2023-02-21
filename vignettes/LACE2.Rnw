@@ -573,10 +573,10 @@ adjust them according to the indications reported in the following table:
 		Higher values, keep mutational sites for which larger number of cells has NA value.
 		\end{minipage}\\
 		Minimum median depth (field 4.3) & 8 & $1\leq x < \sim C$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
-		Bigger values keep only locus with bigger median coverege among cells.
+		Bigger values keep only locus with bigger median coverage among cells.
 		\end{minipage}\\
 		Minimum alt median depth (field 4.4) & 4 & $1\leq x < \sim C$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
-		Bigger values keep only mutations with more supporting read in the cell population.
+		Bigger values keep only mutations with more supporting reads in the cell population.
 		\end{minipage}\\ 
 		%
 		Learning rate  (field 5.1)& 1 & & \begin{minipage}[t]{0.4\columnwidth}\raggedright
