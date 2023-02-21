@@ -104,7 +104,7 @@ show_tab <- function(disp = FALSE) {
 
 
 inf_exec <- function() {
-  #browser()
+  browser()
   if (length(va_out_dir_()) == 0)
     return()
   if (dir.exists(va_out_dir_()))
@@ -288,7 +288,7 @@ inf_exec <- function() {
       list_par[["show"]] <- FALSE
       inputs[['inf_params']](list_par)
 
-      browser()
+      #browser()
       #inference_res <- LACE::LACE(D, show = F)
       inference_res=do.call('LACE',inputs[['inf_params']]())
 
@@ -469,7 +469,7 @@ observeEvent(inputs[["long_job"]](),{
 ## inf_go
 
 inf_go <- function() {
-  #browser()
+  browser()
   # if(inputs[["demo"]]() == "Small_dataset")
   if(!is.null(inputs[["demo"]]()))
   {

@@ -324,7 +324,7 @@ load_all_configs <- function(project_folder,
 
 
   inputs[["load_all_configs"]](FALSE)
-
+  browser()
   ## Change to project folder
   setwd(inputs[["project_folder_std"]]())
 
@@ -378,6 +378,7 @@ load_all_configs <- function(project_folder,
 
 observeEvent(inputs[["load_all_configs"]](),{
   if(inputs[["load_all_configs"]]()) {
+    browser()
     inf_doLoad_c()
     for(i in c("inf_alpha", "inf_beta")) {
       if( i %in% names(inf_loaded_input_())) {
