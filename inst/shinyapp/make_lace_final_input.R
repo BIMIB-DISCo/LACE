@@ -241,6 +241,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
     filter( scID %in% rownames({{depth}}))%>% 
     mutate(idx = paste(Gene,Chr,PosStart,REF,ALT,sep='_')) %>% 
     mutate(val=1) %>%
+    distinct() %>%  
     #select(scID,idx,val) %>%
     pivot_wider(id_cols=scID, names_from = idx, values_from=val, values_fill=0) %>%
     full_join(data.frame(scID=rownames({{depth}})))
