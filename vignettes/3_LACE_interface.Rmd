@@ -108,7 +108,7 @@ The interface is divided in two parts interleaved by variant selection and infer
 
 ### Project creation
 
-To begin the clonal analyses the user needs to create a project by choosing a folder and a meaningful name for the project.
+To begin the clonal analyses the user needs to create a project by choosing a folder and a meaningful name for the project (field 1.1 and 1.2).
 
 ![](./resources/Project_tab.png){width="95%"}
 
@@ -223,7 +223,7 @@ The user can select a set of filters based on gold standards and other analyses 
 4.  the minimum median depth supporting the mutation (field 4.4), 
 5.  subset of known genes (field 4.5).
 
-![](./resources/figure4c.png){width="95%"}
+![](./resources/figure4d.png){width="95%"}
 
 Finding the parameters to select variants is not an easy task, and the user might not know in advance how to choose the best set of filters.
 Hence, the user can press "Select variants" (![](./resources/select_variant.png){width="10%"}) to perform the aforementioned computations on VCF and BAM files to derive all the necessary aggregated information on the sampled cells.
@@ -252,12 +252,14 @@ Inferential step uses the following set of parameters:
 13. Estimate error rates of MCMC moves (field 5.13),
 14. Show results (field 5.14).
 
-![](./resources/figure5d.png){width="95%"}
+![](./resources/Inference_tab1.png){width="95%"}
 
 The user must insert at least one false positive rate (field 5.2) and one false negative rate value (field 5.3) for each sample.
 By double clicking on any cell belonging to the row "add row", the user can insert a new set of false or positive rates for each sample.
 During the inferential step, the maximization of the likelihood for each set of rates is performed.
 The best results are returned.
+
+![](./resources/Inference_tab2.png){width="40%"}
 
 
 Press "Run LACE" to perform all computation and estimation steps and visualize the results.
@@ -305,4 +307,4 @@ By clicking on a mutation label of the longitudinal clonal tree as well as on a 
 
 The bottom part of the tab is used to display the tree legend and the best estimated set false positive/negative rates.
 
-![](./resources/figure6c.png){width="95%"}
+![](./resources/figure6d.png){width="95%"}
