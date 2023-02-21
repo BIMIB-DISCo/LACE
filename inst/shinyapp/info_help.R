@@ -118,7 +118,7 @@ text[["m_timePointsCol"]] =
     "Select the column containing the sampling times. Sampling time tags can concide with the ids if the case."
 
 text[["m_timePoints"]] =
-    "Select and drug one or more sampling points to order them chronologically."
+    "Select and drag one or more sampling points to order them chronologically."
 
 text[["m_doSave"]] =
     "Alpha release: Save state for the current tab."
