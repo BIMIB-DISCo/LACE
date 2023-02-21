@@ -3,7 +3,7 @@
 #################################################
 NA_compute2_load <- function(data_dir, depth_dir, out_dir) {
 
-  #browser()
+  browser()
 
 
   dir.create(out_dir, showWarnings = FALSE)
@@ -25,7 +25,7 @@ NA_compute2_load <- function(data_dir, depth_dir, out_dir) {
 
 NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_mutation, data_dir, depth_dir, out_dir, time_points, verified_genes, non_NA_genes, files) {
 
-  #browser()
+  browser()
 
   cells_aggregate_info <- files$cells_aggregate_info
   snpMut_filt_freq <- files$snpMut_filt_freq
@@ -264,7 +264,7 @@ NA_compute2 <- function(depth_minimum, minumum_median_total, minumum_median_muta
   for ( t in time_points )
     mycellsdata[[t]] = as.matrix.data.frame(mutations[sort(unique(cells_aggregate_info$scID[which(cells_aggregate_info$Time==t)])), , drop=FALSE], rownames.force = TRUE)
   D = mycellsdata
-  browser()
+  #browser()
   save(D,file=file.path(out_dir,"D.RData"))
 
   
@@ -348,8 +348,8 @@ plot_D <-function(D) {
   s <- D1 %>% group_by(time) %>% 
     summarise(across(where(is.numeric), ~sum(.,na.rm = TRUE))) %>% 
     pivot_longer(-1) %>% 
-    pivot_wider(names_from = 1, values_from = value) %>% 
-    arrange(across(everything()))
+    pivot_wider(names_from = 1, values_from = value) #%>% 
+    #arrange(across(everything())) not needed
   
   Dw <- D1 %>%
     pivot_longer( col = -c(time, cell,ordered), names_to = "mutation", values_to = "value") %>%
