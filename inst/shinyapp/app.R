@@ -1367,6 +1367,7 @@ server <- function(input, output, session) {
       }
       va_doLoad_c()
     } else if (input[["main_tabset"]] == "Inference") {
+      browser()
       inf_doLoad_a(config_path)
       uis <- inf_uis
       for(i in uis) {
@@ -1416,6 +1417,7 @@ server <- function(input, output, session) {
     }
     va_doLoad_c()
     
+    browser()
     inf_doLoad_a(config_path)
     uis <- inf_uis
     for(i in uis) {
@@ -1741,10 +1743,10 @@ server <- function(input, output, session) {
   
   
   va_iv <- InputValidator$new()
-  va_iv$add_rule("va_depth_minimum", sv_between(1,100))
+  va_iv$add_rule("va_depth_minimum", sv_between(0,500))
   va_iv$add_rule("va_missing_values_max", sv_between(0.,1.))
-  va_iv$add_rule("va_minumum_median_total", sv_between(0.,50.))
-  va_iv$add_rule("va_minumum_median_mutation", sv_between(0.,50.))
+  va_iv$add_rule("va_minumum_median_total", sv_between(0,500))
+  va_iv$add_rule("va_minumum_median_mutation", sv_between(0,500))
   va_iv$enable()
 
   observeEvent(input$va_exec,{
@@ -2332,8 +2334,8 @@ server <- function(input, output, session) {
     })
 
   thr_iv <- InputValidator$new()
-  thr_iv$add_rule("thr_alleles_ratio", sv_between(0,1))
-  thr_iv$add_rule("thr_maf", sv_between(0.,0.5))
+  thr_iv$add_rule("thr_alleles_ratio", sv_between(1,55))
+  thr_iv$add_rule("thr_maf", sv_between(0.01,0.5))
   thr_iv$add_rule("thr_freq", sv_between(0.,1.))
   thr_iv$enable()
   ### Threshold observers ####
