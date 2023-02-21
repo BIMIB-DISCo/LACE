@@ -3,7 +3,7 @@
 #################################################
 NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, out_dir, time_points) {
   # set working directory
-  #browser()
+  browser()
   #library(stringr)
 
   #depth_minimum = 3 # minimum depth to set values to NA
@@ -60,7 +60,7 @@ NA_compute <- function(depth_minimum, missing_values_max, data_dir, depth_dir, o
   
   #valid_genes <- colnames(mycellsdata[[1]])[apply(do.call(rbind, lapply(time_points_NA, function(x){x<=missing_values_max})), FUN = all, MARGIN = 2)]
   # browser()
-  valid_genes <- colnames(mycellsdata[[1]])[apply(bind_rows(lapply(time_points_NA, function(x){x<=missing_values_max})), FUN = all, MARGIN = 1)]
+  valid_genes <- colnames(mycellsdata[[1]])[apply(bind_rows(lapply(time_points_NA, function(x){x<=missing_values_max})), FUN = all, MARGIN = 2)]
   #valid_genes <- colnames(mycellsdata[[1]])[(data.frame(bind_rows(time_points_NA)<=missing_values_max) %>% rowwise() %>% mutate(y=all(c_across(everything())) ))$y]
   valid = NULL
 
