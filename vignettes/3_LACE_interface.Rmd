@@ -275,13 +275,13 @@ adjust them according to the indications reported in the following table:
 | Alternate counts (field 3.1)      | 2      | $1 < x \ll C/2$    | Higher values select events with more supporting ALT reads and remove PCR errors, but bias the results toward high CN/expressed genes. |
 | MAF (field 3.2)                   | 0.01   | $0 \leq x < 0.5$   |	Smaller values imply more rare events compared to the reference population. |
 | Variant Frequency (field 3.3)     | 0.01   | $0 < x \leq 1$     | Smaller values include less common mutations among cells in the experiment. |
-| Minimum depth (field 4.1)         | 3      | $0 \leq x \ll C$   | Bigger values, implies more NA sites per time point. |
-| Max missing value (field 4.2)     | 0.4    | $0\leq x\leq 1$    | Higher values, keep mutational sites for which larger number of cells has NA value. |
-| Minimum median depth (field 4.3)  | 8      | $1\leq x < \sim C$ |	Bigger values keep only locus with bigger median coverage among cells. |
+| Minimum depth (field 4.1)         | 3      | $0 \leq x \ll C$   | Bigger values imply more NA sites per time point. |
+| Max missing value (field 4.2)     | 0.4    | $0\leq x\leq 1$    | Higher values keep mutational sites for which larger number of cells has an NA value. |
+| Minimum median depth (field 4.3)  | 8      | $1\leq x < \sim C$ |	Bigger values keep only loci with bigger median coverage among cells. |
 | Minimum alt median depth (field 4.4)| 4    | $1\leq x < \sim C$ | Bigger values keep only mutations with more supporting reads in the cell population. |
-| Learning rate  (field 5.1)        | 1      |           | Higher values to avoid local minima, but less accurate. |
-| False positive rates (field 5.2)  |        | $0<x<1$   | Lower values, for more constraining data values. |
-| False negative rates (field 5.3)  |        | $0<x<1$   | Lower values, for more constraining data values. |
+| Learning rate  (field 5.1)        | 1      |           | Higher values permit to avoid local minima, but are less accurate. |
+| False positive rates (field 5.2)  |        | $0<x<1$   | Lower values imply more constraining data values. |
+| False negative rates (field 5.3)  |        | $0<x<1$   | Lower values imply more constraining data values. |
 | MCMC iterations (field 4.4)       | 10000  | $x>1$     | |
 | Number of restart (field 5.5)     | 50     | $x\geq 1$ | |
 | Early stopping (field 5.6)        | 500    | $x>1$     | |

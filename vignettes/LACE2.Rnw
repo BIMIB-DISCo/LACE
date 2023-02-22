@@ -567,26 +567,26 @@ adjust them according to the indications reported in the following table:
 		Smaller values include less common mutations among cells in the experiment.
 		\end{minipage}\\
 		Minimum depth (field 4.1) & 3 & $0 \leq x \ll C$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
-		Bigger values, implies more NA sites per time point.
+		Bigger values imply more NA sites per time point.
 		\end{minipage}\\
 		Max missing value (field 4.2) & 0.4 & $0\leq x\leq 1$  & \begin{minipage}[t]{0.4\columnwidth}\raggedright
-		Higher values, keep mutational sites for which larger number of cells has NA value.
+		Higher values keep mutational sites for which larger number of cells has an NA value.
 		\end{minipage}\\
 		Minimum median depth (field 4.3) & 8 & $1\leq x < \sim C$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
-		Bigger values keep only locus with bigger median coverage among cells.
+		Bigger values keep only loci with bigger median coverage among cells.
 		\end{minipage}\\
 		Minimum alt median depth (field 4.4) & 4 & $1\leq x < \sim C$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
 		Bigger values keep only mutations with more supporting reads in the cell population.
 		\end{minipage}\\ 
 		%
 		Learning rate  (field 5.1)& 1 & & \begin{minipage}[t]{0.4\columnwidth}\raggedright
-		Higher values to avoid local minima, but less accurate.
+		Higher values permit to avoid local minima, but are less accurate.
 		\end{minipage}\\
 		False positive rates (field 5.2)& & $0<x<1$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
-		Lower values, for more constraining data values.
+		Lower values imply more constraining data values.
 		\end{minipage}\\
 		False negative rates (field 5.3)& & $0<x<1$ & \begin{minipage}[t]{0.4\columnwidth}\raggedright
-		Lower values, for more constraining data values.
+		Lower values imply more constraining data values.
 		\end{minipage}\\
 		MCMC iterations (field 4.4) & 10000 &$x>1$ &\\
 		Number of restart (field 5.5)& 50 & $x\geq 1$ &\\
