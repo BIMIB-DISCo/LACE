@@ -79,4 +79,4 @@ To start LACE 2.0 user interface run:
 library(LACE)
 LACEview()
 ```
-![Picture](https://github.com/BIMIB-DISCo/LACE/blob/master/vignettes/resources/Display_tab.png?raw=true)
+![Picture](https://github.com/BIMIB-DISCo/LACE/blob/master/vignettes/resources/figure6d.png?raw=true)
