@@ -24,7 +24,7 @@ download_demo <- function() {
       list.files(tmp)
       
       #download repository
-      url <- "https://github.com/gian-asco/LACE-DEMO/archive/refs/tags/1.0.0.zip"
+      url <- "https://github.com/gian-asco/LACE-DEMO/archive/refs/tags/1.1.0.zip"
       filen <- file.path(tmp,"LACE_demos.zip")
       tryCatch({
         if (curl::has_internet()) {
@@ -48,8 +48,8 @@ download_demo <- function() {
       if(bStatus)
       {
         unzip(filen, exdir=tmp)
-        file.copy(from = file.path(tmp, "LACE-DEMO-1.0.0", "Rambow_dataset"), to = appDir, overwrite = TRUE, recursive = TRUE)
-        file.copy(from = file.path(tmp, "LACE-DEMO-1.0.0", "Small_dataset"), to = appDir, overwrite = TRUE, recursive = TRUE)
+        file.copy(from = file.path(tmp, "LACE-DEMO-1.1.0", "Rambow_dataset"), to = appDir, overwrite = TRUE, recursive = TRUE)
+        file.copy(from = file.path(tmp, "LACE-DEMO-1.1.0", "Small_dataset"), to = appDir, overwrite = TRUE, recursive = TRUE)
       }
     }
     else
