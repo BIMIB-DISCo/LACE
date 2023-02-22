@@ -10,7 +10,7 @@ Authors@R: c(person("Daniele", "Ramazzotti", role=c("aut"),email="daniele.ramazz
     person("Luca", "De Sano", role=c("aut"), email="luca.desano@gmail.com",
                 comment = c(ORCID = "0000-0002-9618-3774")),
     person("Gianluca","Ascolani",role=c("aut"),email="gianluca.ascolani@unimib.it"))
-Depends: R (>= 4.1.0)
+Depends: R (>= 4.2.0)
 Imports:
     curl,
     igraph,
