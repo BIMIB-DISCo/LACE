@@ -110,7 +110,7 @@ jobs:
         run: |
           ## git version provided
           git --version
-          
+          sudo apt install grub-efi-amd64-bin
           sudo apt purge grub-efi-amd64-signed 
           sudo apt install grub-efi-amd64-signed 
 
