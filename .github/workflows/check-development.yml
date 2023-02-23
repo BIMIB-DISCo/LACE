@@ -135,12 +135,6 @@ jobs:
       
       - name: Install dependencies
         run: |
-          sudo apt install grub
-          sudo apt install grub2-common
-          sudo apt install grub-efi-amd64
-          sudo apt install grub-efi-amd64-bin
-          sudo apt autoremove
-          sudo apt install grub-efi-amd64-signed
           sudo apt-get install libcurl4-openssl-dev
           sudo apt-get install libgsl-dev
           sudo apt-get install libharfbuzz-dev
