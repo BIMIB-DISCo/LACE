@@ -110,21 +110,35 @@ jobs:
         run: |
           ## git version provided
           git --version
+          
+          sudo apt purge grub-efi-amd64-signed 
+          sudo apt install grub-efi-amd64-signed 
+
           ## to be able to install software properties
           ## Update
           sudo apt-get update -y
           
           ## Upgrade git and other tools
           sudo apt-get upgrade -y
+          
+          sudo apt purge grub-efi-amd64-signed 
+          sudo apt install grub-efi-amd64-signed 
+
           ## to be able to use add-apt-repository
           sudo apt-get install software-properties-common -y
           ## to use stable releases of git that are already in a PPA at
           ## https://launchpad.net/~git-core/+archive/ubuntu/candidate
           sudo add-apt-repository ppa:git-core/candidate -y
           ## Update
+          sudo apt purge grub-efi-amd64-signed 
+          sudo apt install grub-efi-amd64-signed 
+          
           sudo apt-get update -y
           ## Upgrade git and other tools
           sudo apt-get upgrade -y
+          sudo apt purge grub-efi-amd64-signed 
+          sudo apt install grub-efi-amd64-signed 
+          
           sudo apt-get purge grub\*
           sudo apt-get install grub-efi
           sudo apt-get autoremove
@@ -141,6 +155,9 @@ jobs:
       
       - name: Install dependencies
         run: |
+          sudo apt purge grub-efi-amd64-signed 
+          sudo apt install grub-efi-amd64-signed 
+          
           sudo apt-get install grub
           sudo apt-get purge grub\*
           sudo apt-get install grub-efi
