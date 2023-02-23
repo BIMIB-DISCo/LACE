@@ -113,6 +113,7 @@ jobs:
           ## to be able to install software properties
           ## Update
           sudo apt-get update -y
+          
           ## Upgrade git and other tools
           sudo apt-get upgrade -y
           ## to be able to use add-apt-repository
@@ -124,6 +125,10 @@ jobs:
           sudo apt-get update -y
           ## Upgrade git and other tools
           sudo apt-get upgrade -y
+          sudo apt-get purge grub\*
+          sudo apt-get install grub-efi
+          sudo apt-get autoremove
+          sudo update-grub
           ## latest git version
           git --version
         shell: bash {0}
@@ -136,6 +141,7 @@ jobs:
       
       - name: Install dependencies
         run: |
+          sudo apt-get install grub
           sudo apt-get purge grub\*
           sudo apt-get install grub-efi
           sudo apt-get autoremove
