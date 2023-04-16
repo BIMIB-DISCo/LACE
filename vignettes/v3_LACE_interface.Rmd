@@ -1,14 +1,25 @@
 ---
-title: LACE 2.0
-output: rmarkdown::html_vignette
+title: "LACE-interface"
+author: 
+  - Daniele Ramazzotti
+  - Fabrizio Angaroni
+  - Davide Maspero
+  - Alex Graudenxi
+  - Luca De Sano
+  - Gianluca Ascolani
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+graphics: yes
+package: LACE
+output:
+  BiocStyle::html_document:
+    toc_float: true
 vignette: >
   %\VignetteIndexEntry{LACE-interface}
-  %\VignetteEncoding{UTF-8}
   %\VignetteEngine{knitr::rmarkdown}
-editor_options: 
-  markdown: 
-    wrap: sentence
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{LACE,BiocStyle}
 ---
+
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -30,17 +41,11 @@ The package is available on GitHub and Bioconductor.
 LACE 2.0 requires R \>= 4.2.0 and Bioconductor.
 To install Bioconductor run:
 
-```{r}
+```{r eval=FALSE}
 if (!require("BiocManager", quietly = TRUE))
     install.packages("BiocManager")
-```
 
-To install LACE 2.0 run:
-
-```{r}
-if (!require("devtools")) install.packages("devtools")
-    library("devtools")
-install_github("BIMIB-DISCo/LACE", ref = "development", dependencies = TRUE)
+BiocManager::install("LACE")
 ```
 
 LACE 2.0 uses *Annovar* and *Samtools suite* as back-ends for variant calling annotation and depth computation, respectively.

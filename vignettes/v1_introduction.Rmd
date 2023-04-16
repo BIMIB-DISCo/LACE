@@ -1,6 +1,23 @@
 ---
-title: Introduction
-output: html_document
+title: "Introduction"
+author: 
+  - Daniele Ramazzotti
+  - Fabrizio Angaroni
+  - Davide Maspero
+  - Alex Graudenxi
+  - Luca De Sano
+  - Gianluca Ascolani
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+graphics: yes
+package: LACE
+output:
+  BiocStyle::html_document:
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Introduction}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{LACE,BiocStyle}
 ---
 
 ## Overview
@@ -19,17 +36,14 @@ background = "#f3f3ff"
 
 ## Installing LACE
 
-The R version of *LACE* can be installed from Github. To do so, we need to install the R packages *LACE* depends on and the devtools package. 
+The R version of *LACE* can be installed from BioConductor. To do so, we need to install the R packages *LACE* depends on and the devtools package. 
 
 
 ```{r eval=FALSE}
-# install LACE library
-if (!require("devtools")) install.packages("devtools")
-library("devtools")
-install_github("BIMIB-DISCo/LACE", ref = "master")
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
 
-# load LACE library
-library("LACE")
+BiocManager::install("LACE")
 ```
 
 ## Debug
