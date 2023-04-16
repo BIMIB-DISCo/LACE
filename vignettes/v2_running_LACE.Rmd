@@ -1,7 +1,25 @@
 ---
-title: Running LACE
-output: html_document
+title: "Running LACE"
+author: 
+  - Daniele Ramazzotti
+  - Fabrizio Angaroni
+  - Davide Maspero
+  - Alex Graudenxi
+  - Luca De Sano
+  - Gianluca Ascolani
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+graphics: yes
+package: LACE
+output:
+  BiocStyle::html_document:
+    toc_float: true
+vignette: >
+  %\VignetteIndexEntry{Running LACE}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+  %\VignetteDepends{LACE,BiocStyle}
 ---
+
 
 ## Setup the environement
 

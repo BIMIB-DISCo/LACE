@@ -9,7 +9,6 @@
 ^pkgdown$
 ^doc$
 ^Meta$
-^vignettes/.*Rmd$
 ^vignettes/.*gml$
 ^.*\.Rproj$
 ^\.Rproj\.user$

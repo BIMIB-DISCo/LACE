@@ -439,7 +439,7 @@ lacedata <- function( D,
   error_rates <- inference_res$error_rates
   
   if (!is.null(B) && !is.null(C) && !is.null(clones_prevalence) && !is.null(error_rates)) {
-    x <- LACE:::lace_interface(
+    x <- lace_interface(
       B_mat = B,
       clones_prevalence = clones_prevalence,
       C_mat = C,

@@ -452,7 +452,7 @@ longitudinal.tree.plot <- function( inference,
     g_mod$layout <- igraph::norm_coords(as.matrix(cl_vertex[,c("coord.x", "coord.y")]), xmin = -1*ratio, xmax = 1*ratio, ymin = 1, ymax = -1)
     
     if(tk_plot) {
-        tkplot(g_mod,
+        igraph::tkplot(g_mod,
                rescale = FALSE,
                vertex.label.dist = 0,
                vertex.label.cex = label.cex,

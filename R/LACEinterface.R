@@ -33,6 +33,8 @@
 #' @import callr
 #' @import shinyvalidate
 #' @import logr
+#' @import ggplot2
+#' @import svglite
 
 ## Declare name
 
