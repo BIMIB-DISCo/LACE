@@ -34,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">LACE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.3.2</span>
       </span>
     </div>
 
@@ -51,13 +51,13 @@
   </a>
   <ul class="dropdown-menu" role="menu">
 <li>
-      <a href="articles/1_introduction.html">Introduction</a>
+      <a href="articles/v1_introduction.html">Introduction</a>
     </li>
     <li>
-      <a href="articles/2_running_LACE.html">Running LACE</a>
+      <a href="articles/v2_running_LACE.html">Running LACE</a>
     </li>
     <li>
-      <a href="articles/3_LACE_interface.html">LACE 2.0</a>
+      <a href="articles/v3_LACE_interface.html">LACE-interface</a>
     </li>
   </ul>
 </li>
@@ -95,7 +95,7 @@
 <div class="section level2">
 <h2 id="installation-of-lace-20-r-package">Installation of LACE 2.0 R package<a class="anchor" aria-label="anchor" href="#installation-of-lace-20-r-package"></a>
 </h2>
-<p>The package is available on GitHub and Bioconductor. LACE 2.0 requires R &gt; 4.1.0.</p>
+<p>The package is available on GitHub and Bioconductor. LACE 2.0 requires R &gt;= 4.2.0.</p>
 <p>To install from Bioconductor, please run:</p>
 <pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st">"BiocManager"</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
 <span>    <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"BiocManager"</span><span class="op">)</span></span>
@@ -104,7 +104,7 @@
 <p>To install LACE 2.0 from GitHub run:</p>
 <pre><code><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">require</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://devtools.r-lib.org/" class="external-link">"devtools"</a></span><span class="op">)</span></span>
-<span><span class="fu">install_github</span><span class="op">(</span><span class="st">"BIMIB-DISCo/LACE"</span>, ref <span class="op">=</span> <span class="st">"development"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
+<span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html" class="external-link">install_github</a></span><span class="op">(</span><span class="st">"BIMIB-DISCo/LACE"</span>, ref <span class="op">=</span> <span class="st">"development"</span>, dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre>
 <p>LACE 2.0 uses <em>Annovar</em> and <em>Samtools suite</em> as back-ends for variant calling annotation and depth computation, respectively. Please refer to the next section to install them.</p>
 </div>
 <div class="section level2">
@@ -136,7 +136,7 @@
 <pre><code><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/BIMIB-DISCo/LACE" class="external-link">LACE</a></span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/LACEview.html">LACEview</a></span><span class="op">(</span><span class="op">)</span></span></code></pre>
 <div class="figure">
-<img src="https://github.com/BIMIB-DISCo/LACE/blob/master/vignettes/resources/Display_tab.png?raw=true" alt=""><p class="caption">Picture</p>
+<img src="https://github.com/BIMIB-DISCo/LACE/blob/master/vignettes/resources/figure6d.png?raw=true" alt=""><p class="caption">Picture</p>
 </div>
 </div>
 </div>
