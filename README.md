@@ -1,9 +1,10 @@
 LACE 2.0: an interactive R tool for the inference and visualization of longitudinal cancer evolution
 ============================================
 
-[![Actions Status](https://github.com/BIMIB-DISCo/LACE/workflows/check-master/badge.svg)](https://github.com/BIMIB-DISCo/LACE/actions?query=workflow%3Acheck-master)
-[![Actions Status](https://github.com/BIMIB-DISCo/LACE/workflows/check-development/badge.svg)](https://github.com/BIMIB-DISCo/LACE/actions?query=workflow%3Acheck-development)
-<a href="http://bioconductor.org/packages/release/bioc/html/LACE.html#since"><img border="0" src="http://bioconductor.org/shields/years-in-bioc/LACE.svg" title="How long since the package was first in a released Bioconductor version (or is it in devel only)."/></a>
+| Branch | Status |
+| --- | --- |
+| master | [![R-CMD-check-bioc](https://github.com/BIMIB-DISCo/LACE/actions/workflows/check-bioc.yml/badge.svg?branch=master)](https://github.com/BIMIB-DISCo/LACE/actions/workflows/check-bioc.yml) |
+| development | [![R-CMD-check-bioc](https://github.com/BIMIB-DISCo/LACE/actions/workflows/check-bioc.yml/badge.svg?branch=development)](https://github.com/BIMIB-DISCo/LACE/actions/workflows/check-bioc.yml) |
 
 LACE 2.0 is a new release of the LACE R Bioconductor package. LACE 2.0 is capable of performing clonal evolution analyses for single-cell sequencing data including longitudinal experiments. LACE 2.0 allows to annotate variants and retrieve the relevant mutations interactively based on user-defined filtering criteria; it infers the maximum likelihood clonal tree, cell matrix attachment and false positive/negative rates using boolean matrix factorization. Furthermore, it generates the longitudinal clonal tree. Finally, LACE 2.0 allows to investigate cancer clonal evolution under different experimental conditions and the occurrence of single mutations which can be queried via *ensembl* database. 
 
