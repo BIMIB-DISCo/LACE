@@ -95,7 +95,7 @@ Sano</h4>
                         <h4 data-toc-skip class="author">Gianluca
 Ascolani</h4>
             
-            <h4 data-toc-skip class="date">April 29, 2023</h4>
+            <h4 data-toc-skip class="date">May 09, 2023</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/BIMIB-DISCo/LACE/blob/HEAD/vignettes/v2_running_LACE.Rmd" class="external-link"><code>vignettes/v2_running_LACE.Rmd</code></a></small>
       <div class="hidden name"><code>v2_running_LACE.Rmd</code></div>
@@ -116,11 +116,8 @@ data comprises point mutations for four time points: (1) before
 treatment, (2) 4 days treatment, (3) 28 days treatment and finally (4)
 57 days treatment.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/BIMIB-DISCo/LACE" class="external-link">"LACE"</a></span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## Warning: replacing previous import 'utils::findMatches' by</span></span>
-<span><span class="co">## 'S4Vectors::findMatches' when loading 'AnnotationDbi'</span></span></code></pre>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">longitudinal_sc_variants</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/BIMIB-DISCo/LACE" class="external-link">"LACE"</a></span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">longitudinal_sc_variants</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">longitudinal_sc_variants</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "T1_before_treatment"  "T2_4_days_treatment"  "T3_28_days_treatment"</span></span>
 <span><span class="co">## [4] "T4_57_days_treatment"</span></span></code></pre>
@@ -128,14 +125,14 @@ treatment, (2) 4 days treatment, (3) 28 days treatment and finally (4)
 of all, as the four data points may potentially provide sequencing for
 an unbalanced number of cells, we weight each time point proportionally
 to the sample sizes as follow. We refer to the paper for details.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lik_weights</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2308772</span>,<span class="fl">0.2554386</span>,<span class="fl">0.2701754</span>,<span class="fl">0.2435088</span><span class="op">)</span></span></code></pre></div>
 <p>The second main parameter to be defined as input is represented by
 the false positive and false negative error rates, i.e., alpha and beta.
 We can specify a different rate per time point as a list of rates. When
 multiple set of rates are provided, <em>LACE</em> performs a grid search
 in order to estimate the best set of error rates.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">alpha</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">alpha</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.02</span>,<span class="fl">0.01</span>,<span class="fl">0.01</span>,<span class="fl">0.01</span><span class="op">)</span></span>
 <span><span class="va">alpha</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.10</span>,<span class="fl">0.05</span>,<span class="fl">0.05</span>,<span class="fl">0.05</span><span class="op">)</span></span>
@@ -148,7 +145,7 @@ in order to estimate the best set of error rates.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[2]]</span></span>
 <span><span class="co">## [1] 0.10 0.05 0.05 0.05</span></span></code></pre>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">## [1] 0.10 0.05 0.05 0.05</span></span>
@@ -160,7 +157,7 @@ in order to estimate the best set of error rates.</p>
 <h2 id="inference">Inference<a class="anchor" aria-label="anchor" href="#inference"></a>
 </h2>
 <p>We can now perform the inference as follow.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inference</span> <span class="op">=</span> <span class="fu"><a href="../reference/LACE.html">LACE</a></span><span class="op">(</span>D <span class="op">=</span> <span class="va">longitudinal_sc_variants</span>, </span>
 <span>    lik_w <span class="op">=</span> <span class="va">lik_weights</span>, </span>
 <span>    alpha <span class="op">=</span> <span class="va">alpha</span>, </span>
@@ -550,7 +547,7 @@ n_try_bs representing the number of steps perfomed during the inference
 are downscaled to reduce execution time. We refer to the Manual for
 discussion on default values. We provide within the package results of
 inferences performed with correct parameters as RData.</p>
-<div class="sourceCode" id="cb301"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb299"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">inference</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">inference</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "B"                    "C"                    "corrected_genotypes" </span></span>
@@ -574,7 +571,7 @@ search.</p>
 </h2>
 <p>We can plot the inferred model using the function
 longitudinal.tree.plot.</p>
-<div class="sourceCode" id="cb303"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb301"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">clone_labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ARPC2"</span>,<span class="st">"PRAME"</span>,<span class="st">"HNRNPC"</span>,<span class="st">"COL1A2"</span>,<span class="st">"RPL5"</span>,<span class="st">"CCT8"</span><span class="op">)</span></span>
 <span><span class="va">longitudinal.tree</span> <span class="op">=</span> <span class="fu"><a href="../reference/longitudinal.tree.plot.html">longitudinal.tree.plot</a></span><span class="op">(</span>inference <span class="op">=</span> <span class="va">inference</span>, </span>
 <span>                                           labels_show <span class="op">=</span> <span class="st">"clones"</span>, </span>
