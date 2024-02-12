@@ -424,6 +424,7 @@ prune.and.reattach <- function(B) {
 }
 
 # Compute attachments matrix C at maximum likelihood given B, D and P
+#' @export
 compute.C <- function( B, D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, beta = 10^-2, different.error.rates = FALSE, marginalize = FALSE ) {
     
     # Initialize return variables
