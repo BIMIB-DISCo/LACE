@@ -21,7 +21,7 @@
   <key id="v_color" for="node" attr.name="color" attr.type="string"/>
   <key id="v_coord.x" for="node" attr.name="coord.x" attr.type="boolean"/>
   <key id="v_coord.y" for="node" attr.name="coord.y" attr.type="boolean"/>
-  <key id="e_type" for="edge" attr.name="type" attr.type="string"/>
+  <key id="e_type" for="edge" attr.name="type" attr.type="double"/>
   <key id="e_extincion" for="edge" attr.name="extincion" attr.type="boolean"/>
   <key id="e_label" for="edge" attr.name="label" attr.type="string"/>
   <key id="e_name" for="edge" attr.name="name" attr.type="string"/>
@@ -50,7 +50,7 @@
       <data key="v_name">T1-ARPC2_2_218249894_C_T</data>
       <data key="v_branch_level">2</data>
       <data key="v_branch">1</data>
-      <data key="v_label">ARPC2 (.20)</data>
+      <data key="v_label"> (.20)</data>
       <data key="v_last_mutation">ARPC2_2_218249894_C_T</data>
       <data key="v_TP">1</data>
       <data key="v_clone">1</data>
@@ -69,7 +69,7 @@
       <data key="v_name">T1-PRAME_22_22551005_T_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">2</data>
-      <data key="v_label">PRAME (.18)</data>
+      <data key="v_label"> (.18)</data>
       <data key="v_last_mutation">PRAME_22_22551005_T_A</data>
       <data key="v_TP">1</data>
       <data key="v_clone">2</data>
@@ -88,7 +88,7 @@
       <data key="v_name">T1-HNRNPC_14_21211843_C_T</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">4</data>
-      <data key="v_label">HNRNPC (.08)</data>
+      <data key="v_label"> (.08)</data>
       <data key="v_last_mutation">HNRNPC_14_21211843_C_T</data>
       <data key="v_TP">1</data>
       <data key="v_clone">3</data>
@@ -107,7 +107,7 @@
       <data key="v_name">T1-COL1A2_7_94422978_C_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">5</data>
-      <data key="v_label">COL1A2 (.28)</data>
+      <data key="v_label"> (.28)</data>
       <data key="v_last_mutation">COL1A2_7_94422978_C_A</data>
       <data key="v_TP">1</data>
       <data key="v_clone">4</data>
@@ -126,7 +126,7 @@
       <data key="v_name">T1-RPL5_1_92837514_C_G</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">3</data>
-      <data key="v_label">RPL5 (.10)</data>
+      <data key="v_label"> (.10)</data>
       <data key="v_last_mutation">RPL5_1_92837514_C_G</data>
       <data key="v_TP">1</data>
       <data key="v_clone">5</data>
@@ -145,7 +145,7 @@
       <data key="v_name">T1-CCT8_21_29063389_G_A</data>
       <data key="v_branch_level">2</data>
       <data key="v_branch">5</data>
-      <data key="v_label">CCT8 (.16)</data>
+      <data key="v_label"> (.16)</data>
       <data key="v_last_mutation">CCT8_21_29063389_G_A</data>
       <data key="v_TP">1</data>
       <data key="v_clone">6</data>
@@ -164,7 +164,7 @@
       <data key="v_name">T2-ARPC2_2_218249894_C_T</data>
       <data key="v_branch_level">2</data>
       <data key="v_branch">1</data>
-      <data key="v_label"> (.26)</data>
+      <data key="v_label">ARPC2 (.26)</data>
       <data key="v_last_mutation">ARPC2_2_218249894_C_T</data>
       <data key="v_TP">2</data>
       <data key="v_clone">1</data>
@@ -183,7 +183,7 @@
       <data key="v_name">T2-PRAME_22_22551005_T_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">2</data>
-      <data key="v_label"> (.27)</data>
+      <data key="v_label">PRAME (.27)</data>
       <data key="v_last_mutation">PRAME_22_22551005_T_A</data>
       <data key="v_TP">2</data>
       <data key="v_clone">2</data>
@@ -202,7 +202,7 @@
       <data key="v_name">T2-HNRNPC_14_21211843_C_T</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">4</data>
-      <data key="v_label"> (.11)</data>
+      <data key="v_label">HNRNPC (.11)</data>
       <data key="v_last_mutation">HNRNPC_14_21211843_C_T</data>
       <data key="v_TP">2</data>
       <data key="v_clone">3</data>
@@ -221,7 +221,7 @@
       <data key="v_name">T2-COL1A2_7_94422978_C_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">5</data>
-      <data key="v_label"> (.20)</data>
+      <data key="v_label">COL1A2 (.20)</data>
       <data key="v_last_mutation">COL1A2_7_94422978_C_A</data>
       <data key="v_TP">2</data>
       <data key="v_clone">4</data>
@@ -259,7 +259,7 @@
       <data key="v_name">T2-CCT8_21_29063389_G_A</data>
       <data key="v_branch_level">2</data>
       <data key="v_branch">5</data>
-      <data key="v_label"> (.16)</data>
+      <data key="v_label">CCT8 (.16)</data>
       <data key="v_last_mutation">CCT8_21_29063389_G_A</data>
       <data key="v_TP">2</data>
       <data key="v_clone">6</data>
@@ -278,7 +278,7 @@
       <data key="v_name">T3-ARPC2_2_218249894_C_T</data>
       <data key="v_branch_level">2</data>
       <data key="v_branch">1</data>
-      <data key="v_label"> (.29)</data>
+      <data key="v_label">ARPC2 (.29)</data>
       <data key="v_last_mutation">ARPC2_2_218249894_C_T</data>
       <data key="v_TP">3</data>
       <data key="v_clone">1</data>
@@ -297,7 +297,7 @@
       <data key="v_name">T3-PRAME_22_22551005_T_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">2</data>
-      <data key="v_label"> (.19)</data>
+      <data key="v_label">PRAME (.19)</data>
       <data key="v_last_mutation">PRAME_22_22551005_T_A</data>
       <data key="v_TP">3</data>
       <data key="v_clone">2</data>
@@ -316,7 +316,7 @@
       <data key="v_name">T3-HNRNPC_14_21211843_C_T</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">4</data>
-      <data key="v_label"> (.06)</data>
+      <data key="v_label">HNRNPC (.06)</data>
       <data key="v_last_mutation">HNRNPC_14_21211843_C_T</data>
       <data key="v_TP">3</data>
       <data key="v_clone">3</data>
@@ -335,7 +335,7 @@
       <data key="v_name">T3-COL1A2_7_94422978_C_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">5</data>
-      <data key="v_label"> (.24)</data>
+      <data key="v_label">COL1A2 (.24)</data>
       <data key="v_last_mutation">COL1A2_7_94422978_C_A</data>
       <data key="v_TP">3</data>
       <data key="v_clone">4</data>
@@ -373,7 +373,7 @@
       <data key="v_name">T3-CCT8_21_29063389_G_A</data>
       <data key="v_branch_level">2</data>
       <data key="v_branch">5</data>
-      <data key="v_label"> (.22)</data>
+      <data key="v_label">CCT8 (.22)</data>
       <data key="v_last_mutation">CCT8_21_29063389_G_A</data>
       <data key="v_TP">3</data>
       <data key="v_clone">6</data>
@@ -392,7 +392,7 @@
       <data key="v_name">T4-ARPC2_2_218249894_C_T</data>
       <data key="v_branch_level">2</data>
       <data key="v_branch">1</data>
-      <data key="v_label"> (.25)</data>
+      <data key="v_label">ARPC2 (.25)</data>
       <data key="v_last_mutation">ARPC2_2_218249894_C_T</data>
       <data key="v_TP">4</data>
       <data key="v_clone">1</data>
@@ -411,7 +411,7 @@
       <data key="v_name">T4-PRAME_22_22551005_T_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">2</data>
-      <data key="v_label"> (.24)</data>
+      <data key="v_label">PRAME (.24)</data>
       <data key="v_last_mutation">PRAME_22_22551005_T_A</data>
       <data key="v_TP">4</data>
       <data key="v_clone">2</data>
@@ -430,7 +430,7 @@
       <data key="v_name">T4-HNRNPC_14_21211843_C_T</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">4</data>
-      <data key="v_label"> (.12)</data>
+      <data key="v_label">HNRNPC (.12)</data>
       <data key="v_last_mutation">HNRNPC_14_21211843_C_T</data>
       <data key="v_TP">4</data>
       <data key="v_clone">3</data>
@@ -449,7 +449,7 @@
       <data key="v_name">T4-COL1A2_7_94422978_C_A</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">5</data>
-      <data key="v_label"> (.06)</data>
+      <data key="v_label">COL1A2 (.06)</data>
       <data key="v_last_mutation">COL1A2_7_94422978_C_A</data>
       <data key="v_TP">4</data>
       <data key="v_clone">4</data>
@@ -468,7 +468,7 @@
       <data key="v_name">T4-RPL5_1_92837514_C_G</data>
       <data key="v_branch_level">1</data>
       <data key="v_branch">3</data>
-      <data key="v_label"> (.16)</data>
+      <data key="v_label">RPL5 (.16)</data>
       <data key="v_last_mutation">RPL5_1_92837514_C_G</data>
       <data key="v_TP">4</data>
       <data key="v_clone">5</data>
@@ -487,7 +487,7 @@
       <data key="v_name">T4-CCT8_21_29063389_G_A</data>
       <data key="v_branch_level">2</data>
       <data key="v_branch">5</data>
-      <data key="v_label"> (.16)</data>
+      <data key="v_label">CCT8 (.16)</data>
       <data key="v_last_mutation">CCT8_21_29063389_G_A</data>
       <data key="v_TP">4</data>
       <data key="v_clone">6</data>
@@ -503,168 +503,168 @@
       <data key="v_coord.y">true</data>
     </node>
     <edge source="n1" target="n7">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n7" target="n13">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n13" target="n19">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n2" target="n8">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n8" target="n14">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n14" target="n20">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n3" target="n9">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n9" target="n15">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n15" target="n21">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n4" target="n10">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n10" target="n16">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n16" target="n22">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n5" target="n11">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n11" target="n17">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n17" target="n23">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n6" target="n12">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n12" target="n18">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n18" target="n24">
-      <data key="e_type">persistence</data>
+      <data key="e_type">2</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name"></data>
       <data key="e_lty">2</data>
     </edge>
     <edge source="n2" target="n3">
-      <data key="e_type">parental</data>
+      <data key="e_type">1</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name">HNRNPC_14_21211843_C_T</data>
       <data key="e_lty">1</data>
     </edge>
     <edge source="n1" target="n2">
-      <data key="e_type">parental</data>
+      <data key="e_type">1</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name">PRAME_22_22551005_T_A</data>
       <data key="e_lty">1</data>
     </edge>
     <edge source="n0" target="n1">
-      <data key="e_type">parental</data>
+      <data key="e_type">1</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name">ARPC2_2_218249894_C_T</data>
       <data key="e_lty">1</data>
     </edge>
     <edge source="n1" target="n5">
-      <data key="e_type">parental</data>
+      <data key="e_type">1</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name">RPL5_1_92837514_C_G</data>
       <data key="e_lty">1</data>
     </edge>
     <edge source="n4" target="n6">
-      <data key="e_type">parental</data>
+      <data key="e_type">1</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name">CCT8_21_29063389_G_A</data>
       <data key="e_lty">1</data>
     </edge>
     <edge source="n2" target="n4">
-      <data key="e_type">parental</data>
+      <data key="e_type">1</data>
       <data key="e_extincion">false</data>
       <data key="e_label"></data>
       <data key="e_name">COL1A2_7_94422978_C_A</data>
