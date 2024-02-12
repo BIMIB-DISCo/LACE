@@ -136,12 +136,12 @@ longitudinal.tree.plot <- function( inference,
                 while(nt <= max(cl_vertex$TP)) {
                     if(max(cl_vertex$prevalance[cl_vertex$clone == c & cl_vertex$TP >= nt]) > 0) {
                         to_cc <- cl_vertex$names[cl_vertex$clone == c & cl_vertex$TP == nt]
-                        cl_edges <- rbind(cl_edges, data.frame(from = from_cc, to = to_cc, type = "persistence", extincion = FALSE))
+                        cl_edges <- rbind(cl_edges, data.frame(from = from_cc, to = to_cc, type = 2L, extincion = FALSE))
                         from_cc <- to_cc
                     }
                     else {
                         to_cc <- cl_vertex$names[cl_vertex$clone == c & cl_vertex$TP == nt]
-                        cl_edges <- rbind(cl_edges, data.frame(from = from_cc, to = to_cc, type = "persistence", extincion = TRUE))
+                        cl_edges <- rbind(cl_edges, data.frame(from = from_cc, to = to_cc, type = 2L, extincion = TRUE))
                         break;
                     }
                     nt <- nt + 1
@@ -184,7 +184,7 @@ longitudinal.tree.plot <- function( inference,
             mut <- cl_vertex$last_mutation[cl_vertex$clone == (cs_id-1) & cl_vertex$TP == cs_tp]
             cl_edges_parental <- rbind(cl_edges_parental, data.frame(from = from_cc, 
                                                                      to = to_cc, 
-                                                                     type = "parental", 
+                                                                     type = 1L, 
                                                                      extincion = FALSE, 
                                                                      stringsAsFactors = FALSE))
             
@@ -222,10 +222,10 @@ longitudinal.tree.plot <- function( inference,
         fixing_clones_i <- fixing_clones[fixing_clones$clones == fxc,]
         for(i in 1:(nrow(fixing_clones_i)-1)) {
             
-            if(sum(cl_edges$from == fixing_clones_i$names[i] & cl_edges$to == fixing_clones_i$names[i+1] & cl_edges$type ==  "persistence") == 0) {
+            if(sum(cl_edges$from == fixing_clones_i$names[i] & cl_edges$to == fixing_clones_i$names[i+1] & cl_edges$type ==  2L) == 0) {
                 cl_edges <- rbind(cl_edges, data.frame(from = fixing_clones_i$names[i], 
                                                        to = fixing_clones_i$names[i+1],
-                                                       type = "persistence",
+                                                       type = 2L,
                                                        extincion = FALSE,
                                                        stringsAsFactors = FALSE)
                 )
@@ -240,7 +240,7 @@ longitudinal.tree.plot <- function( inference,
     cl_edges$name <- ""
     
     for(i in 1:nrow(cl_edges)) {
-        if(cl_edges$type[i] == "persistence") {
+        if(cl_edges$type[i] == 2L) {
             cl_edges$label[i] <- ""
             cl_edges$name[i] <- ""
         }
@@ -272,7 +272,7 @@ longitudinal.tree.plot <- function( inference,
     idx_persistent <- sapply(cl_vertex$names, 
                              function(x){
                                  mut_type <- cl_edges$type[cl_edges$to == x]
-                                 !("parental" %in% mut_type) & length(mut_type) > 0
+                                 !(2L %in% mut_type) & length(mut_type) > 0
                              })
     cl_vertex$label[idx_persistent] <- ""
     if(is.null(clone_labels) && labels_show != "clones" && labels_show != "both") {
@@ -300,7 +300,7 @@ longitudinal.tree.plot <- function( inference,
         cl_vertex$label.dist[cl_vertex$extincion == 1] <- 1.2  
     }
     
-    cl_edges$lty <- ifelse(cl_edges$type == "persistence", yes = 2, no = 1)
+    cl_edges$lty <- ifelse(cl_edges$type == 2L, yes = 2, no = 1)
     
     g <- igraph::graph_from_data_frame(cl_edges, directed=TRUE, vertices=cl_vertex)
 
@@ -375,12 +375,13 @@ longitudinal.tree.plot <- function( inference,
     cl_vertex$coord.y <- NA
 
     g <- igraph::graph_from_data_frame(cl_edges, directed=TRUE, vertices=cl_vertex)
-    adjMatrix_overall <- igraph::get.adjacency(g, sparse = FALSE, attr = "type", names = TRUE)
+    #adjMatrix_overall <- igraph::get.adjacency(g, sparse = FALSE, attr = "type", names = TRUE)
+    adjMatrix_overall <- igraph::as_adjacency_matrix(g, sparse = FALSE, attr = "type", names = TRUE)
     
-    adjMatrix_overall[which(adjMatrix_overall=="")] <- 0
-    adjMatrix_overall[which(adjMatrix_overall=="persistence")] <- 2
-    adjMatrix_overall[which(adjMatrix_overall=="parental")] <- 1
-    storage.mode(adjMatrix_overall) <- "integer"
+    # adjMatrix_overall[which(adjMatrix_overall=="")] <- 0
+    # adjMatrix_overall[which(adjMatrix_overall=="persistence")] <- 2
+    # adjMatrix_overall[which(adjMatrix_overall=="parental")] <- 1
+    # storage.mode(adjMatrix_overall) <- "integer"
     
     # Count total level number in each time point
     timepoints <- unique(cl_vertex$TP)
