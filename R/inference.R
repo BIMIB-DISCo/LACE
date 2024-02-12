@@ -41,7 +41,7 @@ learn.longitudinal.phylogeny <- function( D,
         parallel_cl <- makeCluster(num_processes,outfile=log_file)
         
         clusterExport(parallel_cl,varlist=c("D","lik_w","alpha","beta","initialization","different.error.rates","keep_equivalent","num_rs","num_iter","n_try_bs","learning_rate","marginalize","error_move","verbose","log_file"),envir=environment())
-        clusterExport(parallel_cl,c("MCMC","initialize.B","move.B","relabeling", "prune.and.reattach", "compute.C"),envir=environment())
+        clusterExport(parallel_cl,c("MCMC","initialize.B","move.B","relabeling", "prune.and.reattach", "compute_C"),envir=environment())
         clusterSetRNGStream(parallel_cl,iseed=round(runif(1)*100000))
         
         mcmc_res <- parLapply(parallel_cl,1:num_rs,function(x) { 
@@ -152,7 +152,7 @@ MCMC <- function(D,
         }
     }
 
-    res <- compute.C(B,D,lik_w,alpha,beta,different.error.rates,marginalize)
+    res <- compute_C(B,D,lik_w,alpha,beta,different.error.rates,marginalize)
     C <- res$C
     lik <- res$lik
     joint_lik <- res$joint_lik
@@ -193,7 +193,7 @@ MCMC <- function(D,
         beta_tmp <- move_tmp$beta
         
         # Compute C at maximun likelihood given B_tmp and returns its likelihood
-        res <- compute.C(B_tmp,D,lik_w,alpha_tmp,beta_tmp,different.error.rates,marginalize)
+        res <- compute_C(B_tmp,D,lik_w,alpha_tmp,beta_tmp,different.error.rates,marginalize)
         C_tmp <- res$C
         lik_tmp <- res$lik
         joint_lik_tmp <- res$joint_lik
@@ -424,8 +424,7 @@ prune.and.reattach <- function(B) {
 }
 
 # Compute attachments matrix C at maximum likelihood given B, D and P
-#' @export
-compute.C <- function( B, D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, beta = 10^-2, different.error.rates = FALSE, marginalize = FALSE ) {
+compute_C <- function( B, D, lik_w = rep(1/length(D),length(D)), alpha = 10^-3, beta = 10^-2, different.error.rates = FALSE, marginalize = FALSE ) {
     
     # Initialize return variables
     C_res <- list()
