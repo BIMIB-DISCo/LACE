@@ -91,88 +91,88 @@
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>D</dt>
+    <dl><dt id="arg-d">D<a class="anchor" aria-label="anchor" href="#arg-d"></a></dt>
 <dd><p>Mutation data from multiple experiments for a list of driver genes. It can be either a list with a data matrix per time point or a SummarizedExperiment object.
 In this latter, the object must contain two fields: assays and colData. Assays stores one unique data matrix pooling all single cells observed at each time point and colData stores a vector of labels reporting the time point when each single cell was sequenced.
 Ordering of cells in assays field and colData field must be the same.</p></dd>
 
 
-<dt>lik_w</dt>
+<dt id="arg-lik-w">lik_w<a class="anchor" aria-label="anchor" href="#arg-lik-w"></a></dt>
 <dd><p>Weight for each data point. If not provided, weights to correct for sample sizes are used.</p></dd>
 
 
-<dt>alpha</dt>
+<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
 <dd><p>False positive error rate provided as list of elements; if a vector of alpha (and beta) is provided, the inference is performed for multiple values and the solution at
 maximum-likelihood is returned.</p></dd>
 
 
-<dt>beta</dt>
+<dt id="arg-beta">beta<a class="anchor" aria-label="anchor" href="#arg-beta"></a></dt>
 <dd><p>False negative error rate provided as list of elements; if a vector of beta (and alpha) is provided, the inference is performed for multiple values and the solution at
 maximum-likelihood is returned.</p></dd>
 
 
-<dt>initialization</dt>
+<dt id="arg-initialization">initialization<a class="anchor" aria-label="anchor" href="#arg-initialization"></a></dt>
 <dd><p>Binary matrix representing a perfect philogeny clonal tree; clones are rows and mutations are columns.
 This parameter overrides "random_tree".</p></dd>
 
 
-<dt>random_tree</dt>
+<dt id="arg-random-tree">random_tree<a class="anchor" aria-label="anchor" href="#arg-random-tree"></a></dt>
 <dd><p>Boolean. Shall I start MCMC search from a random tree? If FALSE (default) and initialization is NULL, search
 is started from a TRaIT tree (BMC Bioinformatics . 2019 Apr 25;20(1):210.  doi: 10.1186/s12859-019-2795-4).</p></dd>
 
 
-<dt>keep_equivalent</dt>
+<dt id="arg-keep-equivalent">keep_equivalent<a class="anchor" aria-label="anchor" href="#arg-keep-equivalent"></a></dt>
 <dd><p>Boolean. Shall I return results (B and C) at equivalent likelihood with the best returned solution?</p></dd>
 
 
-<dt>check_indistinguishable</dt>
+<dt id="arg-check-indistinguishable">check_indistinguishable<a class="anchor" aria-label="anchor" href="#arg-check-indistinguishable"></a></dt>
 <dd><p>Boolean. Shall I remove any indistinguishable event from input data prior inference?</p></dd>
 
 
-<dt>num_rs</dt>
+<dt id="arg-num-rs">num_rs<a class="anchor" aria-label="anchor" href="#arg-num-rs"></a></dt>
 <dd><p>Number of restarts during mcmc inference.</p></dd>
 
 
-<dt>num_iter</dt>
+<dt id="arg-num-iter">num_iter<a class="anchor" aria-label="anchor" href="#arg-num-iter"></a></dt>
 <dd><p>Maximum number of mcmc steps to be performed during the inference.</p></dd>
 
 
-<dt>n_try_bs</dt>
+<dt id="arg-n-try-bs">n_try_bs<a class="anchor" aria-label="anchor" href="#arg-n-try-bs"></a></dt>
 <dd><p>Number of steps without change in likelihood of best solution after which to stop the mcmc.</p></dd>
 
 
-<dt>learning_rate</dt>
+<dt id="arg-learning-rate">learning_rate<a class="anchor" aria-label="anchor" href="#arg-learning-rate"></a></dt>
 <dd><p>Parameter to tune the probability of accepting solutions at lower values during mcmc. Value of learning_rate = 1 (default), set a
 probability proportional to the difference in likelihood; values of learning_rate greater than 1 inclease the chance of accepting solutions at lower likelihood
 during mcmc while values lower than 1 decrease such probability.</p></dd>
 
 
-<dt>marginalize</dt>
+<dt id="arg-marginalize">marginalize<a class="anchor" aria-label="anchor" href="#arg-marginalize"></a></dt>
 <dd><p>Boolean. Shall I marginalize C when computing likelihood?</p></dd>
 
 
-<dt>error_move</dt>
+<dt id="arg-error-move">error_move<a class="anchor" aria-label="anchor" href="#arg-error-move"></a></dt>
 <dd><p>Boolean. Shall I include estimation of error rates in the MCMC moves?</p></dd>
 
 
-<dt>num_processes</dt>
+<dt id="arg-num-processes">num_processes<a class="anchor" aria-label="anchor" href="#arg-num-processes"></a></dt>
 <dd><p>Number of processes to be used during parallel execution. To execute in single process mode,
 this parameter needs to be set to either NA or NULL.</p></dd>
 
 
-<dt>seed</dt>
+<dt id="arg-seed">seed<a class="anchor" aria-label="anchor" href="#arg-seed"></a></dt>
 <dd><p>Seed for reproducibility.</p></dd>
 
 
-<dt>verbose</dt>
+<dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>Boolean. Shall I print to screen information messages during the execution?</p></dd>
 
 
-<dt>log_file</dt>
+<dt id="arg-log-file">log_file<a class="anchor" aria-label="anchor" href="#arg-log-file"></a></dt>
 <dd><p>log file where to print outputs when using parallel. If parallel execution is disabled, this parameter is ignored.</p></dd>
 
 
-<dt>show</dt>
+<dt id="arg-show">show<a class="anchor" aria-label="anchor" href="#arg-show"></a></dt>
 <dd><p>Boolean. Show the interactive interface to explore the output.</p></dd>
 
 </dl></div>
