@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">LACE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.10.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.12.0</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@ Sano</h4>
                         <h4 data-toc-skip class="author">Gianluca
 Ascolani</h4>
             
-            <h4 data-toc-skip class="date">October 31, 2024</h4>
+            <h4 data-toc-skip class="date">March 26, 2025</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/BIMIB-DISCo/LACE/blob/master/vignettes/v3_LACE_interface.Rmd" class="external-link"><code>vignettes/v3_LACE_interface.Rmd</code></a></small>
       <div class="hidden name"><code>v3_LACE_interface.Rmd</code></div>
@@ -219,13 +219,13 @@ and the results interface.</p>
 <p>To begin the clonal analyses the user needs to create a project by
 choosing a folder and a meaningful name for the project (field 1.1 and
 1.2).</p>
-<p><img src="resources%2FProject_tab.png" style="width:95.0%"></p>
+<p><img src="resources/Project_tab.png" style="width:95.0%"></p>
 <p>If the project path does not contain former LACE projects, it asks
 the user to create a new one (“Create project”) and all intermediate and
 final results will be stored in structured sub-folders of the chosen
 project path.</p>
 <p>LACE 2.0 automatically recognizes if the selected path is a LACE
-project and proposes the user to load it (<img src="resources%2Fload_project.png" style="width:10.0%">)</p>
+project and proposes the user to load it (<img src="resources/load_project.png" style="width:10.0%">)</p>
 </div>
 <div class="section level3">
 <h3 id="sidebar-and-demos">Sidebar and Demos<a class="anchor" aria-label="anchor" href="#sidebar-and-demos"></a>
@@ -233,7 +233,7 @@ project and proposes the user to load it (<img src="resources%2Fload_project.png
 <p>The sidebar is divided in Projects and Current Project. Projects
 contain a set of recently opened projects which can be reloaded by
 selecting the respective project name.</p>
-<p><img src="resources%2FProjects_menu.png" style="width:30.0%"></p>
+<p><img src="resources/Projects_menu.png" style="width:30.0%"></p>
 <p>Under Projects, there is the sub-menu Demos. LACE 2.0 provides the
 user with two demos:</p>
 <ul>
@@ -272,7 +272,7 @@ data as part of the library preparation. LACE 2.0 accepts tsv/csv
 tabular formats with headers and rds file format containing a data.frame
 (field 2.1). Metadata file can include more information relative to the
 experimental setup and the platform used.</p>
-<p><img src="resources%2Ffigure2c.png" style="width:95.0%"></p>
+<p><img src="resources/figure2c.png" style="width:95.0%"></p>
 <p>The user should identify and select the ID (field 2.2) and sampling
 columns (field 2.3). The user can also reorder the sampling names so to
 recreate the chronological order of longitudinal events of the
@@ -286,7 +286,7 @@ experiment, or to explore different orders (field 2.4).</p>
 based on the annotation database used. <em>Annovar</em> provides a
 database for the human species useful to tag cancer mutations and
 whenever possible their functional effect.</p>
-<p><img src="resources%2FAnnotation_tab.png" style="width:95.0%"></p>
+<p><img src="resources/Annotation_tab.png" style="width:95.0%"></p>
 <p>If <em>Annovar</em>’s <em>Perl</em> scripts are available in the
 standard binary paths, they are detected and the <em>Annovar</em> folder
 field is autocompleted; otherwise, the user should provide the folder
@@ -315,7 +315,7 @@ in a default global population (field 3.2),</li>
 <li>the cell frequency per sample showing the mutation at the same site
 (field 3.3).</li>
 </ol>
-<p><img src="resources%2Ffigure3c.png" style="width:95.0%"></p>
+<p><img src="resources/figure3c.png" style="width:95.0%"></p>
 <p>Furthermore, the user can choose which functional exonic variation
 should be considered or neglected (field 3.4). For example, there are
 cases in which unknown and synonymous mutations in exonic regions are
@@ -404,7 +404,7 @@ computationally expensive to retrieve. The user should provide the
 folder with aligned data and, if not found already, the
 <em>samtools</em> executable folder location to compute depth only on
 sites passing the variant filters set in the previous tab.</p>
-<p><img src="resources%2FDepth_tab.png" style="width:95.0%"></p>
+<p><img src="resources/Depth_tab.png" style="width:95.0%"></p>
 </div>
 </div>
 <div class="section level3">
@@ -422,10 +422,10 @@ as:</p>
 <li>the minimum median depth supporting the mutation (field 4.4),</li>
 <li>subset of known genes (field 4.5).</li>
 </ol>
-<p><img src="resources%2Ffigure4d.png" style="width:95.0%"></p>
+<p><img src="resources/figure4d.png" style="width:95.0%"></p>
 <p>Finding the parameters to select variants is not an easy task, and
 the user might not know in advance how to choose the best set of
-filters. Hence, the user can press “Select variants” (<img src="resources%2Fselect_variant.png" style="width:10.0%">) to perform
+filters. Hence, the user can press “Select variants” (<img src="resources/select_variant.png" style="width:10.0%">) to perform
 the aforementioned computations on VCF and BAM files to derive all the
 necessary aggregated information on the sampled cells. Afterward, the
 user is presented with a interactive live preview of variants passing
@@ -457,14 +457,14 @@ likelihood.</p>
 <li>Estimate error rates of MCMC moves (field 5.13),</li>
 <li>Show results (field 5.14).</li>
 </ol>
-<p><img src="resources%2FInference_tab1.png" style="width:95.0%"></p>
+<p><img src="resources/Inference_tab1.png" style="width:95.0%"></p>
 <p>The user must insert at least one false positive rate (field 5.2) and
 one false negative rate value (field 5.3) for each sample. By double
 clicking on any cell belonging to the row “add row”, the user can insert
 a new set of false or positive rates for each sample. During the
 inferential step, the maximization of the likelihood for each set of
 rates is performed. The best results are returned.</p>
-<p><img src="resources%2FInference_tab2.png" style="width:40.0%"></p>
+<p><img src="resources/Inference_tab2.png" style="width:40.0%"></p>
 <p>Press “Run LACE” to perform all computation and estimation steps and
 visualize the results.</p>
 <div class="section level4">
@@ -605,7 +605,7 @@ mutation characterizing the clone can be queried and retrieved from the
 <em>Ensembl</em> database.</p>
 <p>The bottom part of the tab is used to display the tree legend and the
 best estimated set false positive/negative rates.</p>
-<p><img src="resources%2Ffigure6d.png" style="width:95.0%"></p>
+<p><img src="resources/figure6d.png" style="width:95.0%"></p>
 </div>
 </div>
   </div>
