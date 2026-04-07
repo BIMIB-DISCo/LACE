@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">LACE</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.14.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">2.16.0</span>
       </span>
     </div>
 
@@ -94,7 +94,7 @@ Sano</h4>
                         <h4 data-toc-skip class="author">Gianluca
 Ascolani</h4>
             
-            <h4 data-toc-skip class="date">October 15, 2025</h4>
+            <h4 data-toc-skip class="date">April 07, 2026</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/BIMIB-DISCo/LACE/blob/master/vignettes/v2_running_LACE.Rmd" class="external-link"><code>vignettes/v2_running_LACE.Rmd</code></a></small>
       <div class="hidden name"><code>v2_running_LACE.Rmd</code></div>
@@ -115,8 +115,12 @@ data comprises point mutations for four time points: (1) before
 treatment, (2) 4 days treatment, (3) 28 days treatment and finally (4)
 57 days treatment.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/BIMIB-DISCo/LACE" class="external-link">"LACE"</a></span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">longitudinal_sc_variants</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/BIMIB-DISCo/LACE" class="external-link">"LACE"</a></span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Registered S3 method overwritten by 'bit64':</span></span>
+<span><span class="co">##   method          from </span></span>
+<span><span class="co">##   print.bitstring tools</span></span></code></pre>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">longitudinal_sc_variants</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">longitudinal_sc_variants</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "T1_before_treatment"  "T2_4_days_treatment"  "T3_28_days_treatment"</span></span>
 <span><span class="co">## [4] "T4_57_days_treatment"</span></span></code></pre>
@@ -124,14 +128,14 @@ treatment, (2) 4 days treatment, (3) 28 days treatment and finally (4)
 of all, as the four data points may potentially provide sequencing for
 an unbalanced number of cells, we weight each time point proportionally
 to the sample sizes as follow. We refer to the paper for details.</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lik_weights</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.2308772</span>,<span class="fl">0.2554386</span>,<span class="fl">0.2701754</span>,<span class="fl">0.2435088</span><span class="op">)</span></span></code></pre></div>
 <p>The second main parameter to be defined as input is represented by
 the false positive and false negative error rates, i.e., alpha and beta.
 We can specify a different rate per time point as a list of rates. When
 multiple set of rates are provided, <em>LACE</em> performs a grid search
 in order to estimate the best set of error rates.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">alpha</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">alpha</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.02</span>,<span class="fl">0.01</span>,<span class="fl">0.01</span>,<span class="fl">0.01</span><span class="op">)</span></span>
 <span><span class="va">alpha</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.10</span>,<span class="fl">0.05</span>,<span class="fl">0.05</span>,<span class="fl">0.05</span><span class="op">)</span></span>
@@ -144,7 +148,7 @@ in order to estimate the best set of error rates.</p>
 <span><span class="co">## </span></span>
 <span><span class="co">## [[2]]</span></span>
 <span><span class="co">## [1] 0.10 0.05 0.05 0.05</span></span></code></pre>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [[1]]</span></span>
 <span><span class="co">## [1] 0.10 0.05 0.05 0.05</span></span>
@@ -156,7 +160,7 @@ in order to estimate the best set of error rates.</p>
 <h2 id="inference">Inference<a class="anchor" aria-label="anchor" href="#inference"></a>
 </h2>
 <p>We can now perform the inference as follow.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inference</span> <span class="op">=</span> <span class="fu"><a href="../reference/LACE.html">LACE</a></span><span class="op">(</span>D <span class="op">=</span> <span class="va">longitudinal_sc_variants</span>, </span>
 <span>    lik_w <span class="op">=</span> <span class="va">lik_weights</span>, </span>
 <span>    alpha <span class="op">=</span> <span class="va">alpha</span>, </span>
@@ -466,21 +470,21 @@ in order to estimate the best set of error rates.</p>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
 <pre><code><span><span class="co">## [1] "time=" "1"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
-<pre><code><span><span class="co">## [1] "1st Root_t1-&gt;Root_t1=1, prev_Root_t1=0.143835616438356: Root_t1-&gt;Root_t2=2"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "1st Root_t1-&gt;Root_t1=1, prev_Root_t1=0.157534246575343: Root_t1-&gt;Root_t2=2"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
 <pre><code><span><span class="co">## [1] "1st Root_t1-&gt;Root_t2=2, prev_Root_t2=0.162162162162162: Root_t2-&gt;Root_t3=2"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
-<pre><code><span><span class="co">## [1] "1st Root_t1-&gt;Clone_1_t1=1, prev_Clone_1_t1=0.150684931506849: Clone_1_t1-&gt;Clone_1_t2=2"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "1st Root_t1-&gt;Clone_1_t1=1, prev_Clone_1_t1=0.157534246575342: Clone_1_t1-&gt;Clone_1_t2=2"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
 <pre><code><span><span class="co">## [1] "1st Clone_1_t1-&gt;Clone_1_t2=2, prev_Clone_1_t2=0.225225225225225: Clone_1_t2-&gt;Clone_1_t3=2"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
-<pre><code><span><span class="co">## [1] "1st Clone_1_t1-&gt;Clone_2_t1=1, prev_Clone_2_t1=0.184931506849315: Clone_2_t1-&gt;Clone_2_t2=2"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "1st Clone_1_t1-&gt;Clone_2_t1=1, prev_Clone_2_t1=0.157534246575342: Clone_2_t1-&gt;Clone_2_t2=2"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
 <pre><code><span><span class="co">## [1] "1st Clone_2_t1-&gt;Clone_2_t2=2, prev_Clone_2_t2=0.243243243243243: Clone_2_t2-&gt;Clone_2_t3=2"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
 <pre><code><span><span class="co">## [1] "1st Clone_2_t1-&gt;Clone_3_t1=1, prev_Clone_3_t1=0.0753424657534247: Clone_3_t1-&gt;Clone_3_t2=2"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
-<pre><code><span><span class="co">## [1] "1st Clone_2_t1-&gt;Clone_4_t1=1, prev_Clone_4_t1=0.205479452054795: Clone_4_t1-&gt;Clone_4_t2=2"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "1st Clone_2_t1-&gt;Clone_4_t1=1, prev_Clone_4_t1=0.184931506849315: Clone_4_t1-&gt;Clone_4_t2=2"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
 <pre><code><span><span class="co">## [1] "1st Clone_3_t1-&gt;Clone_3_t2=2, prev_Clone_3_t2=0.108108108108108: Clone_3_t2-&gt;Clone_3_t3=2"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
@@ -488,7 +492,7 @@ in order to estimate the best set of error rates.</p>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
 <pre><code><span><span class="co">## [1] "1st Clone_4_t1-&gt;Clone_5_t1=1, prev_Clone_5_t1=0.143835616438356: Clone_5_t1-&gt;Clone_5_t2=2"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
-<pre><code><span><span class="co">## [1] "1st Clone_4_t1-&gt;Clone_6_t1=1, prev_Clone_6_t1=0.0958904109589041: Clone_6_t1-&gt;Clone_6_t2=2"</span></span></code></pre>
+<pre><code><span><span class="co">## [1] "1st Clone_4_t1-&gt;Clone_6_t1=1, prev_Clone_6_t1=0.123287671232877: Clone_6_t1-&gt;Clone_6_t2=2"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
 <pre><code><span><span class="co">## [1] "Clone_5_t1-&gt;Clone_5_t2=2, prev_Clone_5_t2=0: Clone_5_t1-&gt;Clone_5_t2=3"</span></span></code></pre>
 <pre><code><span><span class="co">## Log is not open.</span></span></code></pre>
@@ -546,7 +550,7 @@ n_try_bs representing the number of steps perfomed during the inference
 are downscaled to reduce execution time. We refer to the Manual for
 discussion on default values. We provide within the package results of
 inferences performed with correct parameters as RData.</p>
-<div class="sourceCode" id="cb299"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb301"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">inference</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">inference</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] "B"                    "C"                    "corrected_genotypes" </span></span>
@@ -570,14 +574,14 @@ search.</p>
 </h2>
 <p>We can plot the inferred model using the function
 longitudinal.tree.plot.</p>
-<div class="sourceCode" id="cb301"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb303"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">clone_labels</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"ARPC2"</span>,<span class="st">"PRAME"</span>,<span class="st">"HNRNPC"</span>,<span class="st">"COL1A2"</span>,<span class="st">"RPL5"</span>,<span class="st">"CCT8"</span><span class="op">)</span></span>
 <span><span class="va">longitudinal.tree</span> <span class="op">=</span> <span class="fu"><a href="../reference/longitudinal.tree.plot.html">longitudinal.tree.plot</a></span><span class="op">(</span>inference <span class="op">=</span> <span class="va">inference</span>, </span>
 <span>                                           labels_show <span class="op">=</span> <span class="st">"clones"</span>, </span>
 <span>                                           clone_labels <span class="op">=</span> <span class="va">clone_labels</span>, </span>
 <span>                                           legend_position <span class="op">=</span> <span class="st">"topright"</span><span class="op">)</span></span></code></pre></div>
 <div class="figure">
-<img src="v2_running_LACE_files/figure-html/unnamed-chunk-6-1.png" alt="Inferred model" width="1152"><p class="caption">
+<img src="v2_running_LACE_files/figure-html/unnamed-chunk-6-1.png" class="r-plt" alt="Inferred model" width="1152"><p class="caption">
 Inferred model
 </p>
 </div>
@@ -599,7 +603,7 @@ Inferred model
 
 <div class="pkgdown">
   <p></p>
-<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.9000.</p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.9000.</p>
 </div>
 
       </footer>
