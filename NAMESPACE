@@ -48,11 +48,15 @@ importFrom(Matrix,rankMatrix)
 importFrom(Rfast,rowMaxs)
 importFrom(grDevices,colorRampPalette)
 importFrom(jsonlite,toJSON)
-importFrom(purrr,detect_index)
-importFrom(purrr,is_null)
-importFrom(stats,dist)
-importFrom(stats,hclust)
-importFrom(stats,rnorm)
-importFrom(stats,runif)
-importFrom(stats,setNames)
+importFrom(purrr,
+  detect_index,
+  is_null
+)
+importFrom(stats,
+  dist,
+  hclust,
+  rnorm,
+  runif,
+  setNames
+)
 importFrom(tidyr,gather)
